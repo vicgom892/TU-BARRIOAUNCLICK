@@ -1,0 +1,3034 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BACANO BURGER - Hamburguesas de Calidad</title>
+    <link rel="icon" href="../img/img-gastro/bacano-logo-rojoyblanco-fotor-bg-remover-20251113221238.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset mejorado para móvil */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent; /* Elimina el highlight azul en móvil */
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden; /* Previene scroll horizontal */
+            position: relative;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fondo animado - corregido para móvil */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw; /* Usar vw en lugar de % */
+            height: 100vh; /* Usar vh en lugar de % */
+            z-index: -1;
+            background: linear-gradient(-45deg, #1a1a1a, #2a2a2a, #1a1a1a, #333);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Container mejorado para móvil */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px; /* Padding reducido para móvil */
+            width: 100%; /* Asegurar que ocupe el 100% */
+        }
+
+        /* Splash Screen - corregido para móvil */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('/castelar/img/img-gastro/hamburguesa-4.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+         @media (max-width: 480px) {
+             .splash-screen {
+            background-image: url('/castelar/img/img-gastro/manos-hamburguesas.jpg');
+        }
+         }
+
+        .splash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5));
+            z-index: 1;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 90%;
+            width: 100%; /* Asegurar que ocupe el ancho disponible */
+            padding: 0 15px; /* Padding para móvil */
+        }
+
+        .splash-logo {
+            font-size: clamp(2.5rem, 8vw, 4rem); /* Tamaño responsive */
+            font-weight: bold;
+            color: #ff9900;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        .splash-slogan {
+            color: white;
+            font-size: clamp(1.2rem, 4vw, 1.8rem); /* Tamaño responsive */
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+            font-weight: 300;
+        }
+
+        .loading-container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            width: 100%;
+            max-width: 400px; /* Máximo ancho para móvil */
+            margin: auto;
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #ff9900;
+            font-weight: 500;
+        }
+
+        .loading-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 auto 15px;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9900, #ffcc00);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .loading-percentage {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .loading-message {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            min-height: 24px;
+        }
+
+        /* Header - corregido para móvil */
+        header {
+            background-color: rgba(26, 26, 26, 0.95);
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            left: 0; /* Asegurar posición */
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        .logo img {
+            height: 60px; /* Tamaño reducido para móvil */
+            transition: all 0.4s ease;
+            max-width: 100%; /* Evitar desbordamiento */
+        }
+
+        header.scrolled .logo img {
+            height: 50px;
+        }
+
+        header.scrolled {
+            background: transparent;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px; /* Espacio reducido para móvil */
+            align-items: center;
+            flex-wrap: nowrap; /* Evitar que se rompa en móvil */
+        }
+
+        .hours-btn {
+            background-color: transparent;
+            color: white;
+            border: 1px solid #ff9900;
+            padding: 6px 10px; /* Padding reducido para móvil */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem; /* Tamaño de fuente reducido */
+            white-space: nowrap; /* Evitar que el texto se divida */
+        }
+
+        .hours-btn:hover {
+            background-color: #ff9900;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 18px; /* Tamaño reducido para móvil */
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #ff9900;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        /* Indicador de estado del comercio */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px; /* Espacio reducido para móvil */
+            padding: 5px 10px; /* Padding reducido para móvil */
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.7rem; /* Tamaño reducido para móvil */
+            transition: all 0.3s ease;
+            white-space: nowrap; /* Evitar que el texto se divida */
+        }
+
+        .status-indicator.open {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .status-indicator.closed {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .status-dot {
+            width: 8px; /* Tamaño reducido para móvil */
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-indicator.open .status-dot {
+            background-color: #8BC34A;
+            box-shadow: 0 0 5px #8BC34A;
+        }
+
+        .status-indicator.closed .status-dot {
+            background-color: #FF5722;
+            box-shadow: 0 0 5px #FF5722;
+        }
+
+        /* Botón de ofertas flotante - SOLAPA - corregido para móvil */
+        .offers-floating {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .offers-toggle {
+            background-color: #ff3333;
+            color: white;
+            padding: 12px 8px; /* Padding reducido para móvil */
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 14px; /* Tamaño reducido para móvil */
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px; /* Altura reducida para móvil */
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%) translateY(-50%); }
+            to { transform: translateX(0) translateY(-50%); }
+        }
+
+        .offers-toggle:hover {
+            background-color: #ff5555;
+            padding-left: 12px; /* Padding reducido para móvil */
+        }
+
+        /* Barra de navegación inferior - corregida para móvil */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 26, 0.95);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0; /* Padding reducido para móvil */
+            z-index: 999;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #999;
+            text-decoration: none;
+            font-size: 10px; /* Tamaño reducido para móvil */
+            transition: all 0.3s ease;
+            flex: 1; /* Ocupar espacio igual */
+            max-width: 80px; /* Máximo ancho para evitar desbordamiento */
+        }
+
+        .nav-item i {
+            font-size: 16px; /* Tamaño reducido para móvil */
+            margin-bottom: 3px; /* Margen reducido para móvil */
+        }
+
+        .nav-item.active {
+            color: #ff9900;
+        }
+
+        .nav-item:hover {
+            color: #ff9900;
+        }
+
+        /* Botón flotante redes sociales - corregido para móvil */
+        .social-floating {
+            position: fixed;
+            right: 10px; /* Posición ajustada para móvil */
+            bottom: 60px; /* Posición ajustada para evitar superposición con navegación */
+            z-index: 100;
+        }
+
+        .social-toggle {
+            width: 50px; /* Tamaño reducido para móvil */
+            height: 50px;
+            background-color: #ff9900;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .social-toggle i {
+            color: white;
+            font-size: 20px; /* Tamaño reducido para móvil */
+        }
+
+        .social-toggle.active {
+            transform: rotate(45deg);
+        }
+
+        .social-buttons {
+            position: absolute;
+            bottom: 55px; /* Posición ajustada para móvil */
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px; /* Espacio reducido para móvil */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .social-buttons.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .social-button {
+            width: 45px; /* Tamaño reducido para móvil */
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .social-button:hover {
+            transform: scale(1.1);
+        }
+
+        .social-button.facebook:hover {
+            background-color: #3b5998;
+        }
+
+        .social-button.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .social-button.tiktok:hover {
+            background-color: #000000;
+        }
+
+        /* Hero Section - corregido para móvil */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 150px 15px 80px; /* Padding ajustado para móvil */
+            margin-top: 80px;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 3rem); /* Tamaño responsive */
+            margin-bottom: 15px;
+            color: #ff9900;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 4vw, 1.5rem); /* Tamaño responsive */
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Sección Delivery - corregida para móvil */
+        .delivery-section {
+            padding: 60px 0; /* Padding reducido para móvil */
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+        }
+
+        .delivery-content {
+            display: flex;
+            flex-direction: column; /* Columna en móvil */
+            align-items: center;
+            gap: 30px; /* Espacio reducido para móvil */
+            width: 100%;
+        }
+
+        .delivery-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%; /* Ocupar ancho completo en móvil */
+        }
+
+        .delivery-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .delivery-text {
+            flex: 1;
+            width: 100%; /* Ocupar ancho completo en móvil */
+        }
+
+        .delivery-text h2 {
+            font-size: clamp(1.5rem, 6vw, 2.5rem); /* Tamaño responsive */
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center; /* Centrado en móvil */
+        }
+
+        .delivery-text p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 20px;
+            text-align: center; /* Centrado en móvil */
+        }
+
+        .delivery-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center; /* Centrado en móvil */
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1 1 45%; /* Dos columnas en móvil */
+            min-width: 140px; /* Mínimo ancho para evitar elementos demasiado pequeños */
+        }
+
+        .feature i {
+            color: #ff9900;
+            font-size: 20px;
+        }
+
+        /* Secciones de menú - corregidas para móvil */
+        .menu-section {
+            padding: 60px 0; /* Padding reducido para móvil */
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px; /* Margen reducido para móvil */
+            font-size: clamp(1.8rem, 6vw, 2.5rem); /* Tamaño responsive */
+            color: #333;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 60px; /* Ancho reducido para móvil */
+            height: 4px;
+            background-color: #ff9900;
+            margin: 10px auto;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Tamaño mínimo reducido */
+            gap: 15px; /* Espacio reducido para móvil */
+            width: 100%;
+        }
+
+        /* Media queries mejoradas */
+        @media (max-width: 480px) {
+            .cards-container {
+                grid-template-columns: 1fr; /* Una columna en móviles muy pequeños */
+            }
+            
+            .container {
+                padding: 0 10px; /* Padding aún más reducido */
+            }
+            
+            .feature {
+                flex: 1 1 100%; /* Una columna para características en móviles pequeños */
+            }
+        }
+
+        @media (min-width: 769px) {
+            .delivery-content {
+                flex-direction: row; /* Fila en desktop */
+            }
+            
+            .delivery-text h2,
+            .delivery-text p {
+                text-align: left; /* Alineación izquierda en desktop */
+            }
+        }
+
+        /* Resto de estilos (product cards, modals, etc.) se mantienen igual pero con mejoras responsive */
+        .product-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            width: 100%; /* Asegurar que ocupe el 100% del contenedor grid */
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px; /* Altura reducida para móvil */
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-details {
+            padding: 15px; /* Padding reducido para móvil */
+        }
+
+        .product-name {
+            font-size: 1.1rem; /* Tamaño reducido para móvil */
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .product-description {
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.4; /* Altura de línea reducida para móvil */
+            font-size: 0.9rem; /* Tamaño reducido para móvil */
+        }
+
+        .product-sizes {
+            display: flex;
+            gap: 10px; /* Espacio reducido para móvil */
+            margin-bottom: 12px;
+            flex-wrap: wrap; /* Permitir que se ajuste en móvil */
+        }
+
+        .size-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1; /* Ocupar espacio igual */
+            min-width: 70px; /* Mínimo ancho para evitar elementos demasiado pequeños */
+        }
+
+        .size-option input {
+            margin-bottom: 3px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #ff9900;
+            font-size: 1rem; /* Tamaño reducido para móvil */
+        }
+
+        .add-to-cart {
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            padding: 10px 15px; /* Padding reducido para móvil */
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            font-size: 0.9rem; /* Tamaño reducido para móvil */
+        }
+
+        .add-to-cart:hover {
+            background-color: #e68a00;
+        }
+
+        /* Footer - corregido para móvil */
+        footer {
+            background-color: rgba(26, 26, 26, 0.95);
+            color: white;
+            padding: 30px 0; /* Padding reducido para móvil */
+            text-align: center;
+            margin-bottom: 60px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* Espacio reducido para móvil */
+            width: 100%;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem; /* Tamaño reducido para móvil */
+            font-weight: bold;
+            color: #ff9900;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 15px; /* Espacio reducido para móvil */
+            margin: 15px 0;
+            flex-wrap: wrap; /* Permitir que se ajuste en móvil */
+            justify-content: center; /* Centrado en móvil */
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem; /* Tamaño reducido para móvil */
+        }
+
+        .footer-links a:hover {
+            color: #ff9900;
+        }
+
+        .copyright {
+            color: #999;
+            font-size: 0.8rem; /* Tamaño reducido para móvil */
+        }
+
+        /* Estilos para modales - corregidos para móvil */
+        .modal, .offers-modal, .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw; /* Usar vw para asegurar ancho completo */
+            height: 100vh; /* Usar vh para asegurar alto completo */
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px; /* Padding para evitar que toque los bordes */
+        }
+
+        .modal-content, .offers-content, .cart-content {
+            background-color: white;
+            width: 100%;
+            max-width: 500px; /* Máximo ancho para móvil */
+            border-radius: 10px;
+            padding: 20px; /* Padding reducido para móvil */
+            position: relative;
+            animation: modalAppear 0.3s ease;
+            max-height: 90vh; /* Altura máxima para móvil */
+            overflow-y: auto;
+        }
+
+        /* Estilos para el modal del carrito - Versión mejorada */
+.cart-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.cart-content {
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    border-radius: 20px;
+    padding: 0;
+    position: relative;
+    animation: modalAppear 0.5s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 153, 0, 0.3);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff9900, #ffcc00, #ff9900);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite linear;
+    z-index: 1;
+}
+
+.cart-header {
+    background: rgba(26, 26, 26, 0.9);
+    padding: 25px 30px 15px;
+    border-bottom: 1px solid rgba(255, 153, 0, 0.2);
+    position: relative;
+}
+
+.cart-title {
+    text-align: center;
+    color: #ff9900;
+    font-size: 2.2rem;
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(255, 153, 0, 0.5);
+    position: relative;
+}
+
+.cart-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff9900, transparent);
+    margin: 10px auto 0;
+}
+
+.close-cart {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.close-cart:hover {
+    color: #ff9900;
+    background: rgba(255, 153, 0, 0.1);
+    transform: scale(1.1);
+}
+
+.cart-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 30px;
+    max-height: 400px;
+}
+
+/* Estilos para los items del carrito */
+.cart-items {
+    margin: 20px 0;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    gap: 15px;
+    align-items: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    backdrop-filter: blur(10px);
+}
+
+.cart-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 153, 0, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.item-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.item-name {
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+}
+
+.item-size {
+    color: #ff9900;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.item-price, .item-total {
+    color: #ff9900;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-align: center;
+}
+
+.item-quantity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 153, 0, 0.1);
+    border-radius: 25px;
+    padding: 8px 15px;
+    border: 1px solid rgba(255, 153, 0, 0.3);
+}
+
+.quantity-btn {
+    background: #ff9900;
+    border: none;
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.quantity-btn:hover {
+    background: #ffcc00;
+    transform: scale(1.1);
+}
+
+.quantity-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.remove-item {
+    background: rgba(255, 51, 51, 0.2);
+    border: 1px solid rgba(255, 51, 51, 0.4);
+    color: #ff6666;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.remove-item:hover {
+    background: rgba(255, 51, 51, 0.4);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Sección del total */
+.cart-total-section {
+    background: rgba(26, 26, 26, 0.8);
+    padding: 25px 30px;
+    border-top: 1px solid rgba(255, 153, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 153, 0, 0.2);
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.cart-total-amount {
+    color: #ff9900;
+    font-size: 2rem;
+    text-shadow: 0 2px 10px rgba(255, 153, 0, 0.5);
+}
+
+/* Formulario de checkout */
+.checkout-form {
+    display: none;
+    padding: 30px;
+    background: rgba(26, 26, 26, 0.9);
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 153, 0, 0.2);
+}
+
+.checkout-form h3 {
+    color: #ff9900;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    position: relative;
+}
+
+.checkout-form h3::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #ff9900, transparent);
+    margin: 10px auto 0;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    color: white;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: #ff9900;
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.2);
+}
+
+.form-group input::placeholder, .form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.payment-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.payment-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    backdrop-filter: blur(10px);
+}
+
+.payment-option:hover {
+    background: rgba(255, 153, 0, 0.1);
+    border-color: rgba(255, 153, 0, 0.3);
+}
+
+.payment-option.selected {
+    background: rgba(255, 153, 0, 0.2);
+    border-color: #ff9900;
+    box-shadow: 0 0 0 2px rgba(255, 153, 0, 0.3);
+}
+
+.payment-option input {
+    display: none;
+}
+
+.payment-option label {
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-weight: normal;
+}
+
+/* Mensaje de confirmación */
+.confirmation-message {
+    display: none;
+    text-align: center;
+    padding: 40px 30px;
+    background: rgba(26, 26, 26, 0.9);
+    border-radius: 15px;
+    margin: 20px 0;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+}
+
+.confirmation-message i {
+    font-size: 4rem;
+    color: #4CAF50;
+    margin-bottom: 20px;
+    animation: bounce 1s ease;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+    40% {transform: translateY(-10px);}
+    60% {transform: translateY(-5px);}
+}
+
+.confirmation-message h3 {
+    color: #4CAF50;
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+}
+
+.confirmation-message p {
+    color: white;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+/* Botones de acción */
+.cart-actions {
+    padding: 25px 30px;
+    display: flex;
+    gap: 15px;
+    background: rgba(26, 26, 26, 0.9);
+    border-top: 1px solid rgba(255, 153, 0, 0.2);
+}
+
+.btn {
+    padding: 15px 25px;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex: 1;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #ff9900, #ffcc00);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 153, 0, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 153, 0, 0.6);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 153, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Estados vacíos y especiales */
+.cart-empty {
+    text-align: center;
+    padding: 60px 30px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.cart-empty i {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.cart-empty h3 {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 15px;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .cart-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .cart-header {
+        padding: 20px 25px 15px;
+    }
+    
+    .cart-title {
+        font-size: 1.8rem;
+    }
+    
+    .cart-body {
+        padding: 0 20px;
+        max-height: 300px;
+    }
+    
+    .cart-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
+        padding: 15px;
+    }
+    
+    .item-quantity {
+        justify-self: center;
+        max-width: 150px;
+    }
+    
+    .cart-total {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .cart-total-amount {
+        font-size: 1.8rem;
+    }
+    
+    .checkout-form {
+        padding: 20px;
+    }
+    
+    .payment-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .cart-actions {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cart-content {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+        margin: 0;
+    }
+    
+    .cart-body {
+        max-height: calc(100vh - 200px);
+    }
+    
+    .cart-header {
+        padding: 15px 20px 10px;
+    }
+    
+    .cart-title {
+        font-size: 1.5rem;
+    }
+    
+    .close-cart {
+        top: 15px;
+        right: 20px;
+        width: 35px;
+        height: 35px;
+    }
+}
+        /* Estilos para el modal de ofertas */
+.offers-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.offers-content {
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    width: 90%;
+    max-width: 800px;
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    animation: modalAppear 0.5s ease;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 153, 0, 0.3);
+    overflow: hidden;
+}
+
+.offers-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #ff9900, #ffcc00, #ff9900);
+    background-size: 200% 100%;
+    animation: shimmer 3s infinite linear;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.offers-title {
+    text-align: center;
+    color: #ff9900;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 0 2px 10px rgba(255, 153, 0, 0.5);
+    position: relative;
+}
+
+.offers-title::after {
+    content: '';
+    display: block;
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #ff9900, transparent);
+    margin: 10px auto;
+}
+
+.close-offers {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.close-offers:hover {
+    color: #ff9900;
+    transform: scale(1.2);
+}
+
+/* Estilos para el carousel de ofertas */
+.offers-carousel {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.offers-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+.offer-slide {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 30px;
+    color: white;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.offer-slide::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
+    z-index: 1;
+}
+
+.offer-badge {
+    position: absolute;
+    top: 150px;
+    right: 20px;
+    background: linear-gradient(45deg, #ff3333, #ff6666);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    z-index: 2;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.offer-title {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+}
+
+.offer-description {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    opacity: 0.9;
+    max-width: 80%;
+}
+
+.offer-price {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.offer-old-price {
+    font-size: 1.5rem;
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.countdown-timer {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.countdown-unit {
+    background: rgba(255, 153, 0, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    min-width: 60px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 153, 0, 0.3);
+}
+
+.countdown-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ff9900;
+}
+
+.countdown-label {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.carousel-controls {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    z-index: 2;
+}
+
+.carousel-btn {
+    background: rgba(255, 153, 0, 0.8);
+    border: none;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.carousel-btn:hover {
+    background: #ff9900;
+    transform: scale(1.1);
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #ff9900, #ffcc00);
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 153, 0, 0.4);
+    z-index: 1;
+    margin-bottom: 22px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 153, 0, 0.6);
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .offers-content {
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .offers-title {
+        font-size: 2rem;
+    }
+    
+    .offers-carousel {
+        height: 350px;
+    }
+    
+    .offer-slide {
+        padding: 20px;
+    }
+    
+    .offer-title {
+        font-size: 1.5rem;
+    }
+    
+    .offer-price {
+        font-size: 1.5rem;
+    }
+    
+    .countdown-unit {
+        min-width: 50px;
+        padding: 8px;
+    }
+    
+    .countdown-value {
+        font-size: 1.2rem;
+    }
+    
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .offers-carousel {
+        height: 300px;
+    }
+    
+    .offer-title {
+        font-size: 1.3rem;
+    }
+    
+    .offer-description {
+        font-size: 0.9rem;
+        max-width: 100%;
+    }
+    
+    .countdown-timer {
+        gap: 5px;
+    }
+    
+    .countdown-unit {
+        min-width: 45px;
+        padding: 5px;
+    }
+    
+    .countdown-value {
+        font-size: 1rem;
+    }
+    
+    .countdown-label {
+        font-size: 0.7rem;
+    }
+}
+
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Estilos específicos para móvil muy pequeños */
+        @media (max-width: 360px) {
+            .header-buttons {
+                gap: 5px;
+            }
+            
+            .hours-btn {
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+            
+            .status-indicator {
+                font-size: 0.6rem;
+                padding: 4px 8px;
+            }
+            
+            .nav-item {
+                font-size: 9px;
+            }
+            
+            .nav-item i {
+                font-size: 14px;
+            }
+        }
+
+        /* Prevenir desbordamiento horizontal en todos los elementos */
+        img, video, iframe {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Asegurar que todos los contenedores principales ocupen el 100% */
+        main, section, .menu-section, .delivery-section, .hero {
+            width: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo animado -->
+    <div class="animated-bg"></div>
+
+    <!-- Splash Screen Mejorado -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-overlay"></div>
+        <div class="splash-content">
+            <div class="splash-logo">BACANO <span>BURGER'S</span></div>
+            <div class="splash-slogan">Prepárate para degustar algo alucinante</div>
+            
+            <div class="loading-container">
+                <div class="loading-text">Cargando experiencia...</div>
+                <div class="loading-percentage" id="loadingPercentage">0%</div>
+                <div class="loading-bar-container">
+                    <div class="loading-bar" id="loadingBar"></div>
+                </div>
+                <div class="loading-message" id="loadingMessage">Inicializando sabores...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" id="mainLogo">
+                    <img src="/castelar/img/img-gastro/bacano-logo-rojoyblanco-fotor-bg-remover-20251113221238.png" alt="BACANO BURGER">
+                </div>
+                <div class="header-buttons">
+                    <!-- Indicador de estado del comercio -->
+                    <div class="status-indicator" id="statusIndicator">
+                        <span class="status-dot"></span>
+                        <span id="statusText">Abierto</span>
+                    </div>
+                    <button class="hours-btn" id="hoursBtn">
+                        <i class="far fa-clock"></i> Horarios
+                    </button>
+                    <div class="cart-icon" id="cartIcon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div class="cart-count" id="cartCount">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Botón de ofertas flotante - SOLAPA -->
+    <div class="offers-floating">
+        <div class="offers-toggle" id="offersToggle">
+            OFERTAS
+        </div>
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="bottom-nav">
+        <a href="#inicio" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="#hamburguesas" class="nav-item">
+            <i class="fas fa-hamburger"></i>
+            <span>Hamburguesas</span>
+        </a>
+        <a href="#combos" class="nav-item">
+            <i class="fas fa-gift"></i>
+            <span>Combos</span>
+        </a>
+        <a href="#kids" class="nav-item">
+            <i class="fas fa-child"></i>
+            <span>Kids</span>
+        </a>
+        <a href="#papas" class="nav-item">
+            <i class="fas fa-utensils"></i>
+            <span>Papas Fritas</span>
+        </a>
+        <a href="#bebidas" class="nav-item">
+            <i class="fas fa-glass-cheers"></i>
+            <span>Bebidas</span>
+        </a>
+        <a href="#delivery" class="nav-item">
+            <i class="fas fa-motorcycle"></i>
+            <span>Delivery</span>
+        </a>
+    </div>
+
+    <!-- Botón flotante redes sociales -->
+    <div class="social-floating">
+        <div class="social-toggle" id="socialToggle">
+            <i class="fas fa-share-alt"></i>
+        </div>
+        <div class="social-buttons" id="socialButtons">
+            <a href="#" class="social-button facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-button instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-button whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h1>BACANO BURGER</h1>
+            <p>Sabor Auténtico, Experiencia Única</p>
+        </div>
+    </section>
+
+    <!-- Sección Delivery -->
+    <section class="delivery-section" id="delivery">
+        <div class="container">
+            <div class="delivery-content">
+                <div class="delivery-image">
+                    <img src="/castelar/img/img-gastro/delibery-icon.jpg" alt="Delivery">
+                </div>
+                <div class="delivery-text">
+                    <h2>¡Disfruta BACANO en tu casa!</h2>
+                    <p>Nuestro servicio de delivery te lleva el auténtico sabor de BACANO BURGER directamente a tu puerta. Hamburguesas jugosas, papas crujientes y todo lo que necesitas para una experiencia gastronómica inolvidable.</p>
+                    <div class="delivery-features">
+                        <div class="feature">
+                            <i class="fas fa-shipping-fast"></i>
+                            <span>Entrega rápida</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Zona de cobertura amplia</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-utensils"></i>
+                            <span>Productos frescos</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Múltiples métodos de pago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Hamburguesas -->
+    <section class="menu-section" id="hamburguesas">
+        <div class="container">
+            <h2 class="section-title">BURGUER'S</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Todas nuestras hamburguesas incluyen papas fritas</p>
+            <div class="cards-container" id="burgersContainer">
+                <!-- Las tarjetas de hamburguesas se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Nueva Sección de Combos -->
+    <section class="menu-section combo-section" id="combos">
+        <div class="container">
+            <h2 class="section-title">COMBOS ESPECIALES</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Ahorra con nuestros combos perfectamente balanceados</p>
+            <div class="cards-container" id="combosContainer">
+                <!-- Las tarjetas de combos se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Nueva Sección Kids -->
+    <section class="menu-section kids-section" id="kids">
+        <div class="container">
+            <h2 class="section-title">MENÚ KIDS</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Diversión y sabor para los más pequeños</p>
+            <div class="cards-container" id="kidsContainer">
+                <!-- Las tarjetas kids se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Papas Fritas -->
+    <section class="menu-section" id="papas">
+        <div class="container">
+            <h2 class="section-title">PAPAS FRITAS</h2>
+            <div class="cards-container" id="friesContainer">
+                <!-- Las tarjetas de papas fritas se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Bebidas -->
+    <section class="menu-section" id="bebidas">
+        <div class="container">
+            <h2 class="section-title">BEBIDAS</h2>
+            <div class="cards-container" id="drinksContainer">
+                <!-- Las tarjetas de bebidas se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de ofertas -->
+    <div class="offers-modal" id="offersModal">
+        <div class="offers-content">
+            <button class="close-offers" id="closeOffersModal">&times;</button>
+            <h2 class="offers-title">¡OFERTAS EXPLOSIVAS!</h2>
+            <div class="offers-carousel">
+                <div class="offers-slides" id="offersSlides">
+                    <!-- Las diapositivas de ofertas se generarán dinámicamente -->
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prevOffer">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn" id="nextOffer">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de horarios -->
+    <div class="modal" id="hoursModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeHoursModal">&times;</button>
+            <h2 class="modal-title">Horarios de Atención</h2>
+            <ul class="hours-list">
+                <li>
+                    <span class="day">Martes</span>
+                    <span class="time">21:00 - 24:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Miercole</span>
+                    <span class="time">21:00 - 24:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Jueves</span>
+                    <span class="time">21:00 - 24:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Viernes</span>
+                    <span class="time">21:00 - 24:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Sabados</span>
+                    <span class="time">21:00 - 24:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Domingo</span>
+                    <span class="time">21:00 - 24:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Lunes</span>
+                    <span class="time">Cerrado</span>
+                </li>
+            </ul>
+            <p style="margin-top: 20px; font-style: italic; text-align: center;">¡Te esperamos para disfrutar de las mejores hamburguesas!</p>
+        </div>
+    </div>
+
+    <!-- Carrito de Compras -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2 class="cart-title">Tu Pedido</h2>
+                <button class="close-cart" id="closeCart">&times;</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Los productos del carrito se agregarán aquí dinámicamente -->
+            </div>
+            <div class="cart-total">
+                Total: $<span id="cartTotal">0.00</span>
+            </div>
+            <div class="checkout-form" id="checkoutForm">
+                <h3 style="margin-bottom: 15px;">Información de Entrega</h3>
+                <div class="form-group">
+                    <label for="customerName">Nombre Completo *</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Teléfono *</label>
+                    <input type="tel" id="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryAddress">Dirección de Entrega *</label>
+                    <textarea id="deliveryAddress" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Método de Pago *</label>
+                    <div class="payment-options">
+                        <div class="payment-option" id="cashOption">
+                            <input type="radio" id="cash" name="payment" value="efectivo">
+                            <label for="cash">Efectivo</label>
+                        </div>
+                        <div class="payment-option" id="transferOption">
+                            <input type="radio" id="transfer" name="payment" value="transferencia">
+                            <label for="transfer">Transferencia</label>
+                        </div>
+                        <div class="payment-option" id="mercadopagoOption">
+                            <input type="radio" id="mercadopago" name="payment" value="mercadopago">
+                            <label for="mercadopago">Mercado Pago</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="additionalNotes">Notas Adicionales</label>
+                    <textarea id="additionalNotes" rows="3" placeholder="Instrucciones especiales para la entrega..."></textarea>
+                </div>
+                <button class="btn btn-primary" id="sendOrder">Enviar Pedido por WhatsApp</button>
+            </div>
+            <div class="confirmation-message" id="confirmationMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>¡Pedido Enviado con Éxito!</h3>
+                <p>Hemos recibido tu pedido y te contactaremos pronto para confirmar los detalles.</p>
+                <p>¡Gracias por elegir BACANO BURGER!</p>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-secondary" id="continueShopping">Seguir Comprando</button>
+                <button class="btn btn-primary" id="checkoutBtn">Finalizar Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">BACANO BURGER</div>
+                <p>Sabor Auténtico, Experiencia Única</p>
+                <div class="footer-links">
+                    <a href="#inicio">Inicio</a>
+                    <a href="#hamburguesas">Hamburguesas</a>
+                    <a href="#combos">Combos</a>
+                    <a href="#kids">Kids</a>
+                    <a href="#papas">Papas Fritas</a>
+                    <a href="#bebidas">Bebidas</a>
+                    <a href="#delivery">Delivery</a>
+                </div>
+                <p class="copyright">© 2023 BACANO BURGER. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales
+        let cart = [];
+        let currentProduct = null;
+        let currentOfferSlide = 0;
+        let offersInterval;
+
+        // Datos del menú actualizados con Combos y Kids
+        const menuData = {
+            burgers: [
+                {
+                    id: 1,
+                    name: "Hamburguesa Clásica",
+                    description: "Carne 100% de res, lechuga, tomate, cebolla y nuestra salsa especial. Una combinación perfecta de sabores tradicionales.",
+                    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=699&q=80",
+                    sizes: [
+                        { name: "Simple", price: 8.99 },
+                        { name: "Doble", price: 12.99 },
+                        { name: "Triple", price: 15.99 }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Hamburguesa BBQ",
+                    description: "Carne a la parrilla, queso cheddar, cebolla caramelizada, tocino crujiente y nuestra salsa BBQ casera.",
+                    image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80",
+                    sizes: [
+                        { name: "Simple", price: 10.99 },
+                        { name: "Doble", price: 14.99 },
+                        { name: "Triple", price: 17.99 }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Hamburguesa Vegana",
+                    description: "Hamburguesa de lentejas y vegetales, lechuga, tomate, cebolla morada y mayonesa vegana. Una opción deliciosa y saludable.",
+                    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=699&q=80",
+                    sizes: [
+                        { name: "Simple", price: 9.99 },
+                        { name: "Doble", price: 13.99 }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "Hamburguesa Bacon Deluxe",
+                    description: "Doble carne, queso cheddar, doble tocino, cebolla crispy y salsa especial.",
+                    image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80",
+                    sizes: [
+                        { name: "Simple", price: 11.99 },
+                        { name: "Doble", price: 15.99 }
+                    ]
+                },
+                {
+                    id: 5,
+                    name: "Hamburguesa Clásica",
+                    description: "Carne 100% de res, lechuga, tomate, cebolla y nuestra salsa especial. Una combinación perfecta de sabores tradicionales.",
+                    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=699&q=80",
+                    sizes: [
+                        { name: "Simple", price: 8.99 },
+                        { name: "Doble", price: 12.99 },
+                        { name: "Triple", price: 15.99 }
+                    ]
+                },
+                {
+                    id: 6,
+                    name: "Hamburguesa BBQ",
+                    description: "Carne a la parrilla, queso cheddar, cebolla caramelizada, tocino crujiente y nuestra salsa BBQ casera.",
+                    image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80",
+                    sizes: [
+                        { name: "Simple", price: 10.99 },
+                        { name: "Doble", price: 14.99 },
+                        { name: "Triple", price: 17.99 }
+                    ]
+                },
+                {
+                    id: 7,
+                    name: "Hamburguesa Vegana",
+                    description: "Hamburguesa de lentejas y vegetales, lechuga, tomate, cebolla morada y mayonesa vegana. Una opción deliciosa y saludable.",
+                    image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=699&q=80",
+                    sizes: [
+                        { name: "Simple", price: 9.99 },
+                        { name: "Doble", price: 13.99 }
+                    ]
+                },
+                {
+                    id: 8,
+                    name: "Hamburguesa Bacon Deluxe",
+                    description: "Doble carne, queso cheddar, doble tocino, cebolla crispy y salsa especial.",
+                    image: "https://images.unsplash.com/photo-1553979459-d2229ba7433b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80",
+                    sizes: [
+                        { name: "Simple", price: 11.99 },
+                        { name: "Doble", price: 15.99 }
+                    ]
+                }
+            ],
+            combos: [
+                {
+                    id: 101,
+                    name: "Combo Bacano",
+                    description: "El combo perfecto para una experiencia completa. Incluye hamburguesa, papas y bebida.",
+                    image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80",
+                    includes: [
+                        "Hamburguesa a elección",
+                        "Papas fritas clásicas medianas",
+                        "Bebida 500ml a elección"
+                    ],
+                    sizes: [
+                        { name: "Combo Individual", price: 14.99 },
+                        { name: "Combo Familiar", price: 39.99 }
+                    ]
+                },
+                {
+                    id: 102,
+                    name: "Combo Pareja",
+                    description: "Disfruta en pareja con este combo especial. Perfecto para compartir.",
+                    image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                    includes: [
+                        "2 Hamburguesas clásicas",
+                        "Papas con cheddar y panceta grandes",
+                        "2 Bebidas 500ml"
+                    ],
+                    sizes: [
+                        { name: "Combo Completo", price: 24.99 }
+                    ]
+                },
+                {
+                    id: 103,
+                    name: "Combo Bacano",
+                    description: "El combo perfecto para una experiencia completa. Incluye hamburguesa, papas y bebida.",
+                    image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80",
+                    includes: [
+                        "Hamburguesa a elección",
+                        "Papas fritas clásicas medianas",
+                        "Bebida 500ml a elección"
+                    ],
+                    sizes: [
+                        { name: "Combo Individual", price: 14.99 },
+                        { name: "Combo Familiar", price: 39.99 }
+                    ]
+                },
+                {
+                    id: 104,
+                    name: "Combo Pareja",
+                    description: "Disfruta en pareja con este combo especial. Perfecto para compartir.",
+                    image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                    includes: [
+                        "2 Hamburguesas clásicas",
+                        "Papas con cheddar y panceta grandes",
+                        "2 Bebidas 500ml"
+                    ],
+                    sizes: [
+                        { name: "Combo Completo", price: 24.99 }
+                    ]
+                }
+            ],
+            kids: [
+                {
+                    id: 201,
+                    name: "Combo Kids Clásico",
+                    description: "Hamburguesa especial para niños con ingredientes frescos y divertidos.",
+                    image: "https://images.unsplash.com/photo-1551782450-17144efb9c50?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
+                    includes: [
+                        "Hamburguesa kids",
+                        "Papas fritas pequeñas",
+                        "Jugo de manzana",
+                        "Sorpresa divertida"
+                    ],
+                    sizes: [
+                        { name: "Combo Kids", price: 9.99 }
+                    ]
+                },
+                {
+                    id: 202,
+                    name: "Nuggets Kids",
+                    description: "Crujientes nuggets de pollo con formas divertidas que encantarán a los más pequeños.",
+                    image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80",
+                    includes: [
+                        "6 Nuggets de pollo",
+                        "Papas fritas pequeñas",
+                        "Jugo o batido",
+                        "Juguete sorpresa"
+                    ],
+                    sizes: [
+                        { name: "Combo Nuggets", price: 8.99 }
+                    ]
+                },
+                {
+                    id: 203,
+                    name: "Combo Kids Clásico",
+                    description: "Hamburguesa especial para niños con ingredientes frescos y divertidos.",
+                    image: "https://images.unsplash.com/photo-1551782450-17144efb9c50?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
+                    includes: [
+                        "Hamburguesa kids",
+                        "Papas fritas pequeñas",
+                        "Jugo de manzana",
+                        "Sorpresa divertida"
+                    ],
+                    sizes: [
+                        { name: "Combo Kids", price: 9.99 }
+                    ]
+                },
+                {
+                    id: 204,
+                    name: "Nuggets Kids",
+                    description: "Crujientes nuggets de pollo con formas divertidas que encantarán a los más pequeños.",
+                    image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=735&q=80",
+                    includes: [
+                        "6 Nuggets de pollo",
+                        "Papas fritas pequeñas",
+                        "Jugo o batido",
+                        "Juguete sorpresa"
+                    ],
+                    sizes: [
+                        { name: "Combo Nuggets", price: 8.99 }
+                    ]
+                }
+            ],
+            fries: [
+                {
+                    id: 1,
+                    name: "Papas Clásicas",
+                    description: "Crujientes papas fritas cortadas a mano, sazonadas con sal marina y perejil. El acompañamiento perfecto.",
+                    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                    sizes: [
+                        { name: "Chica", price: 3.99 },
+                        { name: "Mediana", price: 5.99 },
+                        { name: "Grande", price: 7.99 }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Papas con Cheddar y Panceta",
+                    description: "Nuestras papas clásicas cubiertas con queso cheddar derretido y trozos de panceta crujiente.",
+                    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                    sizes: [
+                        { name: "Chica", price: 6.99 },
+                        { name: "Mediana", price: 8.99 },
+                        { name: "Grande", price: 10.99 }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Papas Clásicas",
+                    description: "Crujientes papas fritas cortadas a mano, sazonadas con sal marina y perejil. El acompañamiento perfecto.",
+                    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                    sizes: [
+                        { name: "Chica", price: 3.99 },
+                        { name: "Mediana", price: 5.99 },
+                        { name: "Grande", price: 7.99 }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "Papas con Cheddar y Panceta",
+                    description: "Nuestras papas clásicas cubiertas con queso cheddar derretido y trozos de panceta crujiente.",
+                    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                    sizes: [
+                        { name: "Chica", price: 6.99 },
+                        { name: "Mediana", price: 8.99 },
+                        { name: "Grande", price: 10.99 }
+                    ]
+                },
+                {
+                    id: 5,
+                    name: "Papas Clásicas",
+                    description: "Crujientes papas fritas cortadas a mano, sazonadas con sal marina y perejil. El acompañamiento perfecto.",
+                    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                    sizes: [
+                        { name: "Chica", price: 3.99 },
+                        { name: "Mediana", price: 5.99 },
+                        { name: "Grande", price: 7.99 }
+                    ]
+                },
+                {
+                    id: 6,
+                    name: "Papas con Cheddar y Panceta",
+                    description: "Nuestras papas clásicas cubiertas con queso cheddar derretido y trozos de panceta crujiente.",
+                    image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                    sizes: [
+                        { name: "Chica", price: 6.99 },
+                        { name: "Mediana", price: 8.99 },
+                        { name: "Grande", price: 10.99 }
+                    ]
+                }
+            ],
+            drinks: [
+                {
+                    id: 1,
+                    name: "Cervezas",
+                    description: "Variedad de cervezas artesanales e importadas. Consulta nuestra selección del día.",
+                    image: "https://images.unsplash.com/photo-1608270586620-248524c67de9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                    sizes: [
+                        { name: "355ml", price: 4.99 },
+                        { name: "473ml", price: 6.99 },
+                        { name: "1L", price: 12.99 }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Gaseosas",
+                    description: "Refrescantes gaseosas de cola, naranja, lima-limón y más. Disponibles en diferentes tamaños.",
+                    image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+                    sizes: [
+                        { name: "500ml", price: 2.50 },
+                        { name: "1L", price: 4.00 },
+                        { name: "1.5L", price: 5.50 }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Cervezas",
+                    description: "Variedad de cervezas artesanales e importadas. Consulta nuestra selección del día.",
+                    image: "https://images.unsplash.com/photo-1608270586620-248524c67de9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                    sizes: [
+                        { name: "355ml", price: 4.99 },
+                        { name: "473ml", price: 6.99 },
+                        { name: "1L", price: 12.99 }
+                    ]
+                },
+                {
+                    id: 4,
+                    name: "Gaseosas",
+                    description: "Refrescantes gaseosas de cola, naranja, lima-limón y más. Disponibles en diferentes tamaños.",
+                    image: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
+                    sizes: [
+                        { name: "500ml", price: 2.50 },
+                        { name: "1L", price: 4.00 },
+                        { name: "1.5L", price: 5.50 }
+                    ]
+                }
+            ]
+        };
+
+        // Datos de ofertas con imágenes
+        const offersData = [
+            {
+                id: 1,
+                title: "2x1 en Hamburguesas Clásicas",
+                description: "Lleva 2 hamburguesas clásicas al precio de 1. ¡Solo por hoy!",
+                oldPrice: 17.98,
+                newPrice: 8.99,
+                endDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 horas desde ahora
+                badge: "FLASH",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=699&q=80"
+            },
+            {
+                id: 2,
+                title: "Combo Familiar Especial",
+                description: "4 hamburguesas + 2 papas grandes + 4 bebidas. Ahorra 25%",
+                oldPrice: 45.00,
+                newPrice: 33.75,
+                endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 días desde ahora
+                badge: "FAMILIA",
+                image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80"
+            },
+            {
+                id: 3,
+                title: "Papas Gratis en tu Primera Compra",
+                description: "Al pedir cualquier hamburguesa, llévate papas clásicas gratis",
+                oldPrice: 3.99,
+                newPrice: 0.00,
+                endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 días desde ahora
+                badge: "NUEVO",
+                image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+            },
+             {
+                id: 4,
+                title: "2x1 en Hamburguesas Clásicas",
+                description: "Lleva 2 hamburguesas clásicas al precio de 1. ¡Solo por hoy!",
+                oldPrice: 17.98,
+                newPrice: 8.99,
+                endDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // 24 horas desde ahora
+                badge: "FLASH",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=699&q=80"
+            },
+            {
+                id: 5,
+                title: "Combo Familiar Especial",
+                description: "4 hamburguesas + 2 papas grandes + 4 bebidas. Ahorra 25%",
+                oldPrice: 45.00,
+                newPrice: 33.75,
+                endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // 3 días desde ahora
+                badge: "FAMILIA",
+                image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1172&q=80"
+            },
+            {
+                id: 6,
+                title: "Papas Gratis en tu Primera Compra",
+                description: "Al pedir cualquier hamburguesa, llévate papas clásicas gratis",
+                oldPrice: 3.99,
+                newPrice: 0.00,
+                endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 días desde ahora
+                badge: "NUEVO",
+                image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+            }
+
+        ];
+
+        // Horarios del comercio
+        const businessHours = {
+            "Lunes": { open: null, close: null }, // Cerrado
+            "Martes": { open: 21, close: 24 },
+            "Miercoles": { open: 21, close: 24 },
+            "Jueves": { open: 21, close: 24 },
+            "Viernes": { open: 21, close: 24 },
+            "Sabado": { open: 21, close: 24 },
+            "Domingo": { open: 21, close: 24 }
+        };
+
+        // Inicialización cuando el DOM está listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Iniciar la barra de carga del splash screen
+            setTimeout(updateLoadingBar, 500);
+
+            // Generar tarjetas de productos
+            generateProductCards('burgersContainer', menuData.burgers);
+            generateProductCards('combosContainer', menuData.combos, 'combo');
+            generateProductCards('kidsContainer', menuData.kids, 'kids');
+            generateProductCards('friesContainer', menuData.fries);
+            generateProductCards('drinksContainer', menuData.drinks);
+
+            // Generar ofertas
+            generateOffers();
+
+            // Configurar botones de agregar al carrito
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('add-to-cart')) {
+                    const card = e.target.closest('.product-card');
+                    const productName = card.querySelector('.product-name').textContent;
+                    const sizeOption = card.querySelector('input[name="size"]:checked');
+                    
+                    if (!sizeOption) {
+                        alert('Por favor selecciona un tamaño');
+                        return;
+                    }
+                    
+                    const size = sizeOption.value;
+                    const price = parseFloat(sizeOption.getAttribute('data-price'));
+                    
+                    addToCart(productName, price, size);
+                }
+            });
+
+            // Configurar carrito
+            document.getElementById('cartIcon').addEventListener('click', openCart);
+            document.getElementById('closeCart').addEventListener('click', closeCart);
+            document.getElementById('continueShopping').addEventListener('click', closeCart);
+            document.getElementById('checkoutBtn').addEventListener('click', showCheckoutForm);
+            document.getElementById('sendOrder').addEventListener('click', sendOrder);
+
+            // Configurar opciones de pago
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    this.querySelector('input').checked = true;
+                });
+            });
+
+            // Configurar botón flotante de redes sociales
+            document.getElementById('socialToggle').addEventListener('click', function() {
+                this.classList.toggle('active');
+                document.getElementById('socialButtons').classList.toggle('active');
+            });
+
+            // Configurar botón de ofertas
+            document.getElementById('offersToggle').addEventListener('click', openOffersModal);
+            document.getElementById('closeOffersModal').addEventListener('click', closeOffersModal);
+
+            // Configurar controles del carousel de ofertas
+            document.getElementById('prevOffer').addEventListener('click', () => navigateOffers(-1));
+            document.getElementById('nextOffer').addEventListener('click', () => navigateOffers(1));
+
+            // Configurar modal de horarios
+            document.getElementById('hoursBtn').addEventListener('click', openHoursModal);
+            document.getElementById('closeHoursModal').addEventListener('click', closeHoursModal);
+
+            // Configurar navegación inferior
+            setupBottomNav();
+
+            // Configurar scroll para animaciones
+            setupScrollAnimations();
+
+            // Configurar scroll para cambiar tamaño del logo
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('mainHeader');
+                const scrollPosition = window.scrollY;
+                
+                if (scrollPosition > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Iniciar contadores de ofertas
+            startOfferCountdowns();
+
+            // Verificar estado del comercio
+            checkBusinessStatus();
+        });
+
+        // Función para actualizar la barra de carga del splash
+        function updateLoadingBar() {
+            const loadingBar = document.getElementById('loadingBar');
+            const loadingPercentage = document.getElementById('loadingPercentage');
+            const loadingMessage = document.getElementById('loadingMessage');
+            
+            let loadingProgress = 0;
+            const loadingMessages = [
+                "Preparando ingredientes frescos...",
+                "Calentando la parrilla...",
+                "Armando las mejores hamburguesas...",
+                "Preparando salsas secretas...",
+                "¡Casi listo! Ajustando los últimos detalles...",
+                "¡Listo para disfrutar!"
+            ];
+
+            function update() {
+                loadingProgress += Math.random() * 15 + 5;
+                
+                if (loadingProgress > 100) {
+                    loadingProgress = 100;
+                }
+                
+                loadingBar.style.width = loadingProgress + '%';
+                loadingPercentage.textContent = Math.floor(loadingProgress) + '%';
+                
+                // Cambiar mensaje según el progreso
+                if (loadingProgress < 20) {
+                    loadingMessage.textContent = loadingMessages[0];
+                } else if (loadingProgress < 40) {
+                    loadingMessage.textContent = loadingMessages[1];
+                } else if (loadingProgress < 60) {
+                    loadingMessage.textContent = loadingMessages[2];
+                } else if (loadingProgress < 80) {
+                    loadingMessage.textContent = loadingMessages[3];
+                } else if (loadingProgress < 100) {
+                    loadingMessage.textContent = loadingMessages[4];
+                } else {
+                    loadingMessage.textContent = loadingMessages[5];
+                }
+                
+                if (loadingProgress < 100) {
+                    setTimeout(update, 300 + Math.random() * 400);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('splashScreen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('splashScreen').style.display = 'none';
+                        }, 800);
+                    }, 800);
+                }
+            }
+            
+            update();
+        }
+
+        // Función mejorada para generar tarjetas de productos
+        function generateProductCards(containerId, products, type = 'normal') {
+            const container = document.getElementById(containerId);
+            
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = `product-card ${type === 'combo' ? 'combo-card' : ''} ${type === 'kids' ? 'kids-card' : ''}`;
+                
+                let sizesHTML = '';
+                product.sizes.forEach((size, index) => {
+                    sizesHTML += `
+                        <div class="size-option">
+                            <input type="radio" id="${product.id}-${size.name}" name="size" value="${size.name}" data-price="${size.price}" ${index === 0 ? 'checked' : ''}>
+                            <label for="${product.id}-${size.name}">${size.name}</label>
+                            <span class="price">$${size.price.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+
+                let includesHTML = '';
+                if (product.includes) {
+                    includesHTML = `
+                        <div class="combo-includes">
+                            <h4>Este combo incluye:</h4>
+                            <ul>
+                                ${product.includes.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                let badgeHTML = '';
+                if (type === 'combo') {
+                    badgeHTML = '<div class="combo-badge">COMBO</div>';
+                } else if (type === 'kids') {
+                    badgeHTML = '<div class="kids-badge">KIDS</div>';
+                }
+                
+                card.innerHTML = `
+                    ${badgeHTML}
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        ${includesHTML}
+                        <div class="product-sizes">
+                            ${sizesHTML}
+                        </div>
+                        <button class="add-to-cart">Agregar al Carrito</button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Verificar estado del comercio
+        function checkBusinessStatus() {
+            const now = new Date();
+            const currentDay = now.toLocaleDateString('es-ES', { weekday: 'long' });
+            const currentHour = now.getHours();
+            
+            // Capitalizar primera letra del día
+            const capitalizedDay = currentDay.charAt(0).toUpperCase() + currentDay.slice(1);
+            
+            const todayHours = businessHours[capitalizedDay];
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            
+            if (!todayHours || !todayHours.open) {
+                // Cerrado (como los lunes)
+                statusIndicator.className = 'status-indicator closed';
+                statusText.textContent = 'Cerrado';
+            } else if (currentHour >= todayHours.open && currentHour < todayHours.close) {
+                // Abierto
+                statusIndicator.className = 'status-indicator open';
+                statusText.textContent = 'Abierto';
+            } else {
+                // Cerrado
+                statusIndicator.className = 'status-indicator closed';
+                statusText.textContent = 'Cerrado';
+            }
+        }
+
+        // Generar ofertas con imágenes de fondo
+        function generateOffers() {
+            const offersSlides = document.getElementById('offersSlides');
+            
+            offersData.forEach((offer, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'offer-slide';
+                slide.style.backgroundImage = `url('${offer.image}')`;
+                
+                slide.innerHTML = `
+                    <div class="offer-badge">${offer.badge}</div>
+                    <h3 class="offer-title">${offer.title}</h3>
+                    <p class="offer-description">${offer.description}</p>
+                    <div class="offer-price">
+                        ${offer.oldPrice > 0 ? `<span class="offer-old-price">$${offer.oldPrice.toFixed(2)}</span>` : ''}
+                        $${offer.newPrice.toFixed(2)}
+                    </div>
+                    <div class="countdown-timer" id="countdown-${offer.id}">
+                        <div class="countdown-unit">
+                            <div class="countdown-value" id="days-${offer.id}">00</div>
+                            <div class="countdown-label">Días</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-value" id="hours-${offer.id}">00</div>
+                            <div class="countdown-label">Horas</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-value" id="minutes-${offer.id}">00</div>
+                            <div class="countdown-label">Min</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-value" id="seconds-${offer.id}">00</div>
+                            <div class="countdown-label">Seg</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="addOfferToCart(${offer.id})">Aprovechar Oferta</button>
+                `;
+                
+                offersSlides.appendChild(slide);
+            });
+        }
+
+        // Navegar entre ofertas
+        function navigateOffers(direction) {
+            const slides = document.querySelectorAll('.offer-slide');
+            const totalSlides = slides.length;
+            
+            currentOfferSlide = (currentOfferSlide + direction + totalSlides) % totalSlides;
+            
+            const offersSlides = document.getElementById('offersSlides');
+            offersSlides.style.transform = `translateX(-${currentOfferSlide * 100}%)`;
+        }
+
+        // Iniciar contadores de ofertas
+        function startOfferCountdowns() {
+            offersInterval = setInterval(updateOfferCountdowns, 1000);
+            updateOfferCountdowns(); // Ejecutar inmediatamente
+        }
+
+        // Actualizar contadores de ofertas
+        function updateOfferCountdowns() {
+            offersData.forEach(offer => {
+                const now = new Date().getTime();
+                const distance = offer.endDate.getTime() - now;
+                
+                if (distance < 0) {
+                    // La oferta ha expirado
+                    document.getElementById(`countdown-${offer.id}`).innerHTML = '<div class="countdown-value">EXPIRADA</div>';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById(`days-${offer.id}`).textContent = days.toString().padStart(2, '0');
+                document.getElementById(`hours-${offer.id}`).textContent = hours.toString().padStart(2, '0');
+                document.getElementById(`minutes-${offer.id}`).textContent = minutes.toString().padStart(2, '0');
+                document.getElementById(`seconds-${offer.id}`).textContent = seconds.toString().padStart(2, '0');
+            });
+        }
+
+        // Agregar oferta al carrito
+        function addOfferToCart(offerId) {
+            const offer = offersData.find(o => o.id === offerId);
+            
+            if (!offer) return;
+            
+            // Verificar si la oferta ha expirado
+            const now = new Date().getTime();
+            if (now > offer.endDate.getTime()) {
+                alert('Lo sentimos, esta oferta ha expirado.');
+                return;
+            }
+            
+            // Agregar la oferta al carrito
+            addToCart(offer.title, offer.newPrice, 'Oferta Especial');
+            closeOffersModal();
+        }
+
+        // Configurar navegación inferior
+        function setupBottomNav() {
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remover clase active de todos los items
+                    navItems.forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    
+                    // Agregar clase active al item clickeado
+                    this.classList.add('active');
+                    
+                    // Obtener el destino del enlace
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    // Desplazarse a la sección
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Configurar animaciones al hacer scroll
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observar todas las tarjetas de productos
+            document.querySelectorAll('.product-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Funciones del carrito
+        function addToCart(product, price, size) {
+            // Buscar si el producto ya está en el carrito
+            const existingItem = cart.find(item => item.product === product && item.size === size);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    product: product,
+                    price: price,
+                    size: size,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            openCart();
+            
+            // Mostrar mensaje de confirmación
+            showNotification(`${product} agregado al carrito`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            
+            if (cart[index].quantity <= 0) {
+                removeFromCart(index);
+            } else {
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            // Actualizar contador
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Actualizar lista de productos
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="item-details">
+                        <div class="item-name">${item.product}</div>
+                        <div class="item-size">${item.size}</div>
+                    </div>
+                    <div class="item-price">$${item.price.toFixed(2)}</div>
+                    <div class="item-quantity">
+                        <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                    </div>
+                    <div class="item-total">$${itemTotal.toFixed(2)}</div>
+                    <button class="remove-item" onclick="removeFromCart(${index})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                
+                cartItems.appendChild(cartItem);
+            });
+            
+            // Actualizar total
+            cartTotal.textContent = total.toFixed(2);
+            
+            // Mostrar u ocultar botón de finalizar pedido
+            document.getElementById('checkoutBtn').style.display = cart.length > 0 ? 'block' : 'none';
+        }
+
+        function openCart() {
+            document.getElementById('cartModal').style.display = 'flex';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+            document.getElementById('checkoutForm').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'none';
+        }
+
+        function showCheckoutForm() {
+            document.getElementById('checkoutForm').style.display = 'block';
+        }
+
+        function sendOrder() {
+            // Validar formulario
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('deliveryAddress').value;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            const notes = document.getElementById('additionalNotes').value;
+            
+            if (!name || !phone || !address || !paymentMethod) {
+                alert('Por favor completa todos los campos obligatorios (*)');
+                return;
+            }
+            
+            // Construir mensaje para WhatsApp
+            let message = `¡Hola! Quiero hacer un pedido:\n\n`;
+            
+            cart.forEach(item => {
+                message += `- ${item.product} (${item.size}) x${item.quantity}: $${(item.price * item.quantity).toFixed(2)}\n`;
+            });
+            
+            message += `\nTotal: $${document.getElementById('cartTotal').textContent}\n\n`;
+            message += `Información de entrega:\n`;
+            message += `Nombre: ${name}\n`;
+            message += `Teléfono: ${phone}\n`;
+            message += `Dirección: ${address}\n`;
+            message += `Método de pago: ${paymentMethod.value}\n`;
+            
+            if (notes) {
+                message += `Notas: ${notes}\n`;
+            }
+            
+            // Codificar mensaje para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Abrir WhatsApp (reemplaza el número con el de tu negocio)
+            const whatsappURL = `https://wa.me/5491112345678?text=${encodedMessage}`;
+            window.open(whatsappURL, '_blank');
+            
+            // Mostrar mensaje de confirmación
+            document.getElementById('checkoutForm').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'block';
+            
+            // Limpiar carrito después de enviar
+            setTimeout(() => {
+                cart = [];
+                updateCart();
+                closeCart();
+                
+                // Limpiar formulario
+                document.getElementById('customerName').value = '';
+                document.getElementById('customerPhone').value = '';
+                document.getElementById('deliveryAddress').value = '';
+                document.getElementById('additionalNotes').value = '';
+                document.querySelectorAll('.payment-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+            }, 3000);
+        }
+
+        // Funciones del modal de ofertas
+        function openOffersModal() {
+            document.getElementById('offersModal').style.display = 'flex';
+        }
+
+        function closeOffersModal() {
+            document.getElementById('offersModal').style.display = 'none';
+        }
+
+        // Funciones del modal de horarios
+        function openHoursModal() {
+            document.getElementById('hoursModal').style.display = 'flex';
+        }
+
+        function closeHoursModal() {
+            document.getElementById('hoursModal').style.display = 'none';
+        }
+
+        function showNotification(message) {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #4CAF50;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 3000;
+                transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Eliminar notificación después de 3 segundos
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
+
