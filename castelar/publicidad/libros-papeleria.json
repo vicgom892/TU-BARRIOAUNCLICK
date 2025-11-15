@@ -1,0 +1,33 @@
+{
+  "rubro": "LIBROS Y PAPELERIA",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "Librería Central",
+      "descripcion": "Libros y material educativo",
+      "imagen": "https://via.placeholder.com/100x77/8B4513/ffffff?text=LIBROS",
+      "enlace": "comunidad-de-ofertas.html?tienda=libreriacentral"
+    },
+    {
+      "id": 2,
+      "titulo": "El Ateneo",
+      "descripcion": "Grandes títulos y bestsellers",
+      "imagen": "https://via.placeholder.com/100x77/000080/ffffff?text=ATENEO",
+      "enlace": "comunidad-de-ofertas.html?tienda=ateneo"
+    },
+    {
+      "id": 3,
+      "titulo": "Papelería Office",
+      "descripcion": "Material de oficina y escolar",
+      "imagen": "https://via.placeholder.com/100x77/808080/ffffff?text=PAPELERIA",
+      "enlace": "comunidad-de-ofertas.html?tienda=office"
+    },
+    {
+      "id": 4,
+      "titulo": "Cultura Books",
+      "descripcion": "Literatura y cultura general",
+      "imagen": "https://via.placeholder.com/100x77/4B0082/ffffff?text=CULTURA",
+      "enlace": "comunidad-de-ofertas.html?tienda=cultura"
+    }
+  ]
+}

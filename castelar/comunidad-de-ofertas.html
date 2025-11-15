@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script src="/shared/js/security-config.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad Tu Barrio - Ofertas y Promociones</title>
+     <!-- Iconos y Manifest -->
+    <link rel="icon" href="img/icon-abeja-sola.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="img/icon-192x192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="img/icon-192x192.png" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1e3a8a; /* Azul oscuro tecnológico */
+            --secondary-color: #10b981; /* Verde esmeralda */
+            --accent-color: #00d4ff; /* Neón para toque futurista */
+            --background-color: #0f172a; /* Fondo oscuro elegante */
+            --card-color: #1e293b; /* Tarjetas oscuras */
+            --text-color: #e2e8f0; /* Texto claro */
+            --light-text: #94a3b8; /* Texto secundario */
+            --border-color: #475569; /* Bordes */
+            --danger-color: #ef4444; /* Rojo para expirados */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Splash Screen Tecnológico */
+    .splash-screen {
+        position: fixed;
+        /*top: 50px;*/
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #121212 0%, #1a1a2e 50%, #16213e 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 100000;
+        opacity: 1;
+        transition: opacity 0.8s ease;
+        overflow: hidden;
+    }
+    
+    .splash-screen.fade-out {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    /* Fondo de partículas animadas */
+    .splash-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+        animation: float 6s infinite ease-in-out;
+    }
+    
+    /* Grid de fondo */
+    .splash-grid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: 2;
+        opacity: 0.3;
+    }
+    
+    /* Logo con efecto de brillo */
+    .splash-logo {
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff6200 0%, #ff9e2c 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+        z-index: 3;
+        box-shadow: 0 20px 60px rgba(255, 98, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+        animation: pulseGlow 2s infinite alternate;
+        border: 4px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .splash-logo::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+        opacity: 0;
+        animation: shine 3s infinite;
+    }
+    
+    .logo-icon {
+        font-size: 80px;
+        color: white;
+        z-index: 1;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        width: 230px;
+        height: 230px;
+    }
+    
+    .splash-text {
+        color: #f8f9fa !important;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 30px;
+        text-align: center;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        z-index: 3;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease forwards 0.5s;
+    }
+    
+    .loading-bar-container {
+        width: 200px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+        position: relative;
+        z-index: 3;
+        margin-top: 20px;
+    }
+    
+    .loading-bar {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #ff6200, #ff9e2c);
+        border-radius: 3px;
+        transition: width 0.3s ease;
+        position: relative;
+    }
+    
+    .loading-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.4), 
+            transparent);
+        animation: shimmer 1.5s infinite;
+    }
+    
+    .loading-text {
+        color:#f8f9fa;
+        font-size: 0.9rem;
+        margin-top: 10px;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeInUp 0.5s ease forwards 1.2s;
+        z-index: 3;
+    }
+    
+    .skip-btn {
+        margin-top: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        z-index: 3;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.5s ease forwards 1.5s;
+    }
+    
+    .skip-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 98, 0, 0.3);
+    }
+    
+    /* Animaciones */
+    @keyframes pulseGlow {
+        0% {
+            box-shadow: 0 20px 60px rgba(255, 98, 0, 0.4);
+            transform: scale(1);
+        }
+        100% {
+            box-shadow: 0 20px 60px rgba(255, 98, 0, 0.6);
+            transform: scale(1.05);
+        }
+    }
+    
+    @keyframes shine {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-50%) rotate(0deg);
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(50%) translateY(50%) rotate(180deg);
+        }
+    }
+    
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+    
+    @keyframes float {
+        0%, 100% {
+            transform: translate(0, 0);
+        }
+        25% {
+            transform: translate(10px, 15px);
+        }
+        50% {
+            transform: translate(-10px, 5px);
+        }
+        75% {
+            transform: translate(5px, -10px);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .splash-logo {
+            width: 280px;
+            height: 280px;
+        }
+        
+        .splash-text {
+            font-size: 1.6rem;
+        }
+        
+        .loading-bar-container {
+            width: 160px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .splash-logo {
+            width: 250px;
+            height: 250px;
+        }
+        
+        .splash-text {
+            font-size: 1.4rem;
+        }
+        
+        .loading-bar-container {
+            width: 140px;
+        }
+        
+        .skip-btn {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+    }
+
+
+           /* Banner elegante con logo y efecto de brillo */
+        .banner {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+            text-align: center;
+            padding: 80px 20px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-50%) translateY(-50%) rotate(45deg); }
+            100% { transform: translateX(50%) translateY(50%) rotate(45deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }    
+
+        .banner img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
+        }
+
+        .banner h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .banner p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Filtro por rubro */
+        .filter-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-section select {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-color);
+            color: var(--text-color);
+            font-size: 16px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .filter-section select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        /* Contenedor de tarjetas */
+        .offers-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Tarjeta dinámica elegante */
+        .offer-card {
+            background-color: var(--card-color);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 212, 255, 0.1);
+            padding: 20px;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            will-change: transform;
+        }
+
+        .offer-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .offer-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            -loading: lazy;
+            cursor: pointer;
+        }
+
+        .offer-card h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .offer-card p {
+            margin-bottom: 10px;
+            color: var(--light-text);
+            font-size: 0.95rem;
+        }
+
+        .offer-card .rubro {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .offer-card .timer {
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 6px;
+            color: var(--danger-color);
+            text-align: center;
+        }
+
+        .offer-card .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .offer-card .btn {
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            transition: background-color 0.3s, transform 0.2s;
+            text-align: center;
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .offer-card .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .offer-card .web-btn {
+            background-color: var(--primary-color);
+        }
+
+        .offer-card .web-btn:hover {
+            background-color: #1e40af;
+        }
+
+        .offer-card .instagram-btn {
+            background-color: #E1306C;
+        }
+
+        .offer-card .instagram-btn:hover {
+            background-color: #C13584;
+        }
+
+        .offer-card .whatsapp-btn {
+            background-color: #25D366;
+        }
+
+        .offer-card .whatsapp-btn:hover {
+            background-color: #1DA851;
+        }
+
+        .offer-card .like-btn {
+            background-color: transparent;
+            color: var(--light-text);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            margin: 10px 0 0 0 ;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .offer-card .like-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--card-color);
+        }
+
+        .offer-card .like-btn.liked {
+            background-color: var(--accent-color);
+            color: var(--card-color);
+            animation: pulse 0.3s;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .offer-card .likes-count {
+            margin-left: 10px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        /* Modal para tarjeta completa */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-in-out;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal .modal-card {
+            background-color: var(--card-color);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.2);
+            padding: 20px;
+            max-width: 90%;
+            width: 500px;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal .modal-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            -loading: lazy;
+        }
+
+        .modal .modal-card h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .modal .modal-card p {
+            margin-bottom: 10px;
+            color: var(--light-text);
+            font-size: 1rem;
+        }
+
+        .modal .modal-card .rubro {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .modal .modal-card .timer {
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 6px;
+            color: var(--danger-color);
+            text-align: center;
+        }
+
+        .modal .modal-card .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .modal .modal-card .btn {
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            transition: background-color 0.3s, transform 0.2s;
+            text-align: center;
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .modal .modal-card .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .modal .modal-card .web-btn {
+            background-color: var(--primary-color);
+        }
+
+        .modal .modal-card .web-btn:hover {
+            background-color: #1e40af;
+        }
+
+        .modal .modal-card .instagram-btn {
+            background-color: #E1306C;
+        }
+
+        .modal .modal-card .instagram-btn:hover {
+            background-color: #C13584;
+        }
+
+        .modal .modal-card .whatsapp-btn {
+            background-color: #25D366;
+        }
+
+        .modal .modal-card .whatsapp-btn:hover {
+            background-color: #1DA851;
+        }
+
+        .modal .modal-card .like-btn {
+            background-color: transparent;
+            color: var(--light-text);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin: 10px 0 0 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .modal .modal-card .like-btn:hover {
+            background-color: var(--accent-color);
+            color: var(--card-color);
+        }
+
+        .modal .modal-card .like-btn.liked {
+            background-color: var(--accent-color);
+            color: var(--card-color);
+            animation: pulse 0.3s;
+        }
+
+        .modal .modal-card .likes-count {
+            margin-left: 10px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .modal .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+
+        .modal .close-btn:hover {
+            background: #1e40af;
+        }
+
+        /* Botón de regreso con logo */
+        .back-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+            transition: background-color 0.3s, transform 0.3s;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .back-btn img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .back-btn:hover {
+            background-color: #1e40af;
+            transform: scale(1.1);
+        }
+
+        /* Loading spinner */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            font-size: 1.2rem;
+            color: var(--accent-color);
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--accent-color);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .offers-container {
+                grid-template-columns: 1fr;
+            }
+
+            .banner {
+                padding: 50px 15px;
+            }
+
+            .banner h1 {
+                font-size: 2rem;
+            }
+
+            .offer-card {
+                box-shadow: 0 2px 8px rgba(0, 212, 255, 0.1);
+            }
+
+            .modal .modal-card {
+                max-width: 95%;
+                width: 100%;
+                padding: 15px;
+            }
+
+            .modal .modal-card img {
+                height: 200px;
+            }
+
+            .modal .modal-card h3 {
+                font-size: 1.5rem;
+            }
+
+            .modal .close-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-particles" id="splashParticles"></div>
+        <div class="splash-grid"></div>
+        <div class="splash-logo">
+            <!--<i class="fas fa-store logo-icon"></i>-->
+            <img src="img/icon-192x192.webp" class="logo-icon" alt="logo de la app">
+        </div>
+        <h1 class="splash-text">Tu Barrio A Un Clic</h1>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <p class="loading-text" id="loadingText">Cargando experiencia local...</p>
+        <button onclick="skipSplash()" class="skip-btn">Saltar</button>
+    </div>
+
+    <!-- Banner elegante con logo y nombre -->
+    <div class="banner">
+        <img src="img/icon-192x192.webp" alt="Tu Barrio a un Click">
+        <h1>Tu Barrio a un Click</h1>
+        <p>¡Explora las mejores ofertas y promociones en tu comunidad!</p>
+    </div>
+
+    <!-- Filtro por rubro -->
+    <div class="filter-section">
+        <label for="rubro-filter">Filtrar por rubro:</label>
+        <select id="rubro-filter" onchange="filterOffers()">
+            <option value="">Todos</option>
+            <option value="Panadería">Panadería</option>
+            <option value="Farmacia">Farmacia</option>
+            <option value="Kiosco">Kiosco</option>
+            <option value="Barbería">Barbería</option>
+            <option value="Carnicería">Carnicería</option>
+            <option value="Ferretería">Ferretería</option>
+            <option value="Fiambrería">Fiambrería</option>
+            <option value="Otro">Otro</option>
+        </select>
+    </div>
+
+    <!-- Contenedor de ofertas -->
+    <div class="offers-container" id="offers-container">
+        <div class="loading">Cargando ofertas...</div>
+    </div>
+
+    <!-- Modal para tarjeta completa -->
+    <div class="modal" id="card-modal">
+        <div class="modal-card" id="modal-card-content"></div>
+        <button class="close-btn" onclick="closeModal()">✖</button>
+    </div>
+
+    <!-- Botón de regreso con logo -->
+    <a href="index.html" class="back-btn">
+        <img src="img/icon-192x192.webp" alt="Tu Barrio a un Click">
+        Regresar
+    </a>
+
+
+    <script src="/shared/js/splash.js" defer></script>
+    <script src="/shared/js/install-app.js" defer></script>
+
+    <!-- Script para manejar JSON, cronómetro, likes y modal -->
+    <script>
+        let offers = []; // Array de ofertas
+
+        // Lista de archivos JSON en la carpeta ofertas
+        const jsonFiles = [
+            'oferta-barberias.json',
+            'oferta-carniceria.json',
+            'oferta-farmacia.json',
+            'oferta-ferreteria.json',
+            'oferta-fiambreria.json',
+            'oferta-kiosco.json',
+            'oferta-panaderia.json',
+            'oferta-pastas.json',
+            'oferta-tienda.json',
+            'oferta-verduleria.json',
+            'oferta-veterinaria.json'
+        ];
+
+        // Cargar ofertas desde múltiples archivos JSON
+        async function loadOffers() {
+            try {
+                const container = document.getElementById('offers-container');
+                container.innerHTML = '<div class="loading">Cargando ofertas...</div>';
+
+                offers = []; // Reiniciar array
+
+                // Cargar cada archivo JSON
+                for (const file of jsonFiles) {
+                    try {
+                        const response = await fetch(`ofertas/${file}`);
+                        if (!response.ok) throw new Error(`Error al cargar ${file}`);
+                        const data = await response.json();
+                        
+                        // Procesar cada oferta del archivo
+                        data.ofertas.forEach(oferta => {
+                            // Convertir el formato del JSON individual al formato esperado por la página
+                            const processedOffer = {
+                                title: oferta.titulo,
+                                description: oferta.descripcion,
+                                rubro: data.categoria,
+                                negocio: data.negocio,
+                                image: oferta.imagen,
+                                web_url: oferta.web_url || oferta.tarjetaUrl,
+                                whatsapp: extractWhatsappNumber(oferta.boton?.url),
+                                start_date: null, // Puedes agregar estas fechas si están en tus JSON
+                                end_date: null,
+                                precioOriginal: oferta.precioOriginal,
+                                precioOferta: oferta.precioOferta,
+                                descuento: oferta.descuento,
+                                validez: oferta.validez,
+                                condiciones: oferta.condiciones,
+                                boton: oferta.boton
+                            };
+                            offers.push(processedOffer);
+                        });
+                    } catch (error) {
+                        console.error(`Error al cargar ${file}:`, error);
+                    }
+                }
+
+                // Cargar ofertas guardadas en localStorage
+                const storedOffers = JSON.parse(localStorage.getItem('offers')) || [];
+                offers = [...offers, ...storedOffers];
+
+                renderOffers();
+            } catch (error) {
+                console.error('Error al cargar ofertas:', error);
+                document.getElementById('offers-container').innerHTML = '<p style="text-align: center; color: var(--danger-color);">Error al cargar las ofertas.</p>';
+            }
+        }
+
+        // Función para extraer número de WhatsApp de la URL
+        function extractWhatsappNumber(url) {
+            if (!url) return null;
+            const match = url.match(/wa\.me\/(\d+)/);
+            return match ? match[1] : null;
+        }
+
+        // Renderizar tarjetas, filtradas si aplica
+        function renderOffers(filterRubro = '') {
+            const container = document.getElementById('offers-container');
+            container.innerHTML = '';
+
+            const filteredOffers = filterRubro ? 
+                offers.filter(offer => offer.rubro.toLowerCase().includes(filterRubro.toLowerCase())) : 
+                offers;
+
+            if (filteredOffers.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--light-text);">No hay ofertas disponibles para este rubro.</p>';
+                return;
+            }
+
+            filteredOffers.forEach((offer, index) => {
+                const card = document.createElement('div');
+                card.classList.add('offer-card');
+                
+                // Construir el contenido de la tarjeta
+                let cardContent = '';
+                
+                // Imagen
+                if (offer.image) {
+                    cardContent += `<img src="${offer.image}" alt="${offer.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200?text=Imagen+No+Disponible'" onclick="openModal(${index})">`;
+                }
+                
+                // Título y descripción
+                cardContent += `<h3>${offer.title}</h3>`;
+                cardContent += `<p>${offer.description}</p>`;
+                
+                // Información del negocio y rubro
+                cardContent += `<p class="rubro">${offer.negocio} - ${offer.rubro}</p>`;
+                
+                // Precios si están disponibles
+                if (offer.precioOriginal || offer.precioOferta) {
+                    if (offer.precioOriginal && offer.precioOferta) {
+                        cardContent += `<p><strong>Precio: </strong><span style="text-decoration: line-through; color: var(--light-text);">$${offer.precioOriginal}</span> <span style="color: var(--secondary-color); font-weight: bold;">$${offer.precioOferta}</span></p>`;
+                    } else if (offer.precioOferta) {
+                        cardContent += `<p><strong>Precio: </strong><span style="color: var(--secondary-color); font-weight: bold;">$${offer.precioOferta}</span></p>`;
+                    }
+                }
+                
+                // Descuento si está disponible
+                if (offer.descuento) {
+                    cardContent += `<p><strong>Descuento: </strong><span style="color: var(--accent-color); font-weight: bold;">${offer.descuento}% OFF</span></p>`;
+                }
+                
+                // Validez
+                if (offer.validez) {
+                    cardContent += `<p><strong>Válido: </strong>${offer.validez}</p>`;
+                }
+                
+                // Botones de acción
+                cardContent += `<div class="buttons">`;
+                if (offer.web_url) {
+                    cardContent += `<a href="${offer.web_url}" class="btn web-btn" target="_blank">Ver más</a>`;
+                }
+                if (offer.boton && offer.boton.url) {
+                    const buttonClass = offer.boton.url.includes('wa.me') ? 'whatsapp-btn' : 'web-btn';
+                    cardContent += `<a href="${offer.boton.url}" class="btn ${buttonClass}" target="_blank">${offer.boton.texto || 'Contactar'}</a>`;
+                }
+                if (offer.whatsapp && !offer.boton) {
+                    cardContent += `<a href="https://wa.me/${offer.whatsapp}" class="btn whatsapp-btn" target="_blank">WhatsApp</a>`;
+                }
+                cardContent += `</div>`;
+                
+                // Botón de like
+                cardContent += `<button class="like-btn ${offer.liked ? 'liked' : ''}" onclick="likeOffer(${index})">⭐ Me gusta</button>`;
+                cardContent += `<span class="likes-count" id="likes-${index}">${offer.likes || 0}</span>`;
+
+                card.innerHTML = cardContent;
+                container.appendChild(card);
+            });
+        }
+
+        // Filtrar ofertas
+        function filterOffers() {
+            const filterRubro = document.getElementById('rubro-filter').value;
+            renderOffers(filterRubro);
+        }
+
+        // Función para likes
+        function likeOffer(index) {
+            offers[index].likes = (offers[index].likes || 0) + 1;
+            offers[index].liked = true;
+            localStorage.setItem('offers', JSON.stringify(offers));
+            renderOffers(document.getElementById('rubro-filter').value);
+        }
+
+        // Funciones para el modal
+        function openModal(index) {
+            const offer = offers[index];
+            const modal = document.getElementById('card-modal');
+            const modalContent = document.getElementById('modal-card-content');
+            
+            let modalHTML = '';
+            
+            // Imagen
+            if (offer.image) {
+                modalHTML += `<img src="${offer.image}" alt="${offer.title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x200?text=Imagen+No+Disponible'">`;
+            }
+            
+            // Título y descripción
+            modalHTML += `<h3>${offer.title}</h3>`;
+            modalHTML += `<p>${offer.description}</p>`;
+            
+            // Información del negocio y rubro
+            modalHTML += `<p class="rubro">${offer.negocio} - ${offer.rubro}</p>`;
+            
+            // Precios si están disponibles
+            if (offer.precioOriginal || offer.precioOferta) {
+                if (offer.precioOriginal && offer.precioOferta) {
+                    modalHTML += `<p><strong>Precio Original: </strong><span style="text-decoration: line-through; color: var(--light-text);">$${offer.precioOriginal}</span></p>`;
+                    modalHTML += `<p><strong>Precio Oferta: </strong><span style="color: var(--secondary-color); font-weight: bold; font-size: 1.2rem;">$${offer.precioOferta}</span></p>`;
+                } else if (offer.precioOferta) {
+                    modalHTML += `<p><strong>Precio: </strong><span style="color: var(--secondary-color); font-weight: bold; font-size: 1.2rem;">$${offer.precioOferta}</span></p>`;
+                }
+            }
+            
+            // Descuento si está disponible
+            if (offer.descuento) {
+                modalHTML += `<p><strong>Descuento: </strong><span style="color: var(--accent-color); font-weight: bold; font-size: 1.1rem;">${offer.descuento}% OFF</span></p>`;
+            }
+            
+            // Validez
+            if (offer.validez) {
+                modalHTML += `<p><strong>Válido: </strong>${offer.validez}</p>`;
+            }
+            
+            // Condiciones si están disponibles
+            if (offer.condiciones && offer.condiciones.length > 0) {
+                modalHTML += `<p><strong>Condiciones:</strong></p><ul>`;
+                offer.condiciones.forEach(condicion => {
+                    modalHTML += `<li>${condicion}</li>`;
+                });
+                modalHTML += `</ul>`;
+            }
+            
+            // Botones de acción
+            modalHTML += `<div class="buttons">`;
+            if (offer.web_url) {
+                modalHTML += `<a href="${offer.web_url}" class="btn web-btn" target="_blank">Ver más</a>`;
+            }
+            if (offer.boton && offer.boton.url) {
+                const buttonClass = offer.boton.url.includes('wa.me') ? 'whatsapp-btn' : 'web-btn';
+                modalHTML += `<a href="${offer.boton.url}" class="btn ${buttonClass}" target="_blank">${offer.boton.texto || 'Contactar'}</a>`;
+            }
+            if (offer.whatsapp && !offer.boton) {
+                modalHTML += `<a href="https://wa.me/${offer.whatsapp}" class="btn whatsapp-btn" target="_blank">WhatsApp</a>`;
+            }
+            modalHTML += `</div>`;
+            
+            // Botón de like
+            modalHTML += `<button class="like-btn ${offer.liked ? 'liked' : ''}" onclick="likeOffer(${index}); closeModal(); renderOffers(document.getElementById('rubro-filter').value)">⭐ Me gusta</button>`;
+            modalHTML += `<span class="likes-count" id="modal-likes-${index}">${offer.likes || 0}</span>`;
+
+            modalContent.innerHTML = modalHTML;
+            modal.classList.add('show');
+
+            // Cerrar con tecla Esc
+            document.addEventListener('keydown', closeOnEsc);
+            // Cerrar al hacer clic fuera de la tarjeta
+            modal.addEventListener('click', closeOnClickOutside);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('card-modal');
+            modal.classList.remove('show');
+            document.removeEventListener('keydown', closeOnEsc);
+            modal.removeEventListener('click', closeOnClickOutside);
+        }
+
+        function closeOnEsc(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        }
+
+        function closeOnClickOutside(e) {
+            if (e.target === document.getElementById('card-modal')) {
+                closeModal();
+            }
+        }
+
+        // Cargar ofertas al iniciar
+        loadOffers();
+    </script>
+</body>
+</html>

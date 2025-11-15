@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2 Formularios de Inscripción - Tu Barrio A Un Click</title>
+    <style>
+        /* Estilos para pantalla (muestra solo el primero) */
+        @media screen {
+            body {
+                font-family: 'Arial', sans-serif;
+                max-width: 450px;
+                margin: 0 auto;
+                padding: 10px;
+                background: #f5f5f5;
+                font-size: 12px;
+            }
+            
+            .form-wrapper {
+                display: block;
+            }
+            
+            .form-container {
+                background: white;
+                padding: 12px;
+                border-radius: 4px;
+                box-shadow: 0 0 8px rgba(0,0,0,0.1);
+                margin-bottom: 20px;
+            }
+
+            .form2 { /* Oculta el segundo solo en pantalla */
+                display: none;
+            }
+            
+            .print-btn {
+                background: #1e3a8a;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 3px;
+                cursor: pointer;
+                font-size: 14px;
+                margin: 10px auto;
+                display: block;
+            }
+            
+            .print-btn:hover {
+                background: #0ea5e9;
+            }
+        }
+
+        /* Estilos para impresión - 2 formularios por hoja A4 en landscape */
+        @media print {
+            @page {
+                size: A4 landscape; /* Horizontal para caber dos lado a lado */
+                margin: 0;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                background: white;
+                font-family: 'Arial', sans-serif;
+                font-size: 7px; /* Reducido para caber dos */
+                line-height: 1.1;
+                display: flex;
+                justify-content: center;
+                align-items: stretch;
+                height: 100vh;
+            }
+
+            .form-wrapper {
+                display: flex;
+                width: 100%;
+                height: 100%;
+            }
+
+            .form-container {
+                width: 48%; /* Casi mitad para cada uno, con espacio entre */
+                margin: 1%; /* Pequeño margen entre formularios */
+                padding: 0.4cm; /* Padding ajustado */
+                border: 1px solid #000;
+                box-sizing: border-box;
+                border-radius: 0;
+                box-shadow: none;
+                page-break-inside: avoid; /* Evita saltos de página */
+            }
+
+            .form2 { /* Muestra el segundo al imprimir */
+                display: block;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            /* Ajustes visuales para compacto (reducidos ~10-20% del original) */
+            .header {
+                margin-bottom: 2px;
+                padding-bottom: 1px;
+                border-bottom: 1px solid #000;
+            }
+
+            .logo {
+                width: 18px; /* Más chico */
+                height: 18px;
+                margin-right: 2px;
+            }
+
+            .title h1 {
+                font-size: 8px;
+                margin: 0;
+            }
+
+            .title p {
+                font-size: 5px;
+                margin: 1px 0 0 0;
+            }
+
+            .form-section {
+                margin-bottom: 2px;
+                padding: 2px;
+                border: 1px solid #ccc;
+            }
+
+            .section-title {
+                padding: 1px 2px;
+                margin: -2px -2px 2px -2px;
+                font-size: 6px;
+                background: #000;
+                color: white;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 2px;
+            }
+
+            .form-group {
+                margin-bottom: 1px;
+            }
+
+            label {
+                font-size: 5.5px;
+                margin-bottom: 0.5px;
+            }
+
+            input, select, textarea {
+                padding: 0.5px 1px;
+                font-size: 5.5px;
+                height: 12px; /* Más bajo */
+                box-sizing: border-box;
+            }
+
+            textarea {
+                height: 15px;
+            }
+
+            .signature-area {
+                margin-top: 4px;
+                border-top: 1px solid #000;
+                padding-top: 3px;
+            }
+
+            .signature-box {
+                width: 48%;
+                font-size: 5px;
+            }
+
+            .dias-fila {
+                display: flex;
+                gap: 0.5px;
+                flex-wrap: nowrap;
+                font-size: 4.5px !important;
+            }
+
+            .dias-fila label {
+                display: flex;
+                align-items: center;
+                gap: 0.5px;
+                margin: 0;
+                white-space: nowrap;
+            }
+
+            .dias-fila input[type="checkbox"] {
+                width: 6px;
+                height: 6px;
+                margin: 0;
+            }
+
+            .plan-selection {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1px;
+            }
+
+            .plan-option {
+                padding: 1px;
+                font-size: 5px;
+            }
+
+            .plan-name, .plan-price, .plan-features {
+                font-size: 5px;
+            }
+
+            .social-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1px;
+            }
+
+            .terms {
+                font-size: 5px;
+                padding: 2px;
+                margin-top: 3px;
+            }
+        }
+
+        /* Estilos comunes (sin cambios) */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #1e3a8a;
+            padding-bottom: 4px;
+        }
+        
+        .logo {
+            width: 25px;
+            height: 25px;
+            margin-right: 5px;
+        }
+        
+        .title {
+            flex: 1;
+        }
+        
+        .title h1 {
+            color: #1e3a8a;
+            margin: 0;
+            font-size: 12px;
+        }
+        
+        .title p {
+            color: #666;
+            margin: 2px 0 0 0;
+            font-size: 8px;
+        }
+        
+        .form-section {
+            margin-bottom: 6px;
+            padding: 4px;
+            border: 1px solid #ddd;
+            border-radius: 2px;
+        }
+        
+        .section-title {
+            background: #1e3a8a;
+            color: white;
+            padding: 2px 4px;
+            margin: -4px -4px 4px -4px;
+            border-radius: 1px 1px 0 0;
+            font-weight: bold;
+            font-size: 8px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+        }
+        
+        .form-group {
+            margin-bottom: 4px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 1px;
+            font-weight: bold;
+            font-size: 8px;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 2px 3px;
+            border: 1px solid #ccc;
+            border-radius: 1px;
+            font-size: 8px;
+            box-sizing: border-box;
+            height: 18px;
+        }
+        
+        textarea {
+            height: 25px;
+            resize: vertical;
+        }
+        
+        .required::after {
+            content: " *";
+            color: red;
+        }
+        
+        .signature-area {
+            margin-top: 8px;
+            border-top: 1px solid #000;
+            padding-top: 6px;
+        }
+        
+        .signature-line {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .signature-box {
+            width: 45%;
+            text-align: center;
+        }
+        
+        .signature-space {
+            height: 15px;
+            border-bottom: 1px solid #000;
+            margin-bottom: 2px;
+        }
+        
+        .terms {
+            font-size: 6px;
+            color: #666;
+            margin-top: 6px;
+            border: 1px solid #ddd;
+            padding: 3px;
+            background: #f9f9f9;
+        }
+        
+        .plan-selection {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+            margin-bottom: 5px;
+        }
+        
+        .plan-option {
+            border: 1px solid #ddd;
+            padding: 3px;
+            border-radius: 2px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 7px;
+        }
+        
+        .plan-option.selected {
+            border-color: #1e3a8a;
+            background: #f0f8ff;
+        }
+        
+        .plan-name {
+            font-weight: bold;
+            font-size: 7px;
+        }
+        
+        .plan-price {
+            color: #1e3a8a;
+            font-size: 7px;
+            font-weight: bold;
+        }
+        
+        .plan-features {
+            font-size: 6px;
+            color: #666;
+            margin-top: 1px;
+        }
+        
+        .social-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+        }
+        
+        .social-grid .form-group {
+            margin-bottom: 2px;
+        }
+        
+        .dias-fila {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-wrapper">
+        <!-- PRIMER FORMULARIO (visible en pantalla) -->
+        <div class="form-container">
+            <!-- Encabezado con logo -->
+            <div class="header">
+                <img src="/shared/img/icon-192x192.webp" alt="Tu Barrio A Un Click" class="logo">
+                <div class="title">
+                    <h1>FORMULARIO DE INSCRIPCIÓN</h1>
+                    <p>Tu Barrio A Un Click - Plataforma de Comercios Locales</p>
+                </div>
+            </div>
+
+            <!-- Resto del formulario (igual al original) -->
+            <div class="form-section">
+                <div class="section-title">PLAN SELECCIONADO</div>
+                <div class="plan-selection" id="planSelection1">
+                    <div class="plan-option" data-plan="basico">
+                        <div class="plan-name">Básico</div>
+                        <div class="plan-price">$7.999/mes</div>
+                        <div class="plan-features">Listado + Contacto</div>
+                    </div>
+                    <div class="plan-option" data-plan="estandar">
+                        <div class="plan-name">Estándar</div>
+                        <div class="plan-price">$11.990/mes</div>
+                        <div class="plan-features">Destacado + Promos</div>
+                    </div>
+                    <div class="plan-option" data-plan="premium">
+                        <div class="plan-name">Premium</div>
+                        <div class="plan-price">$16.990/mes</div>
+                        <div class="plan-features">Posición + Fotos + Ofertas</div>
+                    </div>
+                </div>
+                <input type="hidden" id="selectedPlan1" name="plan" required>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">INFORMACIÓN PERSONAL Y DEL NEGOCIO</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="required">Nombre</label>
+                        <input type="text" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Apellido</label>
+                        <input type="text" name="apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Teléfono</label>
+                        <input type="tel" name="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">WhatsApp</label>
+                        <input type="tel" name="whatsapp" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Nombre Comercio</label>
+                        <input type="text" name="nombre_comercio" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Rubro</label>
+                        <input type="text" name="rubro" required placeholder="Ej: Panadería">
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Dirección</label>
+                        <input type="text" name="direccion" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Localidad</label>
+                        <select name="localidad">
+                            <option value="castelar">Castelar</option>
+                            <option value="ituzaingo">Ituzaingó</option>
+                            <option value="moron">Morón</option>
+                            <option value="ciudadela">Ciudadela</option>
+                            <option value="merlo">Merlo</option>
+                            <option value="haedo">Haedo</option>
+                            <option value="ramos">Ramos Mejía</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">HORARIOS Y CONTACTO</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="required">Apertura</label>
+                        <input type="time" name="apertura" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Cierre</label>
+                        <input type="time" name="cierre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Días</label>
+                        <div class="dias-fila">
+                            <label><input type="checkbox" name="dias[]" value="lunes"> L</label>
+                            <label><input type="checkbox" name="dias[]" value="martes"> M</label>
+                            <label><input type="checkbox" name="dias[]" value="miercoles"> X</label>
+                            <label><input type="checkbox" name="dias[]" value="jueves"> J</label>
+                            <label><input type="checkbox" name="dias[]" value="viernes"> V</label>
+                            <label><input type="checkbox" name="dias[]" value="sabado"> S</label>
+                            <label><input type="checkbox" name="dias[]" value="domingo"> D</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email">
+                    </div>
+                </div>
+                <div class="social-grid">
+                    <div class="form-group">
+                        <label>Facebook</label>
+                        <input type="text" name="facebook" placeholder="Usuario Facebook">
+                    </div>
+                    <div class="form-group">
+                        <label>Instagram</label>
+                        <input type="text" name="instagram" placeholder="Usuario Instagram">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">DOCUMENTACIÓN</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="required">Fecha Inicio</label>
+                        <input type="date" name="fecha_inicio" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">DNI/CUIT</label>
+                        <input type="text" name="dni" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms">
+                <strong>TÉRMINOS:</strong> Información veraz. Sujeto a aprobación. Modificación con 30 días de anticipación. Ley de Protección de Datos Personales.
+            </div>
+
+            <div class="signature-area">
+                <div class="signature-line">
+                    <div class="signature-box">
+                        <div class="signature-space"></div>
+                        <div>Firma del Comerciante</div>
+                    </div>
+                    <div class="signature-box">
+                        <div class="signature-space"></div>
+                        <div>Firma de Tu Barrio A Un Click</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEGUNDO FORMULARIO (oculto en pantalla con .form2, visible en print) -->
+        <div class="form-container form2">
+            <!-- Copia exacta del primero, con IDs únicos -->
+            <div class="header">
+                <img src="/shared/img/icon-192x192.webp" alt="Tu Barrio A Un Click" class="logo">
+                <div class="title">
+                    <h1>FORMULARIO DE INSCRIPCIÓN</h1>
+                    <p>Tu Barrio A Un Click - Plataforma de Comercios Locales</p>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">PLAN SELECCIONADO</div>
+                <div class="plan-selection" id="planSelection2">
+                    <div class="plan-option" data-plan="basico">
+                        <div class="plan-name">Básico</div>
+                        <div class="plan-price">$7.999/mes</div>
+                        <div class="plan-features">Listado + Contacto</div>
+                    </div>
+                    <div class="plan-option" data-plan="estandar">
+                        <div class="plan-name">Estándar</div>
+                        <div class="plan-price">$11.990/mes</div>
+                        <div class="plan-features">Destacado + Promos</div>
+                    </div>
+                    <div class="plan-option" data-plan="premium">
+                        <div class="plan-name">Premium</div>
+                        <div class="plan-price">$16.990/mes</div>
+                        <div class="plan-features">Posición + Fotos + Ofertas</div>
+                    </div>
+                </div>
+                <input type="hidden" id="selectedPlan2" name="plan" required>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">INFORMACIÓN PERSONAL Y DEL NEGOCIO</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="required">Nombre</label>
+                        <input type="text" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Apellido</label>
+                        <input type="text" name="apellido" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Teléfono</label>
+                        <input type="tel" name="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">WhatsApp</label>
+                        <input type="tel" name="whatsapp" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Nombre Comercio</label>
+                        <input type="text" name="nombre_comercio" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Rubro</label>
+                        <input type="text" name="rubro" required placeholder="Ej: Panadería">
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Dirección</label>
+                        <input type="text" name="direccion" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Localidad</label>
+                        <select name="localidad">
+                            <option value="castelar">Castelar</option>
+                            <option value="ituzaingo">Ituzaingó</option>
+                            <option value="moron">Morón</option>
+                            <option value="ciudadela">Ciudadela</option>
+                            <option value="merlo">Merlo</option>
+                            <option value="haedo">Haedo</option>
+                            <option value="ramos">Ramos Mejía</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">HORARIOS Y CONTACTO</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="required">Apertura</label>
+                        <input type="time" name="apertura" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">Cierre</label>
+                        <input type="time" name="cierre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Días</label>
+                        <div class="dias-fila">
+                            <label><input type="checkbox" name="dias[]" value="lunes"> L</label>
+                            <label><input type="checkbox" name="dias[]" value="martes"> M</label>
+                            <label><input type="checkbox" name="dias[]" value="miercoles"> X</label>
+                            <label><input type="checkbox" name="dias[]" value="jueves"> J</label>
+                            <label><input type="checkbox" name="dias[]" value="viernes"> V</label>
+                            <label><input type="checkbox" name="dias[]" value="sabado"> S</label>
+                            <label><input type="checkbox" name="dias[]" value="domingo"> D</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email">
+                    </div>
+                </div>
+                <div class="social-grid">
+                    <div class="form-group">
+                        <label>Facebook</label>
+                        <input type="text" name="facebook" placeholder="Usuario Facebook">
+                    </div>
+                    <div class="form-group">
+                        <label>Instagram</label>
+                        <input type="text" name="instagram" placeholder="Usuario Instagram">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-title">DOCUMENTACIÓN</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="required">Fecha Inicio</label>
+                        <input type="date" name="fecha_inicio" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="required">DNI/CUIT</label>
+                        <input type="text" name="dni" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="terms">
+                <strong>TÉRMINOS:</strong> Información veraz. Sujeto a aprobación. Modificación con 30 días de anticipación. Ley de Protección de Datos Personales.
+            </div>
+
+            <div class="signature-area">
+                <div class="signature-line">
+                    <div class="signature-box">
+                        <div class="signature-space"></div>
+                        <div>Firma del Comerciante</div>
+                    </div>
+                    <div class="signature-box">
+                        <div class="signature-space"></div>
+                        <div>Firma de Tu Barrio A Un Click</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="print-btn no-print" onclick="validarEImprimir()">🖨️ Imprimir 2 formularios</button>
+    <button class="print-btn no-print" onclick="imprimirEnBlanco()">📝 Imprimir en blanco</button>
+
+    <script>
+        // Script adaptado para ambos formularios (inicializa el primero)
+        function initForm(formId) {
+            const planSelection = document.getElementById(`planSelection${formId}`);
+            const selectedPlan = document.getElementById(`selectedPlan${formId}`);
+            
+            if (planSelection && selectedPlan) {
+                planSelection.querySelectorAll('.plan-option').forEach(option => {
+                    option.addEventListener('click', function() {
+                        planSelection.querySelectorAll('.plan-option').forEach(opt => opt.classList.remove('selected'));
+                        this.classList.add('selected');
+                        selectedPlan.value = this.dataset.plan;
+                    });
+                });
+
+                const today = new Date().toISOString().split('T')[0];
+                const fechaInput = planSelection.closest('.form-container').querySelector('input[name="fecha_inicio"]');
+                if (fechaInput) fechaInput.value = today;
+                
+                planSelection.closest('.form-container').querySelectorAll('input[name="dias[]"]').forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+            }
+        }
+
+        // Inicializar el primero (visible)
+        document.addEventListener('DOMContentLoaded', function() {
+            initForm(1);
+            // El segundo se inicializa vacío para "en blanco"
+            initForm(2);
+        });
+
+        // Validar antes de imprimir (solo el primero, corregido con querySelectorAll)
+        function validarEImprimir() {
+            const requiredFields = document.querySelectorAll('.form-container:not(.form2) [required]'); // Solo el visible
+            let valid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) { // Trim para espacios
+                    valid = false;
+                    field.style.borderColor = 'red';
+                } else {
+                    field.style.borderColor = '';
+                }
+            });
+            
+            if (!document.getElementById('selectedPlan1').value) {
+                alert('Por favor seleccione un plan en el formulario visible');
+                return;
+            }
+            
+            if (!valid) {
+                alert('Por favor complete todos los campos obligatorios (*) en el formulario visible');
+                return;
+            }
+            
+            window.print();
+        }
+
+        function imprimirEnBlanco() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

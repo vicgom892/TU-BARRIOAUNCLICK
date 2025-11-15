@@ -1,0 +1,19 @@
+{
+  "rubro": "SALUD Y BELLEZA",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "Parfumerie",
+      "descripcion": "Perfumería y cosmética",
+      "imagen": "https://assets.mobile.playdigital.com.ar/images/ptmo/cyber_25/Farmacias/1%20-%20Parfumerie.jpg",
+      "enlace": "comunidad-de-ofertas.html?tienda=parfumerie"
+    },
+    {
+      "id": 2,
+      "titulo": "Rouge",
+      "descripcion": "Belleza y cuidado personal",
+      "imagen": "https://assets.mobile.playdigital.com.ar/images/ptmo/cyber_25/Farmacias/2%20-%20Rouge.jpg",
+      "enlace": "comunidad-de-ofertas.html?tienda=rouge"
+    }
+  ]
+}

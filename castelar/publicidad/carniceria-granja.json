@@ -1,0 +1,33 @@
+{
+  "rubro": "CARNICERIA Y GRANJA",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "Carnicería Don José",
+      "descripcion": "Cortes premium y embutidos",
+      "imagen": "https://via.placeholder.com/100x77/8B4513/ffffff?text=CARNES",
+      "enlace": "comunidad-de-ofertas.html?tienda=donjose"
+    },
+    {
+      "id": 2,
+      "titulo": "Granja Familiar",
+      "descripcion": "Huevos y lácteos frescos",
+      "imagen": "https://via.placeholder.com/100x77/FFD700/333?text=GRANJA",
+      "enlace": "comunidad-de-ofertas.html?tienda=granjafamiliar"
+    },
+    {
+      "id": 3,
+      "titulo": "La Carnicería",
+      "descripcion": "Carnes de primera calidad",
+      "imagen": "https://via.placeholder.com/100x77/8B0000/ffffff?text=CARNICERIA",
+      "enlace": "comunidad-de-ofertas.html?tienda=lacarniceria"
+    },
+    {
+      "id": 4,
+      "titulo": "Productos Campo",
+      "descripcion": "Directo del campo a tu mesa",
+      "imagen": "https://via.placeholder.com/100x77/228B22/ffffff?text=CAMPO",
+      "enlace": "comunidad-de-ofertas.html?tienda=campo"
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "panaderias": [
+    {
+      "title": "Descuento en Facturas",
+      "description": "20% de descuento en facturas surtidas",
+      "code": "MERLO20",
+      "validUntil": "2025-03-01",
+      "business": "La Canasta de Juan"
+    },
+    {
+      "title": "Medialunas Gratis",
+      "description": "6 medialunas gratis con compra superior a $5000",
+      "code": "MEDIALUNAS6",
+      "validUntil": "2025-02-28",
+      "business": "Victoria"
+    }
+  ],
+  "carnicerias": [
+    {
+      "title": "Oferta Especial",
+      "description": "Combo asado para 4 personas con precio especial",
+      "code": "ASADO25",
+      "validUntil": "2025-02-28",
+      "business": "Carnicería La Pampa"
+    }
+  ],
+  "verdulerias": [
+    {
+      "title": "Descuento en Frutas",
+      "description": "15% de descuento en frutas de estación",
+      "code": "FRUTAS15",
+      "validUntil": "2025-03-05",
+      "business": "Verduleria El Huerto"
+    }
+  ],
+  "farmacias": [
+    {
+      "title": "Descuento en Perfumería",
+      "description": "25% de descuento en productos de perfumería",
+      "code": "PERFUMERIA25",
+      "validUntil": "2025-02-25",
+      "business": "Farmacia Central"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "rubro": "VERDULERIA",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "Verdulería Fresca",
+      "descripcion": "Frutas y verduras frescas",
+      "imagen": "https://via.placeholder.com/100x77/32CD32/ffffff?text=VERDURA",
+      "enlace": "comunidad-de-ofertas.html?tienda=verduleriafresca"
+    },
+    {
+      "id": 2,
+      "titulo": "El Jardín Orgánico",
+      "descripcion": "Productos orgánicos y naturales",
+      "imagen": "https://via.placeholder.com/100x77/228B22/ffffff?text=ORGANICO",
+      "enlace": "comunidad-de-ofertas.html?tienda=jardinorganico"
+    },
+    {
+      "id": 3,
+      "titulo": "Mercado Natural",
+      "descripcion": "Alimentos saludables y frescos",
+      "imagen": "https://via.placeholder.com/100x77/90EE90/333?text=NATURAL",
+      "enlace": "comunidad-de-ofertas.html?tienda=mercadonatural"
+    },
+    {
+      "id": 4,
+      "titulo": "La Huerta",
+      "descripcion": "Verduras de estación",
+      "imagen": "https://via.placeholder.com/100x77/006400/ffffff?text=HUERTA",
+      "enlace": "comunidad-de-ofertas.html?tienda=huerta"
+    }
+  ]
+}

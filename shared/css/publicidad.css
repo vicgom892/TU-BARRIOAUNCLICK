@@ -1,0 +1,361 @@
+ /* Botón lateral para abrir publicidad */
+        .publicidad-toggle {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 15px 8px;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .publicidad-toggle:hover {
+            background-color: #2980b9;
+            padding-left: 12px;
+        }
+        
+        /* Overlay del slider de publicidad */
+        .publicidad-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .publicidad-overlay.active {
+            display: flex;
+        }
+        
+        /* Header con marquee */
+        .publicidad-header {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 20px 16px 16px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .publicidad-header h2 {
+            font-size: 24px;
+            margin: 0 0 12px;
+            font-weight: 700;
+        }
+        
+        .publicidad-header p {
+            font-size: 16px;
+            margin: 0 0 16px;
+            opacity: 0.95;
+        }
+        
+        /* Botón de cerrar - CORREGIDO */
+        .cerrar-publicidad {
+            position: fixed; /* Cambiado a fixed */
+            top: 25px; /* Ajustado para que no quede detrás del header */
+            right: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 3000; /* Mayor z-index */
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .cerrar-publicidad:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        /* Estilo del marquee */
+        .marquee-container {
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            padding: 0 10px;
+        }
+        
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+        }
+        
+        .marquee-content:hover {
+            animation-play-state: paused;
+        }
+        
+        .marquee-item {
+            display: inline-block;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        
+        .marquee-item i {
+            color: #ffdd57;
+        }
+        
+        .marquee-item strong {
+            color: #ffffff;
+        }
+        
+        @keyframes marquee {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+        
+        /* Slider de publicidad */
+        .publicidad-slider {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            flex: 1;
+        }
+        
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+            color: white;
+        }
+        
+        .anuncio {
+            max-width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .anuncio-imagen {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .anuncio-titulo {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        
+        .anuncio-descripcion {
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            max-width: 500px;
+        }
+        
+        .anuncio-precio {
+            font-size: 28px;
+            font-weight: 700;
+            color: #e74c3c;
+            margin-bottom: 25px;
+        }
+        
+        .anuncio-boton {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+        }
+        
+        .anuncio-boton:hover {
+            background-color: #2980b9;
+        }
+        
+        /* Navegación del slider */
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-button:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .nav-button.prev {
+            left: 20px;
+        }
+        
+        .nav-button.next {
+            right: 20px;
+        }
+        
+        .nav-button svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        
+        /* Indicadores de paginación */
+        .swiper-pagination-bullet {
+            background-color: rgba(255, 255, 255, 0.5);
+            opacity: 1;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background-color: #3498db;
+        }
+        
+        /* Controles de reproducción automática */
+        .autoplay-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .autoplay-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .autoplay-btn:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .autoplay-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+        
+       
+        @media (max-width: 768px) {
+            .publicidad-toggle {
+                padding: 12px 6px;
+                font-size: 14px;
+            }
+            
+            .publicidad-header h2 {
+                font-size: 20px;
+            }
+            
+            .publicidad-header p {
+                font-size: 14px;
+            }
+            
+            .cerrar-publicidad {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            
+            .anuncio-titulo {
+                font-size: 22px;
+            }
+            
+            .anuncio-descripcion {
+                font-size: 15px;
+            }
+            
+            .anuncio-precio {
+                font-size: 24px;
+            }
+            
+            .marquee-item {
+                font-size: 13px;
+                padding: 0 15px;
+            }
+            
+            .marquee-content {
+                animation-duration: 15s;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .marquee-content {
+                animation-duration: 12s;
+            }
+            
+            .marquee-item {
+                padding: 0 10px;
+                font-size: 12px;
+            }
+            
+            .cerrar-publicidad {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+        }

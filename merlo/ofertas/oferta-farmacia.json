@@ -1,0 +1,21 @@
+{
+  "categoria": "farmacia", 
+  "negocio": "farmacia Don José",
+  "ofertas": [
+    {
+      "titulo": "Asado 2x1 en Cortes Seleccionados",
+      "descripcion": "Llevá 2 kg de asado y pagá solo 1. Incluye costillar y vacío",
+      "precioOriginal": 8000,
+      "precioOferta": 4000,
+      "descuento": 50,
+      "validez": "Fin de semana",
+      "imagen": "./img/farmacia-1.webp",
+      "web_url": "../comunidad-de-ofertas.html",
+      "boton": {
+        "texto": "Encargar",
+        "url": "https://wa.me/5491165432109"
+      },
+      "condiciones": ["Con reserva previa", "Cortes sujetos a disponibilidad"]
+    }
+  ]
+}

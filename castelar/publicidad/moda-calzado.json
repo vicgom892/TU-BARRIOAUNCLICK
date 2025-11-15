@@ -1,0 +1,33 @@
+{
+  "rubro": "MODA Y CALZADO",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "Zara",
+      "descripcion": "Moda actual y tendencias",
+      "imagen": "https://via.placeholder.com/100x77/333/ffffff?text=ZARA",
+      "enlace": "comunidad-de-ofertas.html?tienda=zara"
+    },
+    {
+      "id": 2,
+      "titulo": "Nike",
+      "descripcion": "Calzado y ropa deportiva",
+      "imagen": "https://via.placeholder.com/100x77/333/ffffff?text=NIKE",
+      "enlace": "comunidad-de-ofertas.html?tienda=nike"
+    },
+    {
+      "id": 3,
+      "titulo": "Adidas",
+      "descripcion": "Deportes y estilo urbano",
+      "imagen": "https://via.placeholder.com/100x77/333/ffffff?text=ADIDAS",
+      "enlace": "comunidad-de-ofertas.html?tienda=adidas"
+    },
+    {
+      "id": 4,
+      "titulo": "H&M",
+      "descripcion": "Moda rápida y accesible",
+      "imagen": "https://via.placeholder.com/100x77/333/ffffff?text=H%26M",
+      "enlace": "comunidad-de-ofertas.html?tienda=hm"
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "categoria": "Panadería",
+  "negocio": "Panadería La Esquina",
+  "ofertas": [
+    {
+      "titulo": "Docena de Facturas + 2 Cafés",
+      "descripcion": "Llevá una docena de facturas surtidas y recibí 2 cafés cortesía de la casa",
+      "precioOriginal": 2500,
+      "precioOferta": 1800,
+      "descuento": 28,
+      "validez": "Hasta el 30/12/2024",
+      "imagen": "./img/panaderia-1.webp",
+      "pagina": "https://panaderialaesquina.com.ar/ofertas",
+      "web_url": "../comunidad-de-ofertas.html",
+      "boton": {
+        "texto": "Pedir oferta",
+        "url": "https://wa.me/5491156789012"
+      },
+      "condiciones": ["Sólo para llevar", "Válido de 08:00 a 12:00"]
+    },
+    {
+      "titulo": "Pan Integral 50% OFF",
+      "descripcion": "Pan integral recién horneado, promoción por lanzamiento",
+      "precioOriginal": 1200,
+      "precioOferta": 600,
+      "descuento": 50,
+      "validez": "Solo hoy",
+      "imagen": "./img/panaderia-2.webp",
+      "boton": {
+        "texto": "Consultar",
+        "url": "https://wa.me/5491156789012"
+      },
+      "condiciones": ["Máximo 2 unidades por cliente"]
+    }
+  ]
+}

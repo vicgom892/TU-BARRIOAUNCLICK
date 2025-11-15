@@ -1,0 +1,22 @@
+{
+  "categoria": "Veterinaria",
+  "negocio": "Veterinaria Patitas Felices",
+  "ofertas": [
+    {
+      "titulo": "Consulta + Vacuna 40% OFF",
+      "descripcion": "Consulta veterinaria completa más aplicación de vacuna (pentavalente o antirrábica)",
+      "precioOriginal": 8500,
+      "precioOferta": 5100,
+      "descuento": 40,
+      "validez": "Hasta el 28/02/2025",
+      "imagen": "./img/veterinaria-1.webp",
+      "pagina": "https://patitasfelices.com.ar/promos",
+      "web_url": "../comunidad-de-ofertas.html",
+      "boton": {
+        "texto": "Sacar turno",
+        "url": "https://wa.me/5491123456789?text=Hola!%20Quiero%20el%20combo%20consulta%20%2B%20vacuna"
+      },
+      "condiciones": ["Solo con turno", "Válido para perros y gatos"]
+    }
+  ]
+}

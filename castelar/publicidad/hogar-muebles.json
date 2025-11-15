@@ -1,0 +1,33 @@
+{
+  "rubro": "HOGAR Y MUEBLES",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "Muebles Plus",
+      "descripcion": "Muebles para todo tu hogar",
+      "imagen": "https://via.placeholder.com/100x77/8B4513/ffffff?text=MUEBLES",
+      "enlace": "comunidad-de-ofertas.html?tienda=mueblesplus"
+    },
+    {
+      "id": 2,
+      "titulo": "Hogar Center",
+      "descripcion": "Decoración y artículos para el hogar",
+      "imagen": "https://via.placeholder.com/100x77/FF69B4/ffffff?text=HOGAR",
+      "enlace": "comunidad-de-ofertas.html?tienda=hogarcenter"
+    },
+    {
+      "id": 3,
+      "titulo": "Décora Hogar",
+      "descripcion": "Diseño y decoración de interiores",
+      "imagen": "https://via.placeholder.com/100x77/FF6347/ffffff?text=DECORA",
+      "enlace": "comunidad-de-ofertas.html?tienda=decorahogar"
+    },
+    {
+      "id": 4,
+      "titulo": "Living Design",
+      "descripcion": "Muebles modernos y funcionales",
+      "imagen": "https://via.placeholder.com/100x77/4682B4/ffffff?text=LIVING",
+      "enlace": "comunidad-de-ofertas.html?tienda=livingdesign"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "categoria": "Ferretería",
+  "negocio": "Ferretería El Martillo",
+  "ofertas": [
+    {
+      "titulo": "3x2 en Herramientas Manuales",
+      "descripcion": "Llevá 3 herramientas manuales y pagá solo 2. Incluye destornilladores, martillos, alicates y más",
+      "precioOriginal": null,
+      "precioOferta": null,
+      "descuento": 33,
+      "validez": "Todo el mes",
+      "imagen": "./img/ferreteria-1.webp",
+      "web_url": "../comunidad-de-ofertas.html",
+      "boton": {
+        "texto": "Consultar stock",
+        "url": "https://wa.me/5491167890123?text=Hola!%20Consulto%20por%20la%20oferta%203x2%20en%20herramientas"
+      },
+      "condiciones": ["Marcas seleccionadas", "Hasta agotar stock"]
+    }
+  ]
+}

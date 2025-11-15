@@ -1,0 +1,21 @@
+{
+  "categoria": "Kiosco",
+  "negocio": "Kiosco La Esquina Dulce",
+  "ofertas": [
+    {
+      "titulo": "Combo Golosinas 2x1",
+      "descripcion": "Llevá 2 paquetes de golosinas y pagá 1. Incluye chocolates, caramelos y chicles",
+      "precioOriginal": null,
+      "precioOferta": null,
+      "descuento": 50,
+      "validez": "Fin de semana",
+      "imagen": "./img/kiosco-1.webp",
+      "web_url": "../comunidad-de-ofertas.html",
+      "boton": {
+        "texto": "Pedir",
+        "url": "https://wa.me/5491189012345?text=Hola!%20Quiero%20el%20combo%202x1%20de%20golosinas"
+      },
+      "condiciones": ["Marcas participantes", "Excluye productos en promoción"]
+    }
+  ]
+}

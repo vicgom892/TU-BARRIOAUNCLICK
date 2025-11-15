@@ -1,0 +1,19 @@
+{
+  "rubro": "ELECTRO Y TECNO",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "Fravega",
+      "descripcion": "Los mejores precios en electrodomésticos",
+      "imagen": "https://assets.mobile.playdigital.com.ar/images/ptmo/cyber_25/Electro%20y%20tecno/Fravega.jpg",
+      "enlace": "comunidad-de-ofertas.html?tienda=fravega"
+    },
+    {
+      "id": 2,
+      "titulo": "On City",
+      "descripcion": "Tecnología y gadgets",
+      "imagen": "https://assets.mobile.playdigital.com.ar/images/ptmo/cyber_25/Electro%20y%20tecno/OnCity.jpg",
+      "enlace": "comunidad-de-ofertas.html?tienda=oncity"
+    }
+  ]
+}

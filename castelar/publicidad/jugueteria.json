@@ -1,0 +1,33 @@
+{
+  "rubro": "JUGUETERIA",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "Juguetelandia",
+      "descripcion": "Juguetes para todas las edades",
+      "imagen": "https://via.placeholder.com/100x77/FF69B4/ffffff?text=JUGUETES",
+      "enlace": "comunidad-de-ofertas.html?tienda=juguetelandia"
+    },
+    {
+      "id": 2,
+      "titulo": "Toy Planet",
+      "descripcion": "Mundo de juguetes y diversión",
+      "imagen": "https://via.placeholder.com/100x77/FFD700/333?text=TOYS",
+      "enlace": "comunidad-de-ofertas.html?tienda=toyplanet"
+    },
+    {
+      "id": 3,
+      "titulo": "Kids World",
+      "descripcion": "Todo para los más pequeños",
+      "imagen": "https://via.placeholder.com/100x77/00BFFF/ffffff?text=KIDS",
+      "enlace": "comunidad-de-ofertas.html?tienda=kidsworld"
+    },
+    {
+      "id": 4,
+      "titulo": "Juegos Educativos",
+      "descripcion": "Aprender jugando",
+      "imagen": "https://via.placeholder.com/100x77/32CD32/ffffff?text=EDUCATIVO",
+      "enlace": "comunidad-de-ofertas.html?tienda=educativo"
+    }
+  ]
+}

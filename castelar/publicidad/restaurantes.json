@@ -1,0 +1,33 @@
+{
+  "rubro": "RESTAURANTES",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "La Parilla",
+      "descripcion": "Carnes y parrilla argentina",
+      "imagen": "https://via.placeholder.com/100x77/8B0000/ffffff?text=PARRILLA",
+      "enlace": "comunidad-de-ofertas.html?tienda=laparrilla"
+    },
+    {
+      "id": 2,
+      "titulo": "Pizzería Napoli",
+      "descripcion": "Pizzas y pastas italianas",
+      "imagen": "https://via.placeholder.com/100x77/FF6347/ffffff?text=PIZZA",
+      "enlace": "comunidad-de-ofertas.html?tienda=pizzeria"
+    },
+    {
+      "id": 3,
+      "titulo": "Sushi Bar",
+      "descripcion": "Comida japonesa y oriental",
+      "imagen": "https://via.placeholder.com/100x77/DC143C/ffffff?text=SUSHI",
+      "enlace": "comunidad-de-ofertas.html?tienda=sushi"
+    },
+    {
+      "id": 4,
+      "titulo": "Café Central",
+      "descripcion": "Cafetería y pastelería",
+      "imagen": "https://via.placeholder.com/100x77/8B4513/ffffff?text=CAFE",
+      "enlace": "comunidad-de-ofertas.html?tienda=cafe"
+    }
+  ]
+}

@@ -1,0 +1,1975 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <script src="./shared/js/security-config.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Barrio A Un Click - Seleccioná tu Localidad</title>
+    
+    <!-- Meta Tags SEO Mejorados -->
+    <meta name="description" content="Seleccioná tu localidad para acceder a comercios, servicios y comunidad local con Tu Barrio A Un Click">
+    <meta name="keywords" content="barrio, comercios, localidad, castelar, ituzaingo, moron, servicios locales, comercios cercanos, economía local">
+    <meta name="author" content="Tu Barrio A Un Click">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Preload de Recursos Críticos -->
+    <link rel="preload" href="./shared/img/icon-192x192.webp" as="image" type="image/png">
+    <link rel="preload" href="./shared/js/splash.js" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" crossorigin="anonymous">
+    
+    <!-- Preconnect para CDNs -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    
+    <!-- Estilos de Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" crossorigin="anonymous">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json" crossorigin="use-credentials">
+    <script src="./shared/js/config.js"></script>
+
+    <!-- Iconos y Manifest -->
+    <link rel="icon" href="./shared/img/icon-abeja-sola.png" type="image/png" sizes="32x32" />
+    <link rel="icon" href="./shared/img/icon-192x192.webp" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="./shared/img/icon-192x192.webp" />
+    <link rel="mask-icon" href="./shared/img/icon-abeja-sola.png" color="#e1306c">
+
+    <!-- Meta Tags PWA Mejorados -->
+    <meta name="apple-mobile-web-app-title" content="TuBarrioSelector">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <meta name="application-name" content="TuBarrioSelector">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#0ea5e9">
+    <meta name="msapplication-TileColor" content="#0ea5e9">
+    <meta name="msapplication-TileImage" content="./shared/img/icon-192x192.png">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Tu Barrio A Un Click",
+        "description": "Plataforma para descubrir comercios y servicios locales en tu zona",
+        "url": "https://tudominio.com",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "Tu Barrio A Un Click"
+        },
+        "screenshot": "./shared/img/icon-192x192.png",
+        "browserRequirements": "Requires JavaScript. Requires HTML5."
+    }
+    </script>
+
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #0ea5e9;
+            --accent: #00f5ff;
+            --metal-light: #c0c0c0;
+            --metal-dark: #808080;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #f1f5f9;
+            --text-muted: #94a3b8;
+            --location: #10b981;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+            --border-color: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        strong{
+            color: red;
+            font-size: 2rem;
+        }
+        /* Mejorar rendimiento de animaciones */
+        .particle, .app-logo, .location-btn, .detect-btn, .install-btn, .share-btn {
+            will-change: transform, opacity;
+        }
+
+        /* Reducir movimiento para usuarios sensibles */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0c0f1d 0%, #1a1f35 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+         /* Splash Screen Tecnológico */
+    .splash-screen {
+        position: fixed;
+        /*top: 50px;*/
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #121212 0%, #1a1a2e 50%, #16213e 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 100000;
+        opacity: 1;
+        transition: opacity 0.8s ease;
+        overflow: hidden;
+    }
+    
+    .splash-screen.fade-out {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    /* Fondo de partículas animadas */
+    .splash-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+    }
+    
+    .particle {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+        animation: float 6s infinite ease-in-out;
+    }
+    
+    /* Grid de fondo */
+    .splash-grid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 40px 40px;
+        z-index: 2;
+        opacity: 0.3;
+    }
+    
+    /* Logo con efecto de brillo */
+    .splash-logo {
+        width: 320px;
+        height: 320px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff6200 0%, #ff9e2c 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 30px;
+        z-index: 3;
+        box-shadow: 0 20px 60px rgba(255, 98, 0, 0.4);
+        position: relative;
+        overflow: hidden;
+        animation: pulseGlow 2s infinite alternate;
+        border: 4px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .splash-logo::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+        opacity: 0;
+        animation: shine 3s infinite;
+    }
+    
+    .logo-icon {
+        font-size: 80px;
+        color: white;
+        z-index: 1;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        width: 230px;
+        height: 230px;
+    }
+    
+    .splash-text {
+        color: #f8f9fa !important;
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 30px;
+        text-align: center;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        z-index: 3;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 1s ease forwards 0.5s;
+    }
+    
+    .loading-bar-container {
+        width: 200px;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+        position: relative;
+        z-index: 3;
+        margin-top: 20px;
+    }
+    
+    .loading-bar {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #ff6200, #ff9e2c);
+        border-radius: 3px;
+        transition: width 0.3s ease;
+        position: relative;
+    }
+    
+    .loading-bar::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(90deg, 
+            transparent, 
+            rgba(255, 255, 255, 0.4), 
+            transparent);
+        animation: shimmer 1.5s infinite;
+    }
+    
+    .loading-text {
+        color:#f8f9fa;
+        font-size: 0.9rem;
+        margin-top: 10px;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeInUp 0.5s ease forwards 1.2s;
+        z-index: 3;
+    }
+    
+    .skip-btn {
+        margin-top: 30px;
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 10px 20px;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        z-index: 3;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.5s ease forwards 1.5s;
+    }
+    
+    .skip-btn:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 98, 0, 0.3);
+    }
+    
+    /* Animaciones */
+    @keyframes pulseGlow {
+        0% {
+            box-shadow: 0 20px 60px rgba(255, 98, 0, 0.4);
+            transform: scale(1);
+        }
+        100% {
+            box-shadow: 0 20px 60px rgba(255, 98, 0, 0.6);
+            transform: scale(1.05);
+        }
+    }
+    
+    @keyframes shine {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-50%) rotate(0deg);
+        }
+        50% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(50%) translateY(50%) rotate(180deg);
+        }
+    }
+    
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+    
+    @keyframes float {
+        0%, 100% {
+            transform: translate(0, 0);
+        }
+        25% {
+            transform: translate(10px, 15px);
+        }
+        50% {
+            transform: translate(-10px, 5px);
+        }
+        75% {
+            transform: translate(5px, -10px);
+        }
+    }
+    
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .splash-logo {
+            width: 280px;
+            height: 280px;
+        }
+        
+        .splash-text {
+            font-size: 1.6rem;
+        }
+        
+        .loading-bar-container {
+            width: 160px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .splash-logo {
+            width: 250px;
+            height: 250px;
+        }
+        
+        .splash-text {
+            font-size: 1.4rem;
+        }
+        
+        .loading-bar-container {
+            width: 140px;
+        }
+        
+        .skip-btn {
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+    }
+
+
+
+        /* Alto contraste para mejor accesibilidad */
+        @media (prefers-contrast: high) {
+            :root {
+                --text-light: #ffffff;
+                --text-muted: #e5e5e5;
+                --border-color: #ffffff;
+            }
+            
+            body {
+                background: #000000;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header con efecto tecnológico */
+        header[role="banner"] {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+            box-shadow: var(--shadow-md);
+            margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        header[role="banner"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: scanline 3s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .header-content {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .app-logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 0 30px rgba(14, 165, 233, 0.4);
+            border: 3px solid var(--accent);
+            animation: pulse 2s infinite;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .app-logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .app-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+            transition: all 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 245, 255, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(0, 245, 255, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 245, 255, 0);
+            }
+        }
+
+        .header-content h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            transition: all 0.5s ease;
+        }
+
+        .header-content h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .header-content p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
+            transition: all 0.5s ease;
+        }
+
+        /* Detección de ubicación con efecto metálico */
+        .location-detection {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.8) 100%);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .location-detection::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.05) 0%, rgba(128, 128, 128, 0.05) 100%);
+            z-index: -1;
+        }
+
+        .location-detection h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--location);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .location-detection p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .detect-btn {
+            background: linear-gradient(135deg, var(--metal-light), var(--metal-dark));
+            color: #1a1a1a;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detect-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .detect-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .detect-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(192, 192, 192, 0.5);
+            background: linear-gradient(135deg, var(--metal-dark), var(--metal-light));
+        }
+
+        .detect-btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .detect-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .detect-btn i {
+            font-size: 18px;
+        }
+
+        /* Focus states para accesibilidad */
+        .detect-btn:focus-visible,
+        .location-btn:focus-visible,
+        .install-btn:focus-visible,
+        .share-btn:focus-visible,
+        .btn:focus-visible {
+            outline: 3px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* Sección de localidades */
+        .locations-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .locations-section h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 35px;
+            color: var(--text-light);
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            display: inline-block;
+        }
+
+        .locations-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Botones de localidad con efecto metálico */
+        .location-btn {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .location-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, rgba(128, 128, 128, 0.1) 100%);
+            z-index: -1;
+        }
+
+        .location-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(14, 165, 233, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .location-btn:hover {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(14, 165, 233, 0.9));
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(30, 58, 138, 0.6);
+            border-color: var(--secondary);
+        }
+
+        .location-btn:hover::after {
+            left: 100%;
+        }
+
+        .location-btn i {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 28px;
+            color: var(--location);
+            transition: all 0.3s ease;
+        }
+
+        .location-btn:hover i {
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+            transform: scale(1.2);
+        }
+
+        /* Modal de sugerencia */
+        .location-suggestion {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            z-index: 1000;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            display: none;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+
+        .location-suggestion::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.05) 0%, rgba(128, 128, 128, 0.05) 100%);
+            z-index: -1;
+            border-radius: 16px;
+        }
+
+        .location-suggestion.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .location-suggestion h3 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .location-suggestion p {
+            color: var(--text-muted);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .suggestion-btns {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--secondary), var(--accent));
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--metal-light), var(--metal-dark));
+            color: #1a1a1a;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--metal-dark), var(--metal-light));
+            transform: translateY(-2px);
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(5px);
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        footer[role="contentinfo"] {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 40px;
+        }
+
+        /* Efectos de partículas en el fondo */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+            }
+        }
+
+        /* Sección de Instalar App */
+        .install-app-section {
+            margin: 40px auto;
+            max-width: 800px;
+        }
+
+        .install-app-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .install-app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.05) 0%, rgba(128, 128, 128, 0.05) 100%);
+            z-index: -1;
+        }
+
+        .install-app-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .install-app-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .install-btn {
+            background: linear-gradient(135deg, var(--success), #0d9667);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 32px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .install-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .install-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .install-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+            background: linear-gradient(135deg, #0d9667, var(--success));
+        }
+
+        .install-btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .install-btn:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .install-btn i {
+            font-size: 18px;
+        }
+
+        .install-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .step i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .step span {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Sección de Compartir App */
+        .share-app-section {
+            margin: 40px auto;
+            max-width: 800px;
+        }
+
+        .share-app-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.9) 100%);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .share-app-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.05) 0%, rgba(128, 128, 128, 0.05) 100%);
+            z-index: -1;
+        }
+
+        .share-app-card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .share-app-card p {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .share-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .share-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .share-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .share-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .share-btn:hover:not(:disabled)::before {
+            left: 100%;
+        }
+
+        .share-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Colores específicos para cada plataforma */
+        .share-btn.whatsapp {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+        }
+
+        .share-btn.facebook {
+            background: linear-gradient(135deg, #1877F2, #0D5CB6);
+            color: white;
+        }
+
+        .share-btn.twitter {
+            background: linear-gradient(135deg, #1DA1F2, #0D8BD9);
+            color: white;
+        }
+
+        .share-btn.copy-link {
+            background: linear-gradient(135deg, var(--metal-light), var(--metal-dark));
+            color: #1a1a1a;
+        }
+
+        .share-btn.instagram {
+            background: linear-gradient(135deg, #E1306C, #C13584);
+            color: white;
+        }
+
+        /* Efectos hover específicos */
+        .share-btn.whatsapp:hover:not(:disabled) {
+            background: linear-gradient(135deg, #128C7E, #25D366);
+        }
+
+        .share-btn.facebook:hover:not(:disabled) {
+            background: linear-gradient(135deg, #0D5CB6, #1877F2);
+        }
+
+        .share-btn.twitter:hover:not(:disabled) {
+            background: linear-gradient(135deg, #0D8BD9, #1DA1F2);
+        }
+
+        .share-btn.copy-link:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--metal-dark), var(--metal-light));
+        }
+
+        .share-btn.instagram:hover:not(:disabled) {
+            background: linear-gradient(135deg, #C13584, #E1306C);
+        }
+
+        /* Toast de notificación */
+        .share-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--success);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1001;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .share-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Toast de error */
+        .error-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--error);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1001;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .error-toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .header-content p {
+                font-size: 1.1rem;
+            }
+            
+            .app-logo {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .app-logo img {
+                width: 60%;
+                height: 60%;
+            }
+            
+            .locations-grid {
+                grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+                gap: 20px;
+            }
+            
+            .location-btn {
+                padding: 20px 15px;
+                font-size: 1.1rem;
+            }
+            
+            .detect-btn {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+
+            .install-steps {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .step {
+                flex-direction: row;
+                justify-content: flex-start;
+                text-align: left;
+            }
+            
+            .step i {
+                font-size: 1.2rem;
+                min-width: 30px;
+            }
+
+            .share-buttons {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            
+            .share-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-content h1 {
+                font-size: 1.8rem;
+            }
+            
+            .app-logo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .app-logo img {
+                width: 100%;
+                height: 100%;
+            }
+            
+            .locations-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .suggestion-btns {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+
+            .share-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Clase para screen readers */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+
+     <div id="splash-screen" class="splash-screen">
+        <div class="splash-particles" id="splashParticles"></div>
+        <div class="splash-grid"></div>
+        <div class="splash-logo">
+            <img src="/shared/img/icon-192x192.webp" class="logo-icon" alt="logo de la app">
+        </div>
+        <h1 class="splash-text">Tu Barrio A Un Clik</h1>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <p class="loading-text" id="loadingText">Cargando experiencia local...</p>
+        <button onclick="skipSplash()" class="skip-btn">Saltar</button>
+    </div>
+
+    <!-- Partículas de fondo -->
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <header role="banner" id="mainHeader">
+            <div class="header-content">
+                <div class="app-logo" id="mainLogo">
+                    <img src="/shared/img/icon-192x192.webp" alt="Tu Barrio A Un Click">
+                </div>
+                <div class="header-text">
+                    <h1>Tu Barrio A Un Click</h1>
+                    <p>Seleccioná tu localidad para acceder a comercios, servicios y comunidad local</p>
+                </div>
+            </div>
+        </header>
+
+        <main role="main">
+            <section class="location-detection" aria-labelledby="location-detection-title">
+                <h3 id="location-detection-title"><i class="fas fa-location-arrow"></i> ¿Querés que te sugiera tu localidad?</h3>
+                <p>Hacé clic en el botón para detectar tu ubicación aproximada y recomendarte la versión de la app que más te conviene según tu zona.</p>
+                <button class="detect-btn" id="detectLocationBtn" aria-describedby="location-detection-desc">
+                    <i class="fas fa-map-marker-alt"></i> Detectar mi ubicación
+                </button>
+                <p id="location-detection-desc" class="sr-only">Botón para detectar automáticamente tu ubicación y sugerirte la localidad más cercana</p>
+            </section>
+
+            <!-- Botón de Instalar App -->
+            <section class="install-app-section" aria-labelledby="install-app-title">
+                <div class="install-app-card">
+                    <h3 id="install-app-title"><i class="fas fa-mobile-alt"></i> ¿Querés la App en tu teléfono?</h3>
+                    <p>Instalá Tu Barrio A Un Click en tu pantalla de inicio para acceder más rápido</p>
+                    <button class="install-btn" id="installButton" aria-label="Instalar aplicación en el dispositivo">
+                        <i class="fas fa-download"></i> Instalar App
+                    </button>
+                    <div class="install-steps" aria-label="Pasos para instalar la aplicación">
+                        <div class="step">
+                            <i class="fas fa-share" aria-hidden="true"></i>
+                            <span>Tocá el botón "Compartir"</span>
+                        </div>
+                        <div class="step">
+                            <i class="fas fa-plus-circle" aria-hidden="true"></i>
+                            <span>Seleccioná "Agregar a pantalla de inicio"</span>
+                        </div>
+                        <div class="step">
+                            <i class="fas fa-check" aria-hidden="true"></i>
+                            <span>¡Listo! La app quedará instalada</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Botón de Compartir App -->
+            <section class="share-app-section" aria-labelledby="share-app-title">
+                <div class="share-app-card">
+                    <h3 id="share-app-title"><i class="fas fa-share-alt"></i> ¡Compartí con tus vecinos!</h3>
+                    <p>Ayudá a que más gente conozca los comercios de tu zona</p>
+                    <div class="share-buttons">
+                        <button class="share-btn whatsapp" data-platform="whatsapp" aria-label="Compartir en WhatsApp">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </button>
+                        <button class="share-btn facebook" data-platform="facebook" aria-label="Compartir en Facebook">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </button>
+                        <button class="share-btn instagram" data-platform="instagram" aria-label="Compartir en Instagram">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </button>
+                        <button class="share-btn copy-link" data-platform="copy" aria-label="Copiar enlace de la aplicación">
+                            <i class="fas fa-link"></i> Copiar Enlace
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="locations-section" aria-labelledby="locations-title">
+                <h2 id="locations-title">Seleccioná tu Localidad</h2>
+                <div class="locations-grid" role="navigation" aria-label="Navegación entre localidades">
+                    <a href="./castelar/index.html" class="location-btn" aria-label="Acceder a la sección de Castelar">
+                        <i class="fas fa-map-marker-alt"></i>Castelar
+                    </a>
+                    <a href="./ituzaingo/index.html" class="location-btn" aria-label="Acceder a la sección de Ituzaingó">
+                        <i class="fas fa-map-marker-alt"></i>Ituzaingó
+                    </a>
+                    <a href="./moron/index.html" class="location-btn" aria-label="Acceder a la sección de Morón">
+                        <i class="fas fa-map-marker-alt"></i>Morón
+                    </a>
+                    <a href="./merlo/index.html" class="location-btn" aria-label="Acceder a la sección de Merlo">
+                        <i class="fas fa-map-marker-alt"></i>Merlo
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <footer role="contentinfo">
+            <p>Tu Barrio A Un Click - Conectando comunidades desde 2025</p>
+        </footer>
+    </div>
+
+    <div class="overlay" id="overlay" aria-hidden="true"></div>
+    
+    <div class="location-suggestion" id="locationSuggestion" role="dialog" aria-labelledby="suggestion-title" aria-modal="true">
+        <h3 id="suggestion-title"><i class="fas fa-map-marker-check"></i> ¡Hola vecino!</h3>
+        <p id="suggestionText">Detectamos que estás cerca de <strong id="detectedCity"></strong>. ¿Querés acceder directamente a la app de Tu Barrio A Un Click para esta localidad?</p>
+        <div class="suggestion-btns">
+            <button class="btn btn-primary" id="acceptSuggestion" aria-label="Aceptar sugerencia y acceder a la localidad detectada">Sí, acceder ahora</button>
+            <button class="btn btn-secondary" id="declineSuggestion" aria-label="Rechazar sugerencia y elegir manualmente">Elegir manualmente</button>
+        </div>
+    </div>
+ 
+    <script src="/shared/js/splash.js" defer></script>
+
+    <script>
+        // =============================================
+        // GESTIÓN DE PARTÍCULAS DE FONDO
+        // =============================================
+
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Posición aleatoria
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Tamaño aleatorio
+                const size = Math.random() * 3 + 1;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Opacidad aleatoria
+                particle.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                // Duración de animación aleatoria
+                particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // =============================================
+        // DETECCIÓN DE UBICACIÓN MEJORADA - COORDENADAS CORREGIDAS
+        // =============================================
+
+        // COORDENADAS PRECISAS CORREGIDAS PARA CASTELAR Y ZONA OESTE
+        const supportedLocations = [
+            { name: 'Castelar', slug: 'castelar', lat: -34.6489, lng: -58.6475, priority: 1 }, // Coordenadas exactas de Castelar
+            { name: 'Ituzaingó', slug: 'ituzaingo', lat: -34.6589, lng: -58.6662, priority: 3 },
+            { name: 'Morón', slug: 'moron', lat: -34.6534, lng: -58.6198, priority: 4 }
+        ];
+
+        let userLocation = null;
+        let detectedCity = '';
+        let detectedSlug = '';
+
+        // Función para redirigir a la app de la localidad
+        function redirectToApp(slug) {
+            window.location.href = `${slug}/index.html`;
+        }
+
+        // Calcular distancia usando fórmula de Haversine (MEJORADA)
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radio de la tierra en km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const distance = R * c;
+            
+            // Para debugging - mostrar en consola
+            console.log(`📍 Distancia calculada: ${distance.toFixed(3)}km desde (${lat1}, ${lon1}) hasta (${lat2}, ${lon2})`);
+            
+            return distance;
+        }
+
+        // Encontrar la localidad más cercana - FUNCIÓN COMPLETAMENTE REESCRITA
+        function findClosestLocation(lat, lng) {
+            console.log('🔍 Iniciando búsqueda de localidad más cercana...');
+            console.log('📍 Tu ubicación detectada:', lat, lng);
+            
+            let closest = null;
+            let minDistance = Infinity;
+            let distances = [];
+
+            for (const location of supportedLocations) {
+                const distance = calculateDistance(lat, lng, location.lat, location.lng);
+                distances.push({ name: location.name, distance: distance });
+                
+                // PRIORIZAMOS CASTELAR si está dentro de un radio razonable
+                if (location.name === 'Castelar' && distance < 5) { // 5km de radio para Castelar
+                    console.log(`🎯 PRIORIDAD CASTELAR: Encontrado a ${distance.toFixed(2)}km`);
+                    return location;
+                }
+                
+                // Para otras localidades, buscamos la más cercana
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closest = location;
+                }
+            }
+            
+            // Mostrar todas las distancias en consola para debugging
+            console.log('📊 Distancias a todas las localidades:');
+            distances.sort((a, b) => a.distance - b.distance);
+            distances.forEach(item => {
+                console.log(`   ${item.name}: ${item.distance.toFixed(2)}km`);
+            });
+            
+            if (closest) {
+                console.log(`✅ Localidad detectada: ${closest.name} (${minDistance.toFixed(2)}km)`);
+            } else {
+                console.log('❌ No se encontró localidad cercana');
+            }
+            
+            return closest;
+        }
+
+        // Mostrar toast de error
+        function showError(message) {
+            // Remover toast existente si hay uno
+            const existingToast = document.querySelector('.error-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            const errorToast = document.createElement('div');
+            errorToast.className = 'error-toast';
+            errorToast.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+            document.body.appendChild(errorToast);
+            
+            // Mostrar toast
+            setTimeout(() => errorToast.classList.add('show'), 100);
+            
+            // Remover después de 5 segundos
+            setTimeout(() => {
+                errorToast.classList.remove('show');
+                setTimeout(() => {
+                    if (errorToast.parentNode) {
+                        errorToast.parentNode.removeChild(errorToast);
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Manejar errores de geolocalización
+        function handleGeolocationError(error) {
+            console.error('Error de geolocalización:', error);
+            
+            const errorMessages = {
+                1: 'Para usar la detección automática, necesitamos acceso a tu ubicación. Por favor, permite el acceso en la configuración de tu navegador.',
+                2: 'No pudimos obtener tu ubicación. Verifica tu conexión a internet o GPS.',
+                3: 'La detección de ubicación tardó demasiado. Intenta nuevamente.',
+                0: 'Error desconocido al detectar la ubicación.'
+            };
+            
+            const errorMessage = errorMessages[error.code] || errorMessages[0];
+            showError(errorMessage);
+            console.log('Detalles del error:', error);
+        }
+
+        // Resetear botón de detección
+        function resetDetectButton() {
+            const detectBtn = document.getElementById('detectLocationBtn');
+            detectBtn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Detectar mi ubicación';
+            detectBtn.disabled = false;
+        }
+
+        // Obtener ubicación del usuario con manejo mejorado de errores
+        function getUserLocation() {
+            console.log('📍 Iniciando detección de ubicación...');
+            
+            const detectBtn = document.getElementById('detectLocationBtn');
+            const originalText = detectBtn.innerHTML;
+            
+            detectBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Detectando...';
+            detectBtn.disabled = true;
+
+            // Timeout de seguridad
+            const timeoutId = setTimeout(() => {
+                if (detectBtn.disabled) {
+                    detectBtn.innerHTML = originalText;
+                    detectBtn.disabled = false;
+                    showError('La detección está tomando más tiempo de lo esperado. Intenta nuevamente.');
+                    console.log('⏰ Timeout de geolocalización alcanzado');
+                }
+            }, 15000);
+
+            if (navigator.geolocation) {
+                console.log('✅ Geolocalización soportada, solicitando permisos...');
+                
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        clearTimeout(timeoutId);
+                        const { latitude, longitude } = position.coords;
+                        userLocation = { lat: latitude, lng: longitude };
+                        
+                        console.log('📍 Ubicación obtenida:', latitude, longitude);
+                        console.log('🎯 Precisión:', position.coords.accuracy, 'metros');
+                        
+                        const closestLocation = findClosestLocation(latitude, longitude);
+                        if (closestLocation) {
+                            detectedCity = closestLocation.name;
+                            detectedSlug = closestLocation.slug;
+                            console.log(`✅ Sugiriendo: ${detectedCity}`);
+                            showLocationSuggestion();
+                        } else {
+                            showError('No pudimos detectar una localidad cercana. Por favor seleccioná manualmente.');
+                            resetDetectButton();
+                        }
+                    },
+                    (error) => {
+                        clearTimeout(timeoutId);
+                        console.log('❌ Error obteniendo ubicación:', error);
+                        handleGeolocationError(error);
+                        resetDetectButton();
+                    },
+                    { 
+                        timeout: 10000,
+                        maximumAge: 300000, // 5 minutos de cache
+                        enableHighAccuracy: true // Mayor precisión para diferenciar Castelar de Padua
+                    }
+                );
+            } else {
+                clearTimeout(timeoutId);
+                showError('Tu navegador no soporta la geolocalización.');
+                resetDetectButton();
+            }
+        }
+
+        // Mostrar sugerencia de localidad
+        function showLocationSuggestion() {
+            if (detectedCity) {
+                document.getElementById('detectedCity').textContent = detectedCity;
+                document.getElementById('locationSuggestion').classList.add('show');
+                document.getElementById('overlay').classList.add('show');
+                document.getElementById('overlay').setAttribute('aria-hidden', 'false');
+                resetDetectButton();
+                
+                console.log(`📍 Modal mostrado para: ${detectedCity}`);
+                
+                // Enfocar el primer botón del modal para accesibilidad
+                setTimeout(() => {
+                    document.getElementById('acceptSuggestion').focus();
+                }, 100);
+            }
+        }
+
+        function hideLocationSuggestion() {
+            document.getElementById('locationSuggestion').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('overlay').setAttribute('aria-hidden', 'true');
+            console.log('❌ Modal de sugerencia cerrado');
+        }
+
+        // =============================================
+        // INSTALACIÓN DE LA PWA
+        // =============================================
+
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+
+        // Escuchar el evento beforeinstallprompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevenir que el mini-infobar aparezca en mobile
+            e.preventDefault();
+            // Guardar el evento para poder activarlo después
+            deferredPrompt = e;
+            // Mostrar el botón de instalación
+            installButton.style.display = 'inline-flex';
+        });
+
+        // Evento click en el botón de instalación
+        installButton.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                // Mostrar el prompt de instalación
+                deferredPrompt.prompt();
+                // Esperar a que el usuario responda al prompt
+                const { outcome } = await deferredPrompt.userChoice;
+                
+                if (outcome === 'accepted') {
+                    console.log('Usuario aceptó instalar la PWA');
+                    installButton.innerHTML = '<i class="fas fa-check"></i> ¡App Instalada!';
+                    installButton.disabled = true;
+                } else {
+                    console.log('Usuario rechazó instalar la PWA');
+                }
+                
+                // Limpiar la referencia
+                deferredPrompt = null;
+                // Ocultar el botón
+                installButton.style.display = 'none';
+            }
+        });
+
+        // Ocultar el botón si la app ya está instalada
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA fue instalada');
+            installButton.style.display = 'none';
+            deferredPrompt = null;
+        });
+
+        // Verificar si la app ya está instalada y ocultar el botón
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.navigator.standalone === true) {
+            installButton.style.display = 'none';
+        }
+
+        // =============================================
+        // GESTIÓN DE COMPARTIR EN REDES SOCIALES
+        // =============================================
+
+        class ShareManager {
+            constructor() {
+                this.url = window.location.href;
+                this.title = 'Tu Barrio A Un Click';
+                this.text = '¡Encontrá todos los comercios y servicios de tu zona en una sola app!';
+                this.hashtags = 'TuBarrioAUnClick,ComerciosLocales,Barrio';
+                
+                this.init();
+            }
+
+            init() {
+                document.querySelectorAll('.share-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const platform = e.currentTarget.dataset.platform;
+                        this.share(platform);
+                    });
+                });
+            }
+
+            share(platform) {
+                switch (platform) {
+                    case 'whatsapp':
+                        this.shareWhatsApp();
+                        break;
+                    case 'facebook':
+                        this.shareFacebook();
+                        break;
+                    case 'instagram':
+                        this.shareInstagram();
+                        break;
+                    case 'copy':
+                        this.copyLink();
+                        break;
+                }
+            }
+
+            shareWhatsApp() {
+                const shareUrl = `https://wa.me/?text=${encodeURIComponent(this.text + ' ' + this.url)}`;
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+                this.showToast('¡Enlace copiado para WhatsApp!');
+            }
+
+            shareFacebook() {
+                const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.url)}`;
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+
+            shareInstagram() {
+                this.showToast('¡Copiá el enlace y compartilo en tus stories de Instagram!');
+                // En un caso real, aquí podrías abrir Instagram o mostrar instrucciones
+            }
+
+            async copyLink() {
+                try {
+                    await navigator.clipboard.writeText(this.url);
+                    this.showToast('¡Enlace copiado al portapapeles!');
+                } catch (err) {
+                    // Fallback para navegadores más antiguos
+                    const textArea = document.createElement('textarea');
+                    textArea.value = this.url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    this.showToast('¡Enlace copiado al portapapeles!');
+                }
+            }
+
+            showToast(message) {
+                // Remover toast existente si hay uno
+                const existingToast = document.querySelector('.share-toast');
+                if (existingToast) {
+                    existingToast.remove();
+                }
+
+                const toast = document.createElement('div');
+                toast.className = 'share-toast';
+                toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                document.body.appendChild(toast);
+                
+                // Mostrar toast
+                setTimeout(() => toast.classList.add('show'), 100);
+                
+                // Remover después de 3 segundos
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                    }, 300);
+                }, 3000);
+            }
+        }
+
+        // =============================================
+        // INICIALIZACIÓN
+        // =============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Inicializando Tu Barrio A Un Click...');
+            
+            // Crear partículas de fondo
+            createParticles();
+
+            // Inicializar gestión de compartir
+            new ShareManager();
+
+            // Event listeners para detección de ubicación
+            document.getElementById('detectLocationBtn').addEventListener('click', getUserLocation);
+            
+            document.getElementById('acceptSuggestion').addEventListener('click', function() {
+                if (detectedSlug) {
+                    console.log(`✅ Aceptando sugerencia: redirigiendo a ${detectedSlug}`);
+                    redirectToApp(detectedSlug);
+                }
+            });
+            
+            document.getElementById('declineSuggestion').addEventListener('click', function() {
+                console.log('❌ Rechazando sugerencia');
+                hideLocationSuggestion();
+            });
+            
+            document.getElementById('overlay').addEventListener('click', hideLocationSuggestion);
+
+            // Cerrar modal con ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    hideLocationSuggestion();
+                }
+            });
+
+            // Service Worker para recursos compartidos
+            if ('serviceWorker' in navigator && !window.location.pathname.includes('/castelar/')) {
+                navigator.serviceWorker.register('/sw.js', {
+                    scope: '/',
+                    updateViaCache: 'none'
+                }).then(registration => {
+                    console.log('✅ SW registrado para recursos compartidos');
+                }).catch(err => {
+                    console.log('ℹ️ No se registró SW en raíz (comportamiento esperado)');
+                });
+            }
+            
+            console.log('✅ Aplicación inicializada correctamente');
+        });
+
+        // Manejar errores no capturados
+        window.addEventListener('error', function(e) {
+            console.error('Error capturado:', e.error);
+        });
+
+        // Manejar promesas rechazadas no capturadas
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Promesa rechazada no capturada:', e.reason);
+            e.preventDefault();
+        });
+        
+        // Función de debug para probar coordenadas específicas
+        window.debugLocation = function(lat, lng) {
+            console.log('🔍 DEBUG - Probando coordenadas:', lat, lng);
+            const closest = findClosestLocation(lat, lng);
+            if (closest) {
+                console.log(`✅ DEBUG - Localidad detectada: ${closest.name}`);
+                alert(`DEBUG: Localidad detectada: ${closest.name}`);
+            } else {
+                console.log('❌ DEBUG - No se detectó localidad');
+                alert('DEBUG: No se detectó localidad');
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "rubro": "DEPORTES",
+  "anuncios": [
+    {
+      "id": 1,
+      "titulo": "Deportes Total",
+      "descripcion": "Todo para el deportista",
+      "imagen": "https://via.placeholder.com/100x77/FF0000/ffffff?text=DEPORTES",
+      "enlace": "comunidad-de-ofertas.html?tienda=deportestotal"
+    },
+    {
+      "id": 2,
+      "titulo": "Fit Store",
+      "descripcion": "Equipamiento fitness y gym",
+      "imagen": "https://via.placeholder.com/100x77/0000FF/ffffff?text=FITNESS",
+      "enlace": "comunidad-de-ofertas.html?tienda=fitstore"
+    },
+    {
+      "id": 3,
+      "titulo": "Sport Life",
+      "descripcion": "Ropa y calzado deportivo",
+      "imagen": "https://via.placeholder.com/100x77/008000/ffffff?text=SPORT",
+      "enlace": "comunidad-de-ofertas.html?tienda=sportlife"
+    },
+    {
+      "id": 4,
+      "titulo": "Outdoor Gear",
+      "descripcion": "Equipo para aventura al aire libre",
+      "imagen": "https://via.placeholder.com/100x77/8B4513/ffffff?text=OUTDOOR",
+      "enlace": "comunidad-de-ofertas.html?tienda=outdoor"
+    }
+  ]
+}

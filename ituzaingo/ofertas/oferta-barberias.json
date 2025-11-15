@@ -1,0 +1,21 @@
+{
+  "categoria": "Barbería",
+  "negocio": "Barbería Classic",
+  "ofertas": [
+    {
+      "titulo": "Corte + Barba 30% OFF",
+      "descripcion": "Corte de cabello clásico o moderno más arreglo de barba con productos premium",
+      "precioOriginal": 4500,
+      "precioOferta": 3150,
+      "descuento": 30,
+      "validez": "Hasta el 15/01/2025",
+      "imagen": "./img/barberia-1.webp",
+      "tarjetaUrl": "/castelar/tarjeta.html?negocio=barberia_classic",
+      "boton": {
+        "texto": "Sacar turno",
+        "url": "https://wa.me/5491156789012?text=Hola!%20Quiero%20el%20combo%20corte%20%2B%20barba"
+      },
+      "condiciones": ["Con cita previa", "Válido de lunes a viernes"]
+    }
+  ]
+}

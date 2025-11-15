@@ -1,0 +1,21 @@
+{
+  "categoria": "Pastas",
+  "negocio": "Pastas Frescas Mama Rosa",
+  "ofertas": [
+    {
+      "titulo": "Docena de Sorrentinos + Salsa",
+      "descripcion": "Docena de sorrentinos caseros (jamón y queso o calabaza) más salsa filetto o bolognesa",
+      "precioOriginal": 3800,
+      "precioOferta": 2800,
+      "descuento": 26,
+      "validez": "Todos los días",
+      "imagen": "./img/pastas-1.webp",
+      "web_url": "../comunidad-de-ofertas.html",
+      "boton": {
+        "texto": "Encargar",
+        "url": "https://wa.me/5491190123456?text=Hola!%20Quiero%20la%20oferta%20de%20sorrentinos"
+      },
+      "condiciones": ["Con 24h de anticipación", "Sabores a elección"]
+    }
+  ]
+}
