@@ -1402,16 +1402,6 @@ h2, h3{
       ¡Gracias! Nos pondremos en contacto contigo pronto.
     </div>
   </section>
-<!-- Testimonials Section -->
-    <section id="testimonios" class="testimonials-section">
-        <div class="container">
-            <div class="section-header mb-4">
-                <h2 class="section-title text-white text-center">Lo que Dicen Nuestros Comerciantes</h2>
-                <p class="section-subtitle text-white text-center">Conoce las experiencias de otros empresarios que ya forman parte de nuestra comunidad</p>
-            </div>
-            <div class="testimonials-container" id="testimonialsContainer"></div>
-        </div>
-    </section>
    
  <!-- Formulario Nuevo Comercio -->
   <section id="nuevoEmprendimiento" class="parallax py-10 bg-gradient-to-b from-gray-100 to-white min-h-screen flex items-center justify-center px-4">
@@ -1658,7 +1648,6 @@ h2, h3{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"defer></script>
 
 <script src="../shared/js/splash.js" defer></script>
-<script src="../shared/js/testimonials.js"defer></script>
 <script src="../shared/lib/aos/aos.js"defer></script>
 
 </script>
@@ -1898,123 +1887,6 @@ h2, h3{
       });
     });
   </script>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      // Evitar doble registro
-      if (window.serviceWorkerRegistered) return;
-      window.serviceWorkerRegistered = true;
 
-      navigator.serviceWorker.register('sw.js')
-        .then(function (registration) {
-          console.log('✅ ServiceWorker registrado:', registration.scope);
-
-          // Detectar cuando hay una nueva versión lista
-          registration.onupdatefound = () => {
-            const installingWorker = registration.installing;
-            let refreshing = false;
-
-            installingWorker.onstatechange = function () {
-              if (installingWorker.state === 'installed') {
-                // Solo si ya hay un controlador, significa que hay una actualización
-                if (navigator.serviceWorker.controller) {
-                  console.log('🔄 Nueva versión disponible. Preparando notificación...');
-
-                  // Mostrar notificación de actualización
-                  showUpdateNotification();
-                } else {
-                  console.log('📥 Primera instalación del Service Worker');
-                }
-              }
-            };
-          };
-        })
-        .catch(function (error) {
-          console.log('❌ ServiceWorker falló al registrarse:', error);
-        });
-    });
-
-    // Escuchar cambio de controlador (solo cuando el nuevo SW toma control)
-    let refreshing = false;
-    navigator.serviceWorker.addEventListener('controllerchange', function () {
-      if (refreshing) return;
-      refreshing = true;
-      console.log('🔁 Controlador cambiado: recargando...');
-      window.location.reload();
-    });
-
-    // Función para mostrar notificación de actualización
-    function showUpdateNotification() {
-      const existing = document.querySelector('.update-notification');
-      if (existing) return; // Evitar duplicados
-
-      const updateNotification = document.createElement('div');
-      updateNotification.className = 'update-notification';
-      updateNotification.innerHTML = `
-        <div class="update-content">
-          <p>¡Hay una nueva versión disponible!</p>
-          <button class="btn-update">Actualizar ahora</button>
-        </div>
-      `;
-      document.body.appendChild(updateNotification);
-
-      document.querySelector('.btn-update').addEventListener('click', function () {
-        navigator.serviceWorker.getRegistration().then(reg => {
-          if (reg && reg.waiting) {
-            reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-          }
-        });
-      });
-    }
-  }
-</script>
-
-<style>
-  .update-notification {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: white;
-    padding: 15px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    z-index: 9999;
-    animation: slideIn 0.3s ease-out;
-  }
-
-  @keyframes slideIn {
-    from {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  .update-content {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Roboto', sans-serif;
-  }
-
-  .btn-update {
-    background: #e1306c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .btn-update:hover {
-    background: #c12757;
-    transform: translateY(-1px);
-  }
-</style>
 </body>
 </html>
