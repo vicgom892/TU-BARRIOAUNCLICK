@@ -2,7 +2,7 @@
 // Localidades: Castelar, Morón, Ituzaingó
 // Versión: v1-prod
 
-const CACHE_VERSION = 'v1-prod-castelar-moron-ituzaingo';
+const CACHE_VERSION = 'v1-prod-castelar-moron-ituzaingo-merlo';
 const CACHE_NAME = `tu-barrio-${CACHE_VERSION}`;
 const BASE_PATH = self.location.hostname === 'vicgom892.github.io' ? '/tubarrioaunclic' : '';
 
@@ -36,6 +36,10 @@ const LOCALIDAD_RESOURCES = {
   ituzaingo: [
     `${BASE_PATH}/ituzaingo/index.html`,
     `${BASE_PATH}/ituzaingo/data/comercios.json`
+  ],
+  merlo: [
+    `${BASE_PATH}/merlo/index.html`,
+    `${BASE_PATH}/merlo/data/comercios.json`
   ]
 };
 
@@ -127,7 +131,8 @@ function handleHtmlFallback(pathname) {
     '/': '/index.html',
     '/castelar': '/castelar/index.html',
     '/moron': '/moron/index.html', 
-    '/ituzaingo': '/ituzaingo/index.html'
+    '/ituzaingo': '/ituzaingo/index.html',
+    '/merlo': '/merlo/index.html'
   };
 
   const cleanPath = BASE_PATH ? pathname.replace(BASE_PATH, '') : pathname;
