@@ -583,7 +583,10 @@
             }
             
             .container {
-                padding: 0 10px; /* Padding aún más reducido */
+                padding: 0; /* Padding aún más reducido */
+            }
+            .cart-content .container{
+                width: 100% !important;
             }
             
             .feature {
@@ -795,14 +798,17 @@
     max-width: 800px;
     max-height: 90vh;
     border-radius: 20px;
-    padding: 0;
+    padding: 20px;
     position: relative;
     animation: modalAppear 0.5s ease;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 153, 0, 0.3);
-    overflow: hidden;
+    overflow:auto;
     display: flex;
     flex-direction: column;
+}
+.cart-content .container{
+    width: 90%;
 }
 
 .cart-content::before {
@@ -1561,6 +1567,9 @@
     color: white;
     box-shadow: 0 4px 15px rgba(255, 153, 0, 0.4);
     z-index: 1;
+}
+
+.offers-content .btn-primary{
     margin-bottom: 22px;
 }
 
@@ -1947,6 +1956,7 @@
     <!-- Carrito de Compras -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-content">
+            <div class="container">
             <div class="cart-header">
                 <h2 class="cart-title">Tu Pedido</h2>
                 <button class="close-cart" id="closeCart">&times;</button>
@@ -2003,6 +2013,7 @@
             <div style="display: flex; gap: 10px; margin-top: 20px;">
                 <button class="btn btn-secondary" id="continueShopping">Seguir Comprando</button>
                 <button class="btn btn-primary" id="checkoutBtn">Finalizar Pedido</button>
+            </div>
             </div>
         </div>
     </div>
