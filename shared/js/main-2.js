@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // --- NUEVA CONFIGURACIÓN MEJORADA ---
   const APP_CONFIG = {
-    VERSION: 'v81-multi-sw',
+    VERSION: 'v81-multi',
     CACHE_STRATEGIES: {
         STATIC: 'static',
         ASSETS: 'assets', 
@@ -651,7 +651,7 @@ document.getElementById('businessModal')?.addEventListener('hidden.bs.modal', fu
   }
 
   // --- CONFIGURACIÓN DE PRODUCCIÓN (EXISTENTE) ---
-  const APP_VERSION = 'v81-multi-sw';
+  const APP_VERSION = 'v81-multi';
   
   // --- CONFIGURACIÓN DINÁMICA DE RUTAS (EXISTENTE) ---
   const isGitHubPages = window.location.hostname.includes('github.io');

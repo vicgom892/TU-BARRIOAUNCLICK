@@ -2,7 +2,7 @@
 // Localidades: Castelar, Morón, Ituzaingó, Merlo
 // Versión: v81-prod - Sync con main-2.js
 
-const CACHE_VERSION = 'v81-prod-castelar-moron-ituzaingo-merlo';
+const CACHE_VERSION = 'v81-multi';
 const CACHE_NAME = `tu-barrio-${CACHE_VERSION}`;
 const BASE_PATH = self.location.hostname === 'vicgom892.github.io' ? '/tubarrioaunclic' : '';
 
