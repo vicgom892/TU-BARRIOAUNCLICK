@@ -1,95 +1,61 @@
-// ===================================================
-// SERVICE WORKER - Tu Barrio a un Click
-// Versión: v81-multi-compatible
-// Compatible con: main-2.js v81-multi
-// Localidades: Castelar, Ituzaingó, Merlo, Morón
-// ===================================================
+// sw.js - Service Worker Actualizado v81
+// Localidades: Castelar, Morón, Ituzaingó, Merlo
+// Versión: v81-prod - Sync con main-2.js
 
-const APP_VERSION = 'v81-multi';
-const CACHE_NAME = `tu-barrio-${APP_VERSION}`;
-const API_CACHE_NAME = `tu-barrio-api-${APP_VERSION}`;
+const CACHE_VERSION = 'v81-prod-castelar-moron-ituzaingo-merlo';
+const CACHE_NAME = `tu-barrio-${CACHE_VERSION}`;
+const BASE_PATH = self.location.hostname === 'vicgom892.github.io' ? '/tubarrioaunclic' : '';
 
-// Configuración de rutas - COMPATIBLE CON main-2.js
-const BASE_PATH = self.location.hostname.includes('github.io') ? '/tubarrioaunclic' : '';
-const LOCALIDADES = ['castelar', 'moron', 'ituzaingo', 'merlo'];
-
-// ==================== RECURSOS CRÍTICOS - SINCRONIZADO CON main-2.js ====================
-const PRECACHE_RESOURCES = [
-  // Páginas principales
+// 🆕 RECURSOS CRÍTICOS ACTUALIZADOS - Incluye manifest-tubarrio.json
+const CORE_RESOURCES = [
   `${BASE_PATH}/`,
   `${BASE_PATH}/index.html`,
-  
-  // Páginas de localidades
-  ...LOCALIDADES.map(loc => `${BASE_PATH}/${loc}/index.html`),
-  
-  // Manifest y configuración
-  `${BASE_PATH}/manifest.json`,
-  `${BASE_PATH}/shared/js/config.js`,
-  `${BASE_PATH}/shared/js/security-config.js`,
-
-  // CSS críticos
+  `${BASE_PATH}/manifest-tubarrio.json`, // 🆕 CAMBIADO A manifest-tubarrio.json
   `${BASE_PATH}/shared/css/styles.css`,
   `${BASE_PATH}/shared/css/fondo.css`,
-  `${BASE_PATH}/shared/css/publicidad.css`,
-  `${BASE_PATH}/shared/css/favorites.css`,
-
-  // JS críticos - ALINEADO CON main-2.js
+  `${BASE_PATH}/shared/css/negocios.css`,
   `${BASE_PATH}/shared/js/main-2.js`,
+  `${BASE_PATH}/shared/js/install-app.js`,
   `${BASE_PATH}/shared/js/splash.js`,
-  `${BASE_PATH}/shared/js/search-functionality.js`,
-  `${BASE_PATH}/shared/js/favorites-system.js`,
-  `${BASE_PATH}/shared/js/notificaciones.js`,
-  `${BASE_PATH}/shared/js/form.js`,
-  `${BASE_PATH}/shared/js/testimonials.js`,
-  `${BASE_PATH}/shared/js/publicidad.js`,
-  `${BASE_PATH}/shared/js/resenas-comun.js`,
-  `${BASE_PATH}/shared/js/coupons-system-castelar.js`,
-
-  // Imágenes críticas
+  `${BASE_PATH}/shared/js/security-config.js`,
   `${BASE_PATH}/shared/img/icon-192x192.webp`,
   `${BASE_PATH}/shared/img/icon-512x512.webp`,
   `${BASE_PATH}/shared/img/icon-abeja-sola.png`
 ];
 
-// ==================== ESTRATEGIAS COMPATIBLES CON main-2.js ====================
+// 🆕 ESTRATEGIAS DE CACHE MEJORADAS
 const CACHE_STRATEGIES = {
-  STATIC: 'cache-first',           // CSS, JS, imágenes
-  HTML: 'network-first',           // Páginas HTML  
-  DATA: 'stale-while-revalidate',  // JSON de datos
-  API: 'network-first'             // APIs externas
+  CORE: 'cache-first',      // Recursos críticos
+  STATIC: 'stale-while-revalidate', // CSS, JS, imágenes
+  DATA: 'network-first',    // JSON de datos
+  HTML: 'network-first'     // Páginas HTML
 };
 
-// ==================== INSTALACIÓN COMPATIBLE ====================
+// === INSTALACIÓN MEJORADA ===
 self.addEventListener('install', (event) => {
-  console.log(`🚀 SW ${APP_VERSION} instalándose (compatible con v81-multi)...`);
+  console.log('🚀 SW v81 instalándose...');
+  self.skipWaiting();
   
   event.waitUntil(
     (async () => {
       try {
-        // Forzar activación inmediata - COMPATIBLE CON skipWaiting de main-2.js
-        self.skipWaiting();
-        
-        // Abrir cache y precargar recursos críticos
         const cache = await caches.open(CACHE_NAME);
         
-        // Precargar recursos con manejo de errores
-        const cachePromises = PRECACHE_RESOURCES.map(async (resource) => {
-          try {
-            await cache.add(resource);
-            console.log(`✅ Precached: ${getShortUrl(resource)}`);
-          } catch (error) {
-            console.warn(`⚠️ No se pudo precachear: ${resource}`, error);
-          }
-        });
-
-        await Promise.all(cachePromises);
-        console.log(`✅ SW ${APP_VERSION} instalado - ${PRECACHE_RESOURCES.length} recursos precacheados`);
-
-        // Notificar a los clientes - COMPATIBLE CON main-2.js
-        await notifyClients({ 
-          type: 'SW_INSTALLED', 
-          version: APP_VERSION,
-          compatibleWith: 'v81-multi'
+        // 🆕 Cachear solo recursos críticos con manejo de errores
+        const promises = CORE_RESOURCES.map(resource => 
+          cache.add(resource).catch(err => 
+            console.warn(`⚠️ No se pudo cachear: ${resource}`, err)
+          )
+        );
+        
+        await Promise.all(promises);
+        console.log('✅ SW v81 instalado - recursos críticos cacheados');
+        
+        // 🆕 Notificar a la página
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => 
+            client.postMessage({ type: 'SW_INSTALLED', version: 'v81' })
+          );
         });
         
       } catch (error) {
@@ -99,27 +65,39 @@ self.addEventListener('install', (event) => {
   );
 });
 
+// === ACTIVACIÓN MEJORADA ===
 self.addEventListener('activate', (event) => {
-  console.log(`🔄 SW ${APP_VERSION} activándose...`);
+  console.log('🔄 SW v81 activándose...');
   
   event.waitUntil(
     (async () => {
       try {
+        // 🆕 Tomar control inmediato
         await self.clients.claim();
-        console.log('✅ SW tomó control de los clients');
         
-        // 🆕 NOTIFICAR INMEDIATAMENTE A LOS CLIENTS
-        const clients = await self.clients.matchAll();
-        clients.forEach(client => {
-          client.postMessage({
-            type: 'SW_READY',
-            version: APP_VERSION,
-            message: 'Service Worker activado y listo',
-            timestamp: new Date().toISOString()
-          });
+        // 🆕 Limpiar caches antiguos MÁS AGRESIVO
+        const keys = await caches.keys();
+        const deletePromises = keys.map(key => {
+          if (key !== CACHE_NAME && key.startsWith('tu-barrio-')) {
+            console.log(`🗑️ Eliminando cache antiguo: ${key}`);
+            return caches.delete(key);
+          }
         });
         
-        // ... resto del código de activate
+        await Promise.all(deletePromises);
+        console.log('✅ SW v81 activado y listo');
+        
+        // 🆕 Notificar a la página
+        self.clients.matchAll().then(clients => {
+          clients.forEach(client => 
+            client.postMessage({ 
+              type: 'SW_ACTIVATED', 
+              version: 'v81',
+              message: 'Service Worker actualizado correctamente'
+            })
+          );
+        });
+        
       } catch (error) {
         console.error('❌ Error en activación SW:', error);
       }
@@ -127,132 +105,112 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// ==================== MANEJO DE FETCH COMPATIBLE ====================
+// === MANEJO DE PETICIONES MEJORADO ===
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
 
-  // Solo manejar peticiones GET - COMPATIBLE CON main-2.js
+  // 🆕 Solo manejar peticiones GET y del mismo origen
   if (request.method !== 'GET') return;
   
-  // Manejar diferentes orígenes
+  // 🆕 Manejar diferentes tipos de recursos
   if (url.origin === self.location.origin) {
-    event.respondWith(handleSameOriginFetch(request));
-  } else {
-    // Peticiones a CDNs (Bootstrap, FontAwesome, Leaflet, etc.)
-    event.respondWith(handleExternalFetch(request));
+    event.respondWith(handleSameOriginRequest(request));
   }
 });
 
-// ==================== ESTRATEGIAS DE CACHE COMPATIBLES ====================
-async function handleSameOriginFetch(request) {
+async function handleSameOriginRequest(request) {
   const url = new URL(request.url);
   const pathname = url.pathname;
 
   try {
-    // Estrategia: Network First para datos frescos - COMPATIBLE CON main-2.js
-    console.log(`🌐 Network First: ${getShortUrl(request.url)}`);
-    
+    // 🆕 DETECTAR Y EVITAR CACHE DEL MANIFEST INCORRECTO
+    if (pathname.includes('manifest.json') && !pathname.includes('manifest-tubarrio')) {
+      console.log('🚫 Bloqueando cache de manifest incorrecto:', pathname);
+      return fetch(request);
+    }
+
+    // 🆕 ESTRATEGIA MEJORADA: Network First para datos frescos
+    console.log('🌐 Intentando red:', request.url);
     const networkResponse = await fetch(request);
     
     if (networkResponse.ok) {
-      // Cachear respuesta exitosa según estrategia
-      if (shouldCacheResponse(request, networkResponse)) {
-        await cacheResponse(request, networkResponse.clone());
+      // 🆕 Cachear respuestas exitosas (excluir HTML principal)
+      if (shouldCacheRequest(request)) {
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(request, networkResponse.clone());
+        console.log('💾 Cacheado:', getShortUrl(request.url));
       }
       return networkResponse;
     }
     throw new Error('Network response not ok');
     
   } catch (error) {
-    // Fallback a cache - COMPATIBLE CON main-2.js
-    console.log(`📦 Fallback a cache: ${getShortUrl(request.url)}`);
-    return handleCacheFallback(request, pathname);
-  }
-}
-
-async function handleExternalFetch(request) {
-  const url = new URL(request.url);
-  
-  // Para recursos externos, usar Cache First - COMPATIBLE CON main-2.js
-  try {
-    const cached = await caches.match(request);
-    if (cached) {
-      console.log(`💾 CDN desde cache: ${getShortUrl(url.href)}`);
-      return cached;
-    }
-
-    // Si no está en cache, buscar en red y cachear
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      await cache.put(request, response.clone());
-    }
-    return response;
+    // 🆕 FALLBACK MEJORADO
+    console.log('📦 Fallback a cache para:', getShortUrl(request.url));
     
-  } catch (error) {
-    console.warn(`❌ Error con recurso externo: ${url.href}`);
-    return new Response('', { status: 408 });
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      console.log('✅ Servido desde cache:', getShortUrl(request.url));
+      return cachedResponse;
+    }
+
+    // 🆕 FALLBACKS ESPECÍFICOS MEJORADOS
+    return handleAdvancedFallback(request, pathname);
   }
 }
 
-// ==================== FUNCIONES AUXILIARES COMPATIBLES ====================
-function shouldCacheResponse(request, response) {
+// 🆕 FUNCIÓN PARA DETERMINAR QUÉ CACHEAR
+function shouldCacheRequest(request) {
   const url = request.url;
-  const contentType = response.headers.get('content-type') || '';
-
-  // No cachear páginas HTML principales - COMPATIBLE CON main-2.js
+  
+  // NO cachear páginas HTML principales (para evitar problemas de actualización)
   if (url.includes('/index.html') || url.endsWith('/')) {
     return false;
   }
-
-  // Cachear estos tipos - COMPATIBLE CON main-2.js
-  if (contentType.includes('text/css') || 
-      contentType.includes('application/javascript') ||
-      contentType.includes('image/') ||
-      url.includes('.json') ||
-      url.includes('manifest.json')) {
-    return true;
-  }
-
-  return false;
+  
+  // Cachear estos tipos de recursos
+  const cacheableTypes = [
+    '.css', '.js', '.json', '.webp', '.png', '.jpg', '.jpeg',
+    'manifest-tubarrio.json'
+  ];
+  
+  return cacheableTypes.some(type => url.includes(type));
 }
 
-async function cacheResponse(request, response) {
-  try {
-    const cache = await caches.open(CACHE_NAME);
-    await cache.put(request, response);
-    console.log(`💾 Cacheado: ${getShortUrl(request.url)}`);
-  } catch (error) {
-    console.warn(`⚠️ Error cacheando: ${request.url}`, error);
-  }
-}
-
-async function handleCacheFallback(request, pathname) {
-  // Buscar en cache primero
-  const cachedResponse = await caches.match(request);
-  if (cachedResponse) {
-    console.log(`✅ Servido desde cache: ${getShortUrl(request.url)}`);
-    return cachedResponse;
-  }
-
-  // Fallbacks específicos por tipo de recurso - COMPATIBLE CON main-2.js
-  if (pathname.includes('/data/')) {
-    return handleDataFallback(pathname);
-  }
-
-  if (pathname.includes('/img/') || pathname.includes('/shared/img/')) {
-    return handleImageFallback(pathname);
-  }
-
+// 🆕 FALLBACK AVANZADO
+async function handleAdvancedFallback(request, pathname) {
+  const url = new URL(request.url);
+  
+  // Fallback para páginas HTML
   if (pathname.endsWith('.html') || pathname.endsWith('/')) {
     return handleHtmlFallback(pathname);
   }
+  
+  // Fallback para JSON de datos
+  if (pathname.includes('/data/')) {
+    return new Response(JSON.stringify({ 
+      error: 'offline', 
+      message: 'Modo offline activado',
+      timestamp: new Date().toISOString()
+    }), {
+      headers: { 
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache'
+      }
+    });
+  }
 
-  // Fallback genérico
-  return createOfflineResponse(request);
+  // 🆕 Fallback para imágenes
+  if (pathname.includes('/img/') || pathname.includes('/shared/img/')) {
+    return caches.match(`${BASE_PATH}/shared/img/icon-192x192.webp`);
+  }
+
+  // Página offline genérica
+  return createOfflinePage();
 }
 
+// 🆕 MANEJO DE FALLBACK HTML MEJORADO
 function handleHtmlFallback(pathname) {
   const fallbacks = {
     '/': '/index.html',
@@ -265,156 +223,98 @@ function handleHtmlFallback(pathname) {
   const cleanPath = BASE_PATH ? pathname.replace(BASE_PATH, '') : pathname;
   const fallbackPath = fallbacks[cleanPath] || fallbacks[cleanPath.replace(/\/$/, '')] || '/index.html';
   
-  console.log(`🏠 Fallback HTML: ${cleanPath} -> ${fallbackPath}`);
+  console.log('🏠 Fallback HTML:', cleanPath, '->', fallbackPath);
   
   return caches.match(`${BASE_PATH}${fallbackPath}`)
-    .then(cached => cached || createEnhancedOfflinePage());
+    .then(cached => {
+      if (cached) {
+        return cached;
+      }
+      // 🆕 Página offline mejorada
+      return createEnhancedOfflinePage();
+    });
 }
 
-function handleDataFallback(pathname) {
-  // Para JSON de datos - COMPATIBLE CON main-2.js
-  return new Response(JSON.stringify({
-    error: 'offline',
-    message: 'Modo offline activado - Datos no disponibles',
-    timestamp: new Date().toISOString(),
-    path: pathname
-  }), {
-    status: 200,
-    headers: { 
-      'Content-Type': 'application/json',
-      'Cache-Control': 'no-cache'
-    }
-  });
-}
-
-function handleImageFallback(pathname) {
-  // Fallback para imágenes - COMPATIBLE CON main-2.js
-  return caches.match(`${BASE_PATH}/shared/img/icon-192x192.webp`)
-    .then(cached => cached || createDefaultImage());
-}
-
-// ==================== PÁGINA OFFLINE COMPATIBLE ====================
+// 🆕 PÁGINA OFFLINE MEJORADA
 function createEnhancedOfflinePage() {
   const html = `
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modo Offline - Tu Barrio a un Click</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; 
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .offline-container { 
-            max-width: 500px; 
-            background: rgba(255,255,255,0.15); 
-            padding: 40px; 
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        .offline-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite;
-        }
-        h1 { 
-            margin-bottom: 15px;
-            font-size: 2.2rem;
-        }
-        p { 
-            margin-bottom: 10px;
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-        .btn { 
-            background: white; 
-            color: #667eea; 
-            border: none; 
-            padding: 15px 30px; 
-            border-radius: 30px; 
-            font-weight: bold; 
-            cursor: pointer; 
-            margin-top: 25px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        .features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 25px 0;
-        }
-        .feature {
-            background: rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 0.9rem;
-        }
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-        @media (max-width: 480px) {
-            .offline-container { padding: 25px; }
-            .features { grid-template-columns: 1fr; }
-            h1 { font-size: 1.8rem; }
-        }
-    </style>
-</head>
-<body>
-    <div class="offline-container">
-        <div class="offline-icon">📡</div>
-        <h1>Estás Offline</h1>
-        <p>No hay conexión a internet en este momento.</p>
-        <p>Puedes seguir navegando por los comercios que ya has visitado.</p>
-        
-        <div class="features">
-            <div class="feature">
-                <strong>📍 Comercios Locales</strong><br>
-                Accede a información guardada
-            </div>
-            <div class="feature">
-                <strong>🕒 Horarios</strong><br>
-                Consulta disponibilidad
-            </div>
-            <div class="feature">
-                <strong>📞 Contactos</strong><br>
-                WhatsApp guardados
-            </div>
-            <div class="feature">
-                <strong>🗺️ Mapas</strong><br>
-                Ubicaciones cacheadas
-            </div>
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Modo Offline - Tu Barrio a un Click</title>
+        <style>
+            body { 
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white; 
+                text-align: center; 
+                padding: 20px;
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .container { 
+                max-width: 500px; 
+                background: rgba(255,255,255,0.15); 
+                padding: 40px; 
+                border-radius: 20px;
+                backdrop-filter: blur(10px);
+                box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            }
+            h1 { 
+                margin-bottom: 20px;
+                font-size: 2.5rem;
+            }
+            .icon {
+                font-size: 4rem;
+                margin-bottom: 20px;
+                animation: pulse 2s infinite;
+            }
+            .btn { 
+                background: white; 
+                color: #667eea; 
+                border: none; 
+                padding: 15px 40px; 
+                border-radius: 30px; 
+                font-weight: bold; 
+                cursor: pointer; 
+                margin-top: 30px;
+                font-size: 1.1rem;
+                transition: transform 0.3s ease;
+            }
+            .btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.1); }
+                100% { transform: scale(1); }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="icon">📡</div>
+            <h1>Estás Offline</h1>
+            <p style="font-size: 1.2rem; line-height: 1.6;">
+                No hay conexión a internet en este momento.
+            </p>
+            <p style="opacity: 0.9;">
+                Puedes seguir navegando por los comercios que ya has visitado.
+                La conexión se restablecerá automáticamente cuando esté disponible.
+            </p>
+            <button class="btn" onclick="location.reload()">
+                🔄 Reintentar Conexión
+            </button>
         </div>
-        
-        <button class="btn" onclick="location.reload()">
-            🔄 Reintentar Conexión
-        </button>
-        
-        <p style="margin-top: 20px; font-size: 0.8rem; opacity: 0.7;">
-            La conexión se restablecerá automáticamente cuando esté disponible
-        </p>
-    </div>
-</body>
-</html>`;
-  
+    </body>
+    </html>
+  `;
   return new Response(html, {
     headers: { 
       'Content-Type': 'text/html; charset=utf-8',
@@ -423,41 +323,23 @@ function createEnhancedOfflinePage() {
   });
 }
 
-function createDefaultImage() {
-  const svg = `<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-    <rect width="100%" height="100%" fill="#f0f0f0"/>
-    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" 
-          font-family="Arial" font-size="14" fill="#666">Imagen no disponible</text>
-  </svg>`;
-  
-  return new Response(svg, {
-    headers: { 'Content-Type': 'image/svg+xml' }
-  });
+// 🆕 FUNCIÓN AUXILIAR PARA URLs CORTAS
+function getShortUrl(url) {
+  try {
+    const parsed = new URL(url);
+    return parsed.pathname.length > 30 ? 
+      '...' + parsed.pathname.slice(-27) : 
+      parsed.pathname;
+  } catch {
+    return url.length > 30 ? '...' + url.slice(-27) : url;
+  }
 }
 
-function createOfflineResponse(request) {
-  const url = new URL(request.url);
-  
-  if (url.pathname.includes('.css')) {
-    return new Response('/* Offline - CSS no disponible */', {
-      headers: { 'Content-Type': 'text/css' }
-    });
-  }
-  
-  if (url.pathname.includes('.js')) {
-    return new Response('// Offline - JS no disponible', {
-      headers: { 'Content-Type': 'application/javascript' }
-    });
-  }
-
-  return createEnhancedOfflinePage();
-}
-
-// ==================== MANEJO DE MENSAJES COMPATIBLE ====================
+// 🆕 MANEJO DE MENSAJES MEJORADO
 self.addEventListener('message', (event) => {
   const { data, source } = event;
   
-  console.log('📨 Mensaje SW:', data);
+  console.log('📨 Mensaje recibido en SW:', data);
   
   switch (data?.type) {
     case 'SKIP_WAITING':
@@ -468,111 +350,44 @@ self.addEventListener('message', (event) => {
     case 'GET_VERSION':
       source.postMessage({
         type: 'SW_VERSION',
-        version: APP_VERSION,
+        version: 'v81',
         cacheName: CACHE_NAME,
-        timestamp: new Date().toISOString(),
-        localidades: LOCALIDADES,
-        compatibleWith: 'main-2.js v81-multi'
+        timestamp: new Date().toISOString()
       });
       break;
       
     case 'CLEAR_CACHE':
-      clearAllCaches().then(() => {
+      caches.delete(CACHE_NAME).then(() => {
         source.postMessage({ type: 'CACHE_CLEARED' });
       });
       break;
-      
-    case 'PAGE_FOCUS':
-      // COMPATIBLE CON main-2.js - Refrescar datos al enfocar página
-      console.log('📱 PAGE_FOCUS recibido - Refrescando datos...');
-      updateContentInBackground();
-      break;
   }
 });
 
-// ==================== SYNC EN SEGUNDO PLANO COMPATIBLE ====================
+// 🆕 MANEJO DE SYNC EN SEGUNDO PLANO
 self.addEventListener('sync', (event) => {
-  console.log('🔄 Background Sync:', event.tag);
+  console.log('🔄 Sync event:', event.tag);
   
-  switch (event.tag) {
-    case 'update-content':
-      event.waitUntil(updateContentInBackground());
-      break;
-    case 'update-offers':
-      event.waitUntil(updateOffersInBackground());
-      break;
+  if (event.tag === 'update-offers') {
+    event.waitUntil(
+      updateOffersInBackground()
+    );
   }
 });
-
-async function updateContentInBackground() {
-  console.log('🔄 Actualizando contenido en segundo plano...');
-  
-  try {
-    // Actualizar datos de comercios - COMPATIBLE CON main-2.js
-    const dataUrls = [
-      `${BASE_PATH}/data/carousel.json`,
-      `${BASE_PATH}/data/promociones.json`
-    ];
-    
-    for (const url of dataUrls) {
-      try {
-        const response = await fetch(url);
-        if (response.ok) {
-          const cache = await caches.open(API_CACHE_NAME);
-          await cache.put(url, response.clone());
-          console.log(`✅ Actualizado: ${getShortUrl(url)}`);
-        }
-      } catch (error) {
-        console.warn(`⚠️ Error actualizando: ${url}`, error);
-      }
-    }
-    
-    await notifyClients({ 
-      type: 'CONTENT_UPDATED', 
-      message: 'Contenido actualizado en segundo plano'
-    });
-    
-  } catch (error) {
-    console.error('❌ Error en background sync:', error);
-  }
-}
 
 async function updateOffersInBackground() {
+  // 🆕 Aquí puedes agregar lógica para actualizar ofertas en segundo plano
   console.log('🔄 Actualizando ofertas en segundo plano...');
-  await notifyClients({ 
-    type: 'OFFERS_UPDATED', 
-    message: 'Ofertas actualizadas en segundo plano'
+  
+  // Notificar a la página
+  self.clients.matchAll().then(clients => {
+    clients.forEach(client => 
+      client.postMessage({ 
+        type: 'BACKGROUND_SYNC',
+        message: 'Ofertas actualizadas en segundo plano'
+      })
+    );
   });
 }
 
-// ==================== FUNCIONES UTILITARIAS COMPATIBLES ====================
-async function notifyClients(message) {
-  const clients = await self.clients.matchAll();
-  clients.forEach(client => {
-    client.postMessage(message);
-  });
-}
-
-async function clearAllCaches() {
-  const keys = await caches.keys();
-  const deletePromises = keys.map(key => caches.delete(key));
-  await Promise.all(deletePromises);
-  console.log('🗑️ Todos los caches limpiados');
-}
-
-function getShortUrl(url) {
-  try {
-    const parsed = new URL(url);
-    return parsed.pathname.length > 40 ? 
-      '...' + parsed.pathname.slice(-37) : 
-      parsed.pathname;
-  } catch {
-    return url.length > 40 ? '...' + url.slice(-37) : url;
-  }
-}
-
-// ==================== INICIALIZACIÓN COMPATIBLE ====================
-console.log(`🚀 SW ${APP_VERSION} cargado - 100% compatible con main-2.js v81-multi`);
-console.log(`📍 Localidades: ${LOCALIDADES.join(', ')}`);
-console.log(`📁 Base path: ${BASE_PATH || '(raíz)'}`);
-console.log(`🔄 Cache strategies:`, CACHE_STRATEGIES);
+console.log('🚀 SW v81 cargado - Listo para producción con manifest-tubarrio.json');

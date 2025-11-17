@@ -1932,7 +1932,17 @@
                 }
             });
 
-           
+            // Service Worker para recursos compartidos
+            if ('serviceWorker' in navigator && !window.location.pathname.includes('/castelar/')) {
+                navigator.serviceWorker.register('/sw.js', {
+                    scope: '/',
+                    updateViaCache: 'none'
+                }).then(registration => {
+                    console.log('✅ SW registrado para recursos compartidos');
+                }).catch(err => {
+                    console.log('ℹ️ No se registró SW en raíz (comportamiento esperado)');
+                });
+            }
             
             console.log('✅ Aplicación inicializada correctamente');
         });

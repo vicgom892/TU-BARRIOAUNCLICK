@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // --- NUEVA CONFIGURACIÓN MEJORADA ---
   const APP_CONFIG = {
-    VERSION: 'v81-multi',
+    VERSION: 'v81-prod-castelar-moron-ituzaingo-merlo',
     CACHE_STRATEGIES: {
         STATIC: 'static',
         ASSETS: 'assets', 
@@ -651,7 +651,7 @@ document.getElementById('businessModal')?.addEventListener('hidden.bs.modal', fu
   }
 
   // --- CONFIGURACIÓN DE PRODUCCIÓN (EXISTENTE) ---
-  const APP_VERSION = 'v81-multi';
+  const APP_VERSION = 'v81-prod-castelar-moron-ituzaingo-merlo';
   
   // --- CONFIGURACIÓN DINÁMICA DE RUTAS (EXISTENTE) ---
   const isGitHubPages = window.location.hostname.includes('github.io');
@@ -659,176 +659,59 @@ document.getElementById('businessModal')?.addEventListener('hidden.bs.modal', fu
   const SW_PATH = `${BASE_PATH}/sw.js`;
   const SCOPE_PATH = `${BASE_PATH}/`;
   
-// --- SERVICE WORKER - VERSIÓN CORREGIDA Y DIAGNOSTICADA ---
-if ('serviceWorker' in navigator) {
-  const currentPath = window.location.pathname;
-  
-  // 🆕 DIAGNÓSTICO MEJORADO
-  console.group('🔍 DIAGNÓSTICO SERVICE WORKER');
-  console.log('📍 Ruta actual:', currentPath);
-  console.log('🏠 Hostname:', window.location.hostname);
-  console.log('🌐 GitHub Pages:', isGitHubPages);
-  console.log('📁 Base path:', BASE_PATH);
-  console.log('🎯 Scope path:', SCOPE_PATH);
-  console.groupEnd();
-
-  // 🆕 SOLO registrar en subcarpetas de localidades (NO en raíz)
-  const isLocalidad = currentPath.includes('/castelar/') || 
-                     currentPath.includes('/moron/') || 
-                     currentPath.includes('/ituzaingo/') ||
-                     currentPath.includes('/merlo/');
-
-  if (isLocalidad) {
-    console.log('🚀 Iniciando registro SW para localidad...');
+  // --- SERVICE WORKER EN PRODUCCIÓN (EXISTENTE) ---
+  if ('serviceWorker' in navigator) {
+    const currentPath = window.location.pathname;
+    const isLocalidad = currentPath.includes('/castelar/') || 
+                       currentPath.includes('/moron/') || 
+                       currentPath.includes('/ituzaingo/') ||
+                       currentPath.includes('/ciudadela/') ||
+                       currentPath.includes('/merlo/') ||
+                       currentPath.includes('/haedo/') ||
+                       currentPath.includes('/ramos-mejia/') ||
+                       currentPath.includes('/marcos-paz/') ||
+                       currentPath.includes('/padua/') ||
+                       (currentPath.split('/').filter(Boolean).length > 1 && 
+                        !currentPath.endsWith('/index.html'));
     
-    // 🆕 RUTA ABSOLUTA CORREGIDA
-    const swUrl = `${BASE_PATH}/sw.js`;
-    
-    navigator.serviceWorker.register(swUrl, {
-      scope: SCOPE_PATH,
-      updateViaCache: 'none'
-    })
-    .then(registration => {
-      console.log('✅ SW registrado EXITOSAMENTE:', APP_VERSION);
-      console.log('📍 Scope:', registration.scope);
-      
-      // 🆕 VERIFICACIÓN DETALLADA DE ACTIVACIÓN
-      const checkActivation = () => {
-        if (registration.active) {
-          console.log('🎉 SW ACTIVO Y FUNCIONANDO');
-          showSWStatus('active');
-          
-          // Notificar al SW que estamos listos
-          if (registration.active) {
-            registration.active.postMessage({ 
-              type: 'CLIENT_READY',
-              version: APP_VERSION,
-              localidad: currentPath.split('/')[1] // castelar, moron, etc.
+    if (isLocalidad) {
+      navigator.serviceWorker.register(`${SW_PATH}?v=${APP_VERSION}`, {
+        scope: SCOPE_PATH, 
+        updateViaCache: 'none'
+      })
+      .then(registration => {
+        console.log('✅ SW registrado:', APP_VERSION);
+        console.log('📍 Entorno:', isGitHubPages ? 'GitHub Pages' : 'Netlify');
+        console.log('🛣️  Ruta base:', BASE_PATH || '(raíz)');
+
+        const checkForUpdates = () => {
+          if (registration.waiting) {
+            showUpdateModal(registration);
+          }
+        };
+
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                checkForUpdates();
+              }
             });
           }
-        } else if (registration.installing) {
-          console.log('⏳ SW instalándose...');
-          registration.installing.addEventListener('statechange', function() {
-            console.log('📊 Estado SW cambiado:', this.state);
-            if (this.state === 'activated') {
-              console.log('🎉 SW ACTIVADO CORRECTAMENTE');
-              showSWStatus('activated');
-            }
-          });
-        } else if (registration.waiting) {
-          console.log('📦 SW esperando activación');
-          showSWStatus('waiting');
-        }
-      };
-
-      // Verificar estado inmediato
-      checkActivation();
-      
-      // Monitorear cambios
-      registration.addEventListener('updatefound', () => {
-        console.log('🔄 Nueva versión SW encontrada');
-        const newWorker = registration.installing;
-        
-        newWorker.addEventListener('statechange', () => {
-          console.log('📊 Estado nuevo SW:', newWorker.state);
-          if (newWorker.state === 'activated') {
-            console.log('🎉 NUEVO SW ACTIVADO - Listo para usar');
-            showSWStatus('updated');
-            
-            // Recargar para usar nueva versión
-            setTimeout(() => {
-              console.log('🔄 Recargando para nueva versión...');
-              window.location.reload();
-            }, 1000);
-          }
         });
-      });
 
-      // Escuchar mensajes del SW
-      navigator.serviceWorker.addEventListener('message', (event) => {
-        const { data } = event;
-        console.log('📨 Mensaje desde SW:', data);
-        
-        if (data.type === 'SW_READY') {
-          console.log('✅ SW reporta que está listo');
-          showSWStatus('ready');
-        }
-      });
+        checkForUpdates();
+        setInterval(() => registration.update(), 10 * 60 * 1000);
 
-    }).catch(err => {
-      console.error('❌ Error CRÍTICO en registro SW:', err);
-      showSWStatus('error', err.message);
-    });
-    
-  } else {
-    console.log('🏠 En raíz - No se registra SW (comportamiento esperado)');
-    
-    // 🆕 Limpiar cualquier SW antiguo que pueda estar en raíz
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-      registrations.forEach(registration => {
-        if (registration.scope === window.location.origin + '/') {
-          console.log('🗑️ Limpiando SW de raíz:', registration.scope);
-          registration.unregister();
-        }
+      }).catch(err => {
+        console.error('❌ Error crítico en SW:', err);
       });
-    });
+    } else {
+      console.log('🏠 En raíz - No se registra SW para selector');
+      console.log('📍 Entorno:', isGitHubPages ? 'GitHub Pages' : 'Netlify');
+    }
   }
-}
-
-// 🆕 FUNCIÓN MEJORADA PARA MOSTRAR ESTADO
-function showSWStatus(status, error = '') {
-  const statusMap = {
-    'active': ['✅ SW Activo', 'success'],
-    'activated': ['🎉 SW Activado', 'success'],
-    'updated': ['🔄 SW Actualizado', 'info'],
-    'ready': ['✅ SW Listo', 'success'],
-    'waiting': ['⏳ SW Esperando', 'warning'],
-    'error': ['❌ Error SW: ' + error, 'error']
-  };
-  
-  const [message, type] = statusMap[status] || ['Estado desconocido', 'info'];
-  console.log(message);
-  
-  // Opcional: Mostrar notificación al usuario
-  if (status === 'activated' || status === 'updated' || status === 'ready') {
-    mostrarToast('App optimizada para uso offline', 'success');
-  } else if (status === 'error') {
-    mostrarToast('Error en optimización offline', 'error');
-  }
-}
-
-// 🆕 DIAGNÓSTICO COMPLETO AL CARGAR
-function performSWDiagnosis() {
-  if (!('serviceWorker' in navigator)) {
-    console.error('❌ Service Worker NO SOPORTADO en este navegador');
-    return;
-  }
-
-  console.group('🔍 DIAGNÓSTICO COMPLETO SW');
-  console.log('📍 URL:', window.location.href);
-  console.log('🛣️ Ruta:', window.location.pathname);
-  console.log('🏠 Origen:', window.location.origin);
-  
-  // Verificar registros existentes
-  navigator.serviceWorker.getRegistrations()
-    .then(registrations => {
-      console.log('📋 SWs registrados:', registrations.length);
-      registrations.forEach((reg, index) => {
-        console.log(`  ${index + 1}. Scope: ${reg.scope}`);
-        console.log(`     Activo: ${!!reg.active}`);
-        console.log(`     Esperando: ${!!reg.waiting}`);
-        console.log(`     Instalándose: ${!!reg.installing}`);
-      });
-    })
-    .catch(err => {
-      console.error('💥 Error obteniendo registros:', err);
-    });
-  
-  console.groupEnd();
-}
-
-// Ejecutar diagnóstico después de cargar
-setTimeout(performSWDiagnosis, 3000);
 
   // --- GESTIÓN DEL MODAL DE ACTUALIZACIÓN (EXISTENTE) ---
   function showUpdateModal(registration) {
