@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BACANO BURGER - Hamburguesas de Calidad</title>
-    <link rel="icon" href="/img/img-gastro/bacano-logo-rojoyblanco-fotor-bg-remover-20251113221238.png">
+    <link rel="icon" href="../img/img-gastro/bacano-logo-rojoyblanco-fotor-bg-remover-20251113221238.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Reset mejorado para móvil */
@@ -64,7 +64,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background-image: url('/castelar/img/img-gastro/hamburguesa-4.jpg');
+            background-image: url('../img/img-gastro/hamburguesa-4.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -77,7 +77,7 @@
         }
          @media (max-width: 480px) {
              .splash-screen {
-            background-image: url('/castelar/img/img-gastro/manos-hamburguesas.jpg');
+            background-image: url('../img/img-gastro/manos-hamburguesas.jpg');
         }
          }
 
@@ -583,7 +583,10 @@
             }
             
             .container {
-                padding: 0 10px; /* Padding aún más reducido */
+                padding: 0; /* Padding aún más reducido */
+            }
+            .cart-content .container{
+                width: 100% !important;
             }
             
             .feature {
@@ -795,14 +798,17 @@
     max-width: 800px;
     max-height: 90vh;
     border-radius: 20px;
-    padding: 0;
+    padding: 20px;
     position: relative;
     animation: modalAppear 0.5s ease;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 153, 0, 0.3);
-    overflow: hidden;
+    overflow:auto;
     display: flex;
     flex-direction: column;
+}
+.cart-content .container{
+    width: 90%;
 }
 
 .cart-content::before {
@@ -1561,6 +1567,9 @@
     color: white;
     box-shadow: 0 4px 15px rgba(255, 153, 0, 0.4);
     z-index: 1;
+}
+
+.offers-content .btn-primary{
     margin-bottom: 22px;
 }
 
@@ -1713,7 +1722,7 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo" id="mainLogo">
-                    <img src="/castelar/img/img-gastro/bacano-logo-rojoyblanco-fotor-bg-remover-20251113221238.png" alt="BACANO BURGER">
+                    <img src="../img/img-gastro/bacano-logo-rojoyblanco-fotor-bg-remover-20251113221238.png" alt="BACANO BURGER">
                 </div>
                 <div class="header-buttons">
                     <!-- Indicador de estado del comercio -->
@@ -1803,7 +1812,7 @@
         <div class="container">
             <div class="delivery-content">
                 <div class="delivery-image">
-                    <img src="/castelar/img/img-gastro/delibery-icon.jpg" alt="Delivery">
+                    <img src="../img/img-gastro/delibery-icon.jpg" alt="Delivery">
                 </div>
                 <div class="delivery-text">
                     <h2>¡Disfruta BACANO en tu casa!</h2>
@@ -1947,6 +1956,7 @@
     <!-- Carrito de Compras -->
     <div class="cart-modal" id="cartModal">
         <div class="cart-content">
+            <div class="container">
             <div class="cart-header">
                 <h2 class="cart-title">Tu Pedido</h2>
                 <button class="close-cart" id="closeCart">&times;</button>
@@ -2003,6 +2013,7 @@
             <div style="display: flex; gap: 10px; margin-top: 20px;">
                 <button class="btn btn-secondary" id="continueShopping">Seguir Comprando</button>
                 <button class="btn btn-primary" id="checkoutBtn">Finalizar Pedido</button>
+            </div>
             </div>
         </div>
     </div>
