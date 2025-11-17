@@ -99,36 +99,27 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// ==================== ACTIVACIÓN COMPATIBLE ====================
 self.addEventListener('activate', (event) => {
   console.log(`🔄 SW ${APP_VERSION} activándose...`);
   
   event.waitUntil(
     (async () => {
       try {
-        // Tomar control inmediato - COMPATIBLE CON clients.claim de main-2.js
         await self.clients.claim();
+        console.log('✅ SW tomó control de los clients');
         
-        // Limpiar caches antiguos
-        const cacheKeys = await caches.keys();
-        const deletePromises = cacheKeys.map(key => {
-          if (key !== CACHE_NAME && key !== API_CACHE_NAME && key.startsWith('tu-barrio-')) {
-            console.log(`🗑️ Eliminando cache antiguo: ${key}`);
-            return caches.delete(key);
-          }
+        // 🆕 NOTIFICAR INMEDIATAMENTE A LOS CLIENTS
+        const clients = await self.clients.matchAll();
+        clients.forEach(client => {
+          client.postMessage({
+            type: 'SW_READY',
+            version: APP_VERSION,
+            message: 'Service Worker activado y listo',
+            timestamp: new Date().toISOString()
+          });
         });
         
-        await Promise.all(deletePromises);
-        console.log(`✅ SW ${APP_VERSION} activado y listo`);
-
-        // Notificar a los clients - COMPATIBLE CON main-2.js
-        await notifyClients({ 
-          type: 'SW_ACTIVATED', 
-          version: APP_VERSION,
-          message: 'Service Worker actualizado correctamente',
-          cacheStrategies: CACHE_STRATEGIES
-        });
-        
+        // ... resto del código de activate
       } catch (error) {
         console.error('❌ Error en activación SW:', error);
       }
