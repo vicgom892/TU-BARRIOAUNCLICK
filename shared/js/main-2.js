@@ -656,7 +656,7 @@ document.getElementById('businessModal')?.addEventListener('hidden.bs.modal', fu
   // --- CONFIGURACIÓN DINÁMICA DE RUTAS (EXISTENTE) ---
   const isGitHubPages = window.location.hostname.includes('github.io');
   const BASE_PATH = isGitHubPages ? '/tubarrioaunclic' : '';
-  const SW_PATH = `${BASE_PATH}/sw.js`;
+  const SW_PATH = `${BASE_PATH}/service-worker.js`;
   const SCOPE_PATH = `${BASE_PATH}/`;
   
   // --- SERVICE WORKER EN PRODUCCIÓN (EXISTENTE) ---
