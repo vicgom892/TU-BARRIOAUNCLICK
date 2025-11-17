@@ -6,7 +6,7 @@
   "scope": "/tubarrioaunclic/",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#0ea5e9",
+  "theme_color": "#0f172a",
   "orientation": "portrait",
   "categories": ["shopping", "food", "business"],
   "lang": "es-AR",

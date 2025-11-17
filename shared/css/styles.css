@@ -2458,6 +2458,7 @@ border: 2px solid #fffdfd;
     animation: pulse 3s infinite;
     border: none;
     outline: none;
+    border: 2px solid #fff;
 }
 
 .floating-btn:hover {
