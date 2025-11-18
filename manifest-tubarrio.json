@@ -2,8 +2,8 @@
   "name": "Tu Barrio a un Click",
   "short_name": "BarrioClick",
   "description": "Comercios, ofertas y servicios locales en Castelar, Morón, Ituzaingó y más",
-  "start_url": "/TU-BARRIO/",
-  "scope": "/TU-BARRIO/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
@@ -23,6 +23,76 @@
       "sizes": "512x512",
       "type": "image/webp",
       "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./shared/img/screenshot-mobile.webp",
+      "sizes": "375x812",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Vista principal de Tu Barrio a un Click"
+    },
+    {
+      "src": "./shared/img/screenshot-tablet.webp",
+      "sizes": "768x1024", 
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Vista en tablet de Tu Barrio a un Click"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Castelar",
+      "short_name": "Castelar",
+      "description": "Ver comercios en Castelar",
+      "url": "./castelar/",
+      "icons": [
+        {
+          "src": "./shared/img/shortcastelar-96x96.webp",
+          "sizes": "96x96",
+          "type": "image/webp"
+        }
+      ]
+    },
+    {
+      "name": "Morón",
+      "short_name": "Morón",
+      "description": "Ver comercios en Morón",
+      "url": "./moron/",
+      "icons": [
+        {
+          "src": "./shared/img/shortmoron-96x96.webp",
+          "sizes": "96x96",
+          "type": "image/webp"
+        }
+      ]
+    },
+    {
+      "name": "Ituzaingó",
+      "short_name": "Ituzaingó",
+      "description": "Ver comercios en Ituzaingó",
+      "url": "./ituzaingo/",
+      "icons": [
+        {
+          "src": "./shared/img/shortituzaingo-96x96.webp",
+          "sizes": "96x96",
+          "type": "image/webp"
+        }
+      ]
+    },
+    {
+      "name": "Merlo",
+      "short_name": "Merlo",
+      "description": "Ver comercios en Merlo",
+      "url": "./merlo/",
+      "icons": [
+        {
+          "src": "./shared/img/shortmerlo-96x96.webp",
+          "sizes": "96x96",
+          "type": "image/webp"
+        }
+      ]
     }
   ]
 }
