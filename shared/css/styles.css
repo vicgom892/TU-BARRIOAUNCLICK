@@ -2460,6 +2460,11 @@ border: 2px solid #fffdfd;
     outline: none;
     border: 2px solid #fff;
 }
+@media (max-width: 768px) {
+   .floating-btn{
+    bottom: 70px;
+   }
+}
 
 .floating-btn:hover {
     transform: scale(1.1) rotate(15deg);
