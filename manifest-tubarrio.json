@@ -94,5 +94,9 @@
         }
       ]
     }
-  ]
+  ],
+  "display_override": ["window-controls-overlay", "minimal-ui"],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
 }
