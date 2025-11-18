@@ -1,0 +1,2465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SALUD TOTAL - Farmacia de Confianza</title>
+    <link rel="icon" href="../img/farmacia/logo-farmacia.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fondo animado - colores para farmacia */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: linear-gradient(-45deg, #e8f4f8, #d1e7f5, #b8d9f2, #9ccbf0);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Colores principales para farmacia */
+        :root {
+            --primary-color: #4169E1;
+            --secondary-color: #228B22;
+            --accent-color: #e8f4f8;
+            --text-color: #2c3e50;
+        }
+
+        /* Header - colores farmacia */
+        header {
+            background-color: rgba(65, 105, 225, 0.95);
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            left: 0;
+        }
+
+        .hours-btn {
+            background-color: transparent;
+            color: white;
+            border: 1px solid var(--secondary-color);
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .hours-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .cart-count {
+            background-color: var(--secondary-color);
+        }
+
+        /* Botón de ofertas flotante - colores farmacia */
+        .offers-toggle {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 8px;
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 14px;
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            animation: slideIn 0.5s ease;
+        }
+
+        .offers-toggle:hover {
+            background-color: #3151c4;
+            padding-left: 12px;
+        }
+
+        /* Barra de navegación inferior - colores farmacia */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(65, 105, 225, 0.95);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 999;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-item.active {
+            color: var(--secondary-color);
+        }
+
+        .nav-item:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Botón flotante redes sociales - colores farmacia */
+        .social-toggle {
+            background-color: var(--secondary-color);
+        }
+
+        /* Hero Section - colores farmacia */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 150px 15px 80px;
+            margin-top: 80px;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 3rem);
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+        }
+
+        /* Secciones de productos - colores farmacia */
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 10px auto;
+        }
+
+        .add-to-cart {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .add-to-cart:hover {
+            background-color: #3151c4;
+        }
+
+        /* Footer - colores farmacia */
+        footer {
+            background-color: rgba(65, 105, 225, 0.95);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 60px;
+            width: 100%;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .footer-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Estilos para modales - colores farmacia */
+        .cart-content::before {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+        }
+
+        .cart-title {
+            color: var(--primary-color);
+        }
+
+        .close-cart:hover {
+            color: var(--primary-color);
+        }
+
+        .item-size {
+            color: var(--primary-color);
+        }
+
+        .quantity-btn {
+            background: var(--primary-color);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        }
+
+        /* Estilos para el modal de ofertas - colores farmacia */
+        .offers-content::before {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+        }
+
+        .offers-title {
+            color: var(--primary-color);
+        }
+
+        .close-offers:hover {
+            color: var(--primary-color);
+        }
+
+        .offer-badge {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .countdown-value {
+            color: var(--primary-color);
+        }
+
+        .carousel-btn {
+            background: rgba(65, 105, 225, 0.8);
+        }
+
+        .carousel-btn:hover {
+            background: var(--primary-color);
+        }
+
+        /* Badges especiales para farmacia */
+        .prescription-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .otc-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        /* Estilos para información médica */
+        .medical-info {
+            background-color: var(--accent-color);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+        }
+
+        /* Media queries */
+        @media (max-width: 480px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0;
+            }
+            
+            .feature {
+                flex: 1 1 100%;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .delivery-content {
+                flex-direction: row;
+            }
+            
+            .delivery-text h2,
+            .delivery-text p {
+                text-align: left;
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            width: 100%;
+        }
+
+        /* Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+
+        .splash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5));
+            z-index: 1;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 90%;
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        .splash-logo {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        .splash-slogan {
+            color: white;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+            font-weight: 300;
+        }
+
+        .loading-container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+
+        .loading-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 auto 15px;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .loading-percentage {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .loading-message {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            min-height: 24px;
+        }
+
+        /* Header Content */
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        .logo img {
+            height: 60px;
+            transition: all 0.4s ease;
+            max-width: 100%;
+        }
+
+        header.scrolled .logo img {
+            height: 50px;
+        }
+
+        header.scrolled {
+            background: transparent;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        /* Indicador de estado del comercio */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .status-indicator.open {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .status-indicator.closed {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-indicator.open .status-dot {
+            background-color: #8BC34A;
+            box-shadow: 0 0 5px #8BC34A;
+        }
+
+        .status-indicator.closed .status-dot {
+            background-color: #FF5722;
+            box-shadow: 0 0 5px #FF5722;
+        }
+
+        /* Navegación */
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #999;
+            text-decoration: none;
+            font-size: 10px;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 80px;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        /* Botón flotante redes sociales */
+        .social-floating {
+            position: fixed;
+            right: 10px;
+            bottom: 60px;
+            z-index: 100;
+        }
+
+        .social-toggle {
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .social-toggle i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .social-toggle.active {
+            transform: rotate(45deg);
+        }
+
+        .social-buttons {
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .social-buttons.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .social-button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .social-button:hover {
+            transform: scale(1.1);
+        }
+
+        .social-button.facebook:hover {
+            background-color: #3b5998;
+        }
+
+        .social-button.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .social-button.whatsapp:hover {
+            background-color: #25D366;
+        }
+
+        /* Sección Delivery */
+        .delivery-section {
+            padding: 60px 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+        }
+
+        .delivery-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .delivery-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+        }
+
+        .delivery-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .delivery-text {
+            flex: 1;
+            width: 100%;
+        }
+
+        .delivery-text h2 {
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+
+        .delivery-text p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .delivery-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1 1 45%;
+            min-width: 140px;
+        }
+
+        .feature i {
+            color: var(--primary-color);
+            font-size: 20px;
+        }
+
+        /* Secciones de menú */
+        .menu-section {
+            padding: 60px 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            color: #333;
+            position: relative;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        /* Product Cards */
+        .product-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            width: 100%;
+            position: relative;
+        }
+
+        .product-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-details {
+            padding: 15px;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .product-description {
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .product-sizes {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 70px;
+        }
+
+        .size-option input {
+            margin-bottom: 3px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        /* Estilos para modales (simplificados) */
+        .modal, .offers-modal, .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal-content, .offers-content, .cart-content {
+            background-color: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            animation: modalAppear 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Estilos para el carrito */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .cart-content {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            animation: modalAppear 0.5s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(65, 105, 225, 0.3);
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-content .container{
+            width: 90%;
+        }
+
+        .cart-header {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 25px 30px 15px;
+            border-bottom: 1px solid rgba(65, 105, 225, 0.2);
+            position: relative;
+        }
+
+        .close-cart {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-cart:hover {
+            color: var(--primary-color);
+            background: rgba(65, 105, 225, 0.1);
+            transform: scale(1.1);
+        }
+
+        .cart-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 30px;
+            max-height: 400px;
+        }
+
+        .cart-items {
+            margin: 20px 0;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr auto;
+            gap: 15px;
+            align-items: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .cart-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(65, 105, 225, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .item-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-name {
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .item-size {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .item-price, .item-total {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .item-quantity {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(65, 105, 225, 0.1);
+            border-radius: 25px;
+            padding: 8px 15px;
+            border: 1px solid rgba(65, 105, 225, 0.3);
+        }
+
+        .quantity-btn {
+            background: var(--primary-color);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .quantity-btn:hover {
+            background: var(--secondary-color);
+            transform: scale(1.1);
+        }
+
+        .quantity-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .remove-item {
+            background: rgba(255, 51, 51, 0.2);
+            border: 1px solid rgba(255, 51, 51, 0.4);
+            color: #ff6666;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .remove-item:hover {
+            background: rgba(255, 51, 51, 0.4);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 20px 0;
+        }
+
+        .cart-total-amount {
+            color: var(--primary-color);
+            font-size: 2rem;
+        }
+
+        .checkout-form {
+            display: none;
+            padding: 30px;
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(65, 105, 225, 0.2);
+        }
+
+        .checkout-form h3 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(65, 105, 225, 0.2);
+        }
+
+        .payment-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .payment-option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .payment-option:hover {
+            background: rgba(65, 105, 225, 0.1);
+            border-color: rgba(65, 105, 225, 0.3);
+        }
+
+        .payment-option.selected {
+            background: rgba(65, 105, 225, 0.2);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(65, 105, 225, 0.3);
+        }
+
+        .confirmation-message {
+            display: none;
+            text-align: center;
+            padding: 40px 30px;
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .confirmation-message i {
+            font-size: 4rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            animation: bounce 1s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        .cart-actions {
+            padding: 25px 30px;
+            display: flex;
+            gap: 15px;
+            background: rgba(26, 26, 26, 0.9);
+            border-top: 1px solid rgba(65, 105, 225, 0.2);
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 4px 15px rgba(65, 105, 225, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(65, 105, 225, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(65, 105, 225, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Estilos para el modal de ofertas */
+        .offers-content {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            width: 90%;
+            max-width: 800px;
+            border-radius: 20px;
+            padding: 30px;
+            position: relative;
+            animation: modalAppear 0.5s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(65, 105, 225, 0.3);
+            overflow: hidden;
+        }
+
+        .close-offers {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .offers-carousel {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .offers-slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .offer-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            color: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .offer-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
+            z-index: 1;
+        }
+
+        .offer-badge {
+            position: absolute;
+            top: 150px;
+            right: 20px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            z-index: 2;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .offer-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .offer-description {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            opacity: 0.9;
+            max-width: 80%;
+        }
+
+        .offer-price {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .offer-old-price {
+            font-size: 1.5rem;
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .countdown-timer {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .countdown-unit {
+            background: rgba(65, 105, 225, 0.2);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            min-width: 60px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(65, 105, 225, 0.3);
+        }
+
+        .countdown-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .countdown-label {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 2;
+        }
+
+        /* Estilos para móviles muy pequeños */
+        @media (max-width: 360px) {
+            .header-buttons {
+                gap: 5px;
+            }
+            
+            .hours-btn {
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+            
+            .status-indicator {
+                font-size: 0.6rem;
+                padding: 4px 8px;
+            }
+            
+            .nav-item {
+                font-size: 9px;
+            }
+            
+            .nav-item i {
+                font-size: 14px;
+            }
+        }
+
+        /* Prevenir desbordamiento horizontal */
+        img, video, iframe {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Asegurar que todos los contenedores principales ocupen el 100% */
+        main, section, .menu-section, .delivery-section, .hero {
+            width: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo animado -->
+    <div class="animated-bg"></div>
+
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-overlay"></div>
+        <div class="splash-content">
+            <div class="splash-logo">SALUD <span>TOTAL</span></div>
+            <div class="splash-slogan">Tu farmacia de confianza, siempre cerca</div>
+            
+            <div class="loading-container">
+                <div class="loading-text">Cargando experiencia...</div>
+                <div class="loading-percentage" id="loadingPercentage">0%</div>
+                <div class="loading-bar-container">
+                    <div class="loading-bar" id="loadingBar"></div>
+                </div>
+                <div class="loading-message" id="loadingMessage">Verificando stock...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" id="mainLogo">
+                    <!-- Logo de farmacia -->
+                    <img src="../img/farmacia/logo-farmacia.png" alt="SALUD TOTAL">
+                </div>
+                <div class="header-buttons">
+                    <!-- Indicador de estado del comercio -->
+                    <div class="status-indicator" id="statusIndicator">
+                        <span class="status-dot"></span>
+                        <span id="statusText">Abierto</span>
+                    </div>
+                    <button class="hours-btn" id="hoursBtn">
+                        <i class="far fa-clock"></i> Horarios
+                    </button>
+                    <div class="cart-icon" id="cartIcon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <div class="cart-count" id="cartCount">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Botón de ofertas flotante - SOLAPA -->
+    <div class="offers-floating">
+        <div class="offers-toggle" id="offersToggle">
+            OFERTAS
+        </div>
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="bottom-nav">
+        <a href="#inicio" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="#medicamentos" class="nav-item">
+            <i class="fas fa-pills"></i>
+            <span>Medicamentos</span>
+        </a>
+        <a href="#cuidado-personal" class="nav-item">
+            <i class="fas fa-soap"></i>
+            <span>Cuidado Personal</span>
+        </a>
+        <a href="#maternidad" class="nav-item">
+            <i class="fas fa-baby"></i>
+            <span>Maternidad</span>
+        </a>
+        <a href="#vitaminas" class="nav-item">
+            <i class="fas fa-capsules"></i>
+            <span>Vitaminas</span>
+        </a>
+        <a href="#bebidas" class="nav-item">
+            <i class="fas fa-prescription-bottle"></i>
+            <span>Suplementos</span>
+        </a>
+        <a href="#delivery" class="nav-item">
+            <i class="fas fa-motorcycle"></i>
+            <span>Delivery</span>
+        </a>
+    </div>
+
+    <!-- Botón flotante redes sociales -->
+    <div class="social-floating">
+        <div class="social-toggle" id="socialToggle">
+            <i class="fas fa-share-alt"></i>
+        </div>
+        <div class="social-buttons" id="socialButtons">
+            <a href="#" class="social-button facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-button instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-button whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h1>SALUD TOTAL</h1>
+            <p>Tu farmacia de confianza, siempre cerca</p>
+        </div>
+    </section>
+
+    <!-- Sección Delivery -->
+    <section class="delivery-section" id="delivery">
+        <div class="container">
+            <div class="delivery-content">
+                <div class="delivery-image">
+                    <img src="../img/farmacia/delivery-farmacia.jpg" alt="Delivery Farmacia">
+                </div>
+                <div class="delivery-text">
+                    <h2>¡Medicamentos en tu puerta!</h2>
+                    <p>Nuestro servicio de delivery te lleva los medicamentos y productos de farmacia que necesites directamente a tu hogar. Contamos con entrega rápida y discreta para tu comodidad.</p>
+                    <div class="delivery-features">
+                        <div class="feature">
+                            <i class="fas fa-shipping-fast"></i>
+                            <span>Entrega en 30 min</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Cobertura amplia</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-user-md"></i>
+                            <span>Asesoramiento profesional</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Múltiples métodos de pago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Medicamentos -->
+    <section class="menu-section" id="medicamentos">
+        <div class="container">
+            <h2 class="section-title">MEDICAMENTOS</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Consulta siempre a tu médico antes de usar cualquier medicamento</p>
+            <div class="cards-container" id="medicamentosContainer">
+                <!-- Las tarjetas de medicamentos se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Cuidado Personal -->
+    <section class="menu-section" id="cuidado-personal">
+        <div class="container">
+            <h2 class="section-title">CUIDADO PERSONAL</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Productos para tu higiene y bienestar diario</p>
+            <div class="cards-container" id="cuidadoContainer">
+                <!-- Las tarjetas de cuidado personal se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Maternidad -->
+    <section class="menu-section" id="maternidad">
+        <div class="container">
+            <h2 class="section-title">MATERNIDAD E INFANCIA</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Cuidados especiales para mamás y bebés</p>
+            <div class="cards-container" id="maternidadContainer">
+                <!-- Las tarjetas de maternidad se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Vitaminas -->
+    <section class="menu-section" id="vitaminas">
+        <div class="container">
+            <h2 class="section-title">VITAMINAS Y SUPLEMENTOS</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Complementa tu nutrición y fortalece tu salud</p>
+            <div class="cards-container" id="vitaminasContainer">
+                <!-- Las tarjetas de vitaminas se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de ofertas -->
+    <div class="offers-modal" id="offersModal">
+        <div class="offers-content">
+            <button class="close-offers" id="closeOffersModal">&times;</button>
+            <h2 class="offers-title">¡PROMOCIONES DE SALUD!</h2>
+            <div class="offers-carousel">
+                <div class="offers-slides" id="offersSlides">
+                    <!-- Las diapositivas de ofertas se generarán dinámicamente -->
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prevOffer">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn" id="nextOffer">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de horarios -->
+    <div class="modal" id="hoursModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeHoursModal">&times;</button>
+            <h2 class="modal-title">Horarios de Atención</h2>
+            <ul class="hours-list">
+                <li>
+                    <span class="day">Lunes a Viernes</span>
+                    <span class="time">08:00 - 20:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Sábados</span>
+                    <span class="time">09:00 - 14:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Domingos</span>
+                    <span class="time">10:00 - 13:00 hs</span>
+                </li>
+            </ul>
+            <div class="medical-info">
+                <i class="fas fa-exclamation-circle"></i>
+                <strong>Servicio de Guardia:</strong> Contamos con farmacia de turno las 24 horas los fines de semana.
+            </div>
+            <p style="margin-top: 20px; font-style: italic; text-align: center;">¡Estamos aquí para cuidar de tu salud!</p>
+        </div>
+    </div>
+
+    <!-- Carrito de Compras -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="container">
+            <div class="cart-header">
+                <h2 class="cart-title">Tu Pedido</h2>
+                <button class="close-cart" id="closeCart">&times;</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Los productos del carrito se agregarán aquí dinámicamente -->
+            </div>
+            <div class="cart-total">
+                Total: $<span id="cartTotal">0.00</span>
+            </div>
+            <div class="checkout-form" id="checkoutForm">
+                <h3 style="margin-bottom: 15px;">Información de Entrega</h3>
+                <div class="form-group">
+                    <label for="customerName">Nombre Completo *</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Teléfono *</label>
+                    <input type="tel" id="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryAddress">Dirección de Entrega *</label>
+                    <textarea id="deliveryAddress" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Método de Pago *</label>
+                    <div class="payment-options">
+                        <div class="payment-option" id="cashOption">
+                            <input type="radio" id="cash" name="payment" value="efectivo">
+                            <label for="cash">Efectivo</label>
+                        </div>
+                        <div class="payment-option" id="transferOption">
+                            <input type="radio" id="transfer" name="payment" value="transferencia">
+                            <label for="transfer">Transferencia</label>
+                        </div>
+                        <div class="payment-option" id="mercadopagoOption">
+                            <input type="radio" id="mercadopago" name="payment" value="mercadopago">
+                            <label for="mercadopago">Mercado Pago</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="additionalNotes">Notas Adicionales</label>
+                    <textarea id="additionalNotes" rows="3" placeholder="Alergias, instrucciones especiales..."></textarea>
+                </div>
+                <div class="medical-info warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Importante:</strong> Los medicamentos con receta requieren presentación de receta médica al momento de la entrega.
+                </div>
+                <button class="btn btn-primary" id="sendOrder">Enviar Pedido por WhatsApp</button>
+            </div>
+            <div class="confirmation-message" id="confirmationMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>¡Pedido Enviado con Éxito!</h3>
+                <p>Hemos recibido tu pedido y te contactaremos pronto para confirmar los detalles.</p>
+                <p>¡Gracias por elegir SALUD TOTAL!</p>
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-secondary" id="continueShopping">Seguir Comprando</button>
+                <button class="btn btn-primary" id="checkoutBtn">Finalizar Pedido</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">SALUD TOTAL</div>
+                <p>Tu farmacia de confianza, siempre cerca</p>
+                <div class="footer-links">
+                    <a href="#inicio">Inicio</a>
+                    <a href="#medicamentos">Medicamentos</a>
+                    <a href="#cuidado-personal">Cuidado Personal</a>
+                    <a href="#maternidad">Maternidad</a>
+                    <a href="#vitaminas">Vitaminas</a>
+                    <a href="#delivery">Delivery</a>
+                </div>
+                <div class="medical-info">
+                    <i class="fas fa-info-circle"></i>
+                    Consulta siempre a un profesional de la salud antes de usar cualquier medicamento.
+                </div>
+                <p class="copyright">© 2023 SALUD TOTAL. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales
+        let cart = [];
+        let currentProduct = null;
+        let currentOfferSlide = 0;
+        let offersInterval;
+
+        // Datos del menú para farmacia
+        const menuData = {
+            medicamentos: [
+                {
+                    id: 1,
+                    name: "Paracetamol 500mg",
+                    description: "Analgésico y antipirético para el alivio del dolor y la fiebre. Caja con 20 comprimidos.",
+                    image: "https://images.unsplash.com/photo-1585435557343-3b092031d5ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    prescription: false,
+                    sizes: [
+                        { name: "Caja 20 comp", price: 8.50 },
+                        { name: "Caja 40 comp", price: 15.00 }
+                    ]
+                },
+                {
+                    id: 2,
+                    name: "Ibuprofeno 400mg",
+                    description: "Antiinflamatorio no esteroideo para el alivio del dolor e inflamación. Caja con 20 comprimidos.",
+                    image: "https://images.unsplash.com/photo-1585435557343-3b092031d5ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    prescription: false,
+                    sizes: [
+                        { name: "Caja 20 comp", price: 9.50 },
+                        { name: "Caja 40 comp", price: 17.00 }
+                    ]
+                },
+                {
+                    id: 3,
+                    name: "Amoxicilina 500mg",
+                    description: "Antibiótico de amplio espectro. Requiere receta médica. Caja con 12 comprimidos.",
+                    image: "https://images.unsplash.com/photo-1585435557343-3b092031d5ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    prescription: true,
+                    sizes: [
+                        { name: "Caja 12 comp", price: 22.00 }
+                    ]
+                }
+            ],
+            cuidadoPersonal: [
+                {
+                    id: 101,
+                    name: "Jabón Líquido Antibacterial",
+                    description: "Jabón líquido con triclosán para una limpieza profunda y protección antibacterial.",
+                    image: "https://images.unsplash.com/photo-1600857062245-1fa1d7c9a1e8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "500ml", price: 12.50 },
+                        { name: "1L", price: 20.00 }
+                    ]
+                },
+                {
+                    id: 102,
+                    name: "Protector Solar FPS 50",
+                    description: "Protector solar de amplio espectro para protección UVA/UVB. Resistente al agua.",
+                    image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "120ml", price: 25.00 },
+                        { name: "240ml", price: 42.00 }
+                    ]
+                }
+            ],
+            maternidad: [
+                {
+                    id: 201,
+                    name: "Pañales Talla 1",
+                    description: "Pañales ultra absorbentes para recién nacidos. Paquete con 36 unidades.",
+                    image: "https://images.unsplash.com/photo-1584839404047-5f65c5df5e6a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "36 unidades", price: 18.00 },
+                        { name: "72 unidades", price: 32.00 }
+                    ]
+                },
+                {
+                    id: 202,
+                    name: "Leche Materna Sustituta",
+                    description: "Fórmula infantil para lactantes desde el nacimiento. Enriquecida con hierro.",
+                    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "400g", price: 28.00 },
+                        { name: "800g", price: 50.00 }
+                    ]
+                }
+            ],
+            vitaminas: [
+                {
+                    id: 301,
+                    name: "Vitamina C 1000mg",
+                    description: "Suplemento de vitamina C de liberación prolongada. Apoya el sistema inmunológico.",
+                    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "60 comprimidos", price: 15.00 },
+                        { name: "120 comprimidos", price: 26.00 }
+                    ]
+                },
+                {
+                    id: 302,
+                    name: "Vitamina D3 2000UI",
+                    description: "Suplemento de vitamina D3 para la salud ósea y función inmunológica.",
+                    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "60 cápsulas", price: 18.00 },
+                        { name: "120 cápsulas", price: 32.00 }
+                    ]
+                }
+            ]
+        };
+
+        // Datos de ofertas para farmacia
+        const offersData = [
+            {
+                id: 1,
+                title: "2x1 en Vitaminas",
+                description: "Lleva 2 frascos de vitaminas al precio de 1. ¡Solo por esta semana!",
+                oldPrice: 30.00,
+                newPrice: 15.00,
+                endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                badge: "SALUD",
+                image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80"
+            },
+            {
+                id: 2,
+                title: "30% OFF en Cuidado Personal",
+                description: "Aprovecha descuentos especiales en toda la línea de cuidado personal.",
+                oldPrice: 35.00,
+                newPrice: 24.50,
+                endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+                badge: "HIGIENE",
+                image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80"
+            },
+            {
+                id: 3,
+                title: "Combo Maternidad",
+                description: "Pañales + Toallitas + Crema antipañalitis. Ahorra 25%",
+                oldPrice: 45.00,
+                newPrice: 33.75,
+                endDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+                badge: "BEBÉ",
+                image: "https://images.unsplash.com/photo-1584839404047-5f65c5df5e6a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80"
+            }
+        ];
+
+        // Horarios del comercio
+        const businessHours = {
+            "Lunes": { open: 8, close: 20 },
+            "Martes": { open: 8, close: 20 },
+            "Miercoles": { open: 8, close: 20 },
+            "Jueves": { open: 8, close: 20 },
+            "Viernes": { open: 8, close: 20 },
+            "Sabado": { open: 9, close: 14 },
+            "Domingo": { open: 10, close: 13 }
+        };
+
+        // Inicialización cuando el DOM está listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Iniciar la barra de carga del splash screen
+            setTimeout(updateLoadingBar, 500);
+
+            // Generar tarjetas de productos
+            generateProductCards('medicamentosContainer', menuData.medicamentos, 'medicamento');
+            generateProductCards('cuidadoContainer', menuData.cuidadoPersonal);
+            generateProductCards('maternidadContainer', menuData.maternidad);
+            generateProductCards('vitaminasContainer', menuData.vitaminas);
+
+            // Generar ofertas
+            generateOffers();
+
+            // Configurar botones de agregar al carrito
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('add-to-cart')) {
+                    const card = e.target.closest('.product-card');
+                    const productName = card.querySelector('.product-name').textContent;
+                    const sizeOption = card.querySelector('input[name="size"]:checked');
+                    
+                    if (!sizeOption) {
+                        alert('Por favor selecciona una presentación');
+                        return;
+                    }
+                    
+                    const size = sizeOption.value;
+                    const price = parseFloat(sizeOption.getAttribute('data-price'));
+                    
+                    // Verificar si es un medicamento con receta
+                    const isPrescription = card.querySelector('.prescription-badge') !== null;
+                    
+                    if (isPrescription) {
+                        if (!confirm('Este producto requiere receta médica. ¿Confirmas que dispones de la receta correspondiente?')) {
+                            return;
+                        }
+                    }
+                    
+                    addToCart(productName, price, size);
+                }
+            });
+
+            // Configurar carrito
+            document.getElementById('cartIcon').addEventListener('click', openCart);
+            document.getElementById('closeCart').addEventListener('click', closeCart);
+            document.getElementById('continueShopping').addEventListener('click', closeCart);
+            document.getElementById('checkoutBtn').addEventListener('click', showCheckoutForm);
+            document.getElementById('sendOrder').addEventListener('click', sendOrder);
+
+            // Configurar opciones de pago
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    this.classList.add('selected');
+                    this.querySelector('input').checked = true;
+                });
+            });
+
+            // Configurar botón flotante de redes sociales
+            document.getElementById('socialToggle').addEventListener('click', function() {
+                this.classList.toggle('active');
+                document.getElementById('socialButtons').classList.toggle('active');
+            });
+
+            // Configurar botón de ofertas
+            document.getElementById('offersToggle').addEventListener('click', openOffersModal);
+            document.getElementById('closeOffersModal').addEventListener('click', closeOffersModal);
+
+            // Configurar controles del carousel de ofertas
+            document.getElementById('prevOffer').addEventListener('click', () => navigateOffers(-1));
+            document.getElementById('nextOffer').addEventListener('click', () => navigateOffers(1));
+
+            // Configurar modal de horarios
+            document.getElementById('hoursBtn').addEventListener('click', openHoursModal);
+            document.getElementById('closeHoursModal').addEventListener('click', closeHoursModal);
+
+            // Configurar navegación inferior
+            setupBottomNav();
+
+            // Configurar scroll para animaciones
+            setupScrollAnimations();
+
+            // Configurar scroll para cambiar tamaño del logo
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('mainHeader');
+                const scrollPosition = window.scrollY;
+                
+                if (scrollPosition > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Iniciar contadores de ofertas
+            startOfferCountdowns();
+
+            // Verificar estado del comercio
+            checkBusinessStatus();
+        });
+
+        // Función para actualizar la barra de carga del splash
+        function updateLoadingBar() {
+            const loadingBar = document.getElementById('loadingBar');
+            const loadingPercentage = document.getElementById('loadingPercentage');
+            const loadingMessage = document.getElementById('loadingMessage');
+            
+            let loadingProgress = 0;
+            const loadingMessages = [
+                "Verificando stock...",
+                "Cargando catálogo de medicamentos...",
+                "Actualizando precios...",
+                "Preparando información de salud...",
+                "¡Casi listo! Verificando disponibilidad...",
+                "¡Listo para cuidar tu salud!"
+            ];
+
+            function update() {
+                loadingProgress += Math.random() * 15 + 5;
+                
+                if (loadingProgress > 100) {
+                    loadingProgress = 100;
+                }
+                
+                loadingBar.style.width = loadingProgress + '%';
+                loadingPercentage.textContent = Math.floor(loadingProgress) + '%';
+                
+                // Cambiar mensaje según el progreso
+                if (loadingProgress < 20) {
+                    loadingMessage.textContent = loadingMessages[0];
+                } else if (loadingProgress < 40) {
+                    loadingMessage.textContent = loadingMessages[1];
+                } else if (loadingProgress < 60) {
+                    loadingMessage.textContent = loadingMessages[2];
+                } else if (loadingProgress < 80) {
+                    loadingMessage.textContent = loadingMessages[3];
+                } else if (loadingProgress < 100) {
+                    loadingMessage.textContent = loadingMessages[4];
+                } else {
+                    loadingMessage.textContent = loadingMessages[5];
+                }
+                
+                if (loadingProgress < 100) {
+                    setTimeout(update, 300 + Math.random() * 400);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('splashScreen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('splashScreen').style.display = 'none';
+                        }, 800);
+                    }, 800);
+                }
+            }
+            
+            update();
+        }
+
+        // Función mejorada para generar tarjetas de productos
+        function generateProductCards(containerId, products, type = 'normal') {
+            const container = document.getElementById(containerId);
+            
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = `product-card ${type === 'medicamento' ? 'medicamento-card' : ''}`;
+                
+                let sizesHTML = '';
+                product.sizes.forEach((size, index) => {
+                    sizesHTML += `
+                        <div class="size-option">
+                            <input type="radio" id="${product.id}-${size.name}" name="size" value="${size.name}" data-price="${size.price}" ${index === 0 ? 'checked' : ''}>
+                            <label for="${product.id}-${size.name}">${size.name}</label>
+                            <span class="price">$${size.price.toFixed(2)}</span>
+                        </div>
+                    `;
+                });
+
+                let badgeHTML = '';
+                if (product.prescription) {
+                    badgeHTML = '<div class="prescription-badge">CON RECETA</div>';
+                } else if (type === 'medicamento') {
+                    badgeHTML = '<div class="otc-badge">VENTA LIBRE</div>';
+                }
+                
+                card.innerHTML = `
+                    ${badgeHTML}
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-details">
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        ${product.prescription ? '<div class="medical-info warning"><i class="fas fa-exclamation-triangle"></i> Este producto requiere receta médica</div>' : ''}
+                        <div class="product-sizes">
+                            ${sizesHTML}
+                        </div>
+                        <button class="add-to-cart">Agregar al Carrito</button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Verificar estado del comercio
+        function checkBusinessStatus() {
+            const now = new Date();
+            const currentDay = now.toLocaleDateString('es-ES', { weekday: 'long' });
+            const currentHour = now.getHours();
+            
+            // Capitalizar primera letra del día
+            const capitalizedDay = currentDay.charAt(0).toUpperCase() + currentDay.slice(1);
+            
+            const todayHours = businessHours[capitalizedDay];
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            
+            if (!todayHours || !todayHours.open) {
+                // Cerrado
+                statusIndicator.className = 'status-indicator closed';
+                statusText.textContent = 'Cerrado';
+            } else if (currentHour >= todayHours.open && currentHour < todayHours.close) {
+                // Abierto
+                statusIndicator.className = 'status-indicator open';
+                statusText.textContent = 'Abierto';
+            } else {
+                // Cerrado
+                statusIndicator.className = 'status-indicator closed';
+                statusText.textContent = 'Cerrado';
+            }
+        }
+
+        // Generar ofertas con imágenes de fondo
+        function generateOffers() {
+            const offersSlides = document.getElementById('offersSlides');
+            
+            offersData.forEach((offer, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'offer-slide';
+                slide.style.backgroundImage = `url('${offer.image}')`;
+                
+                slide.innerHTML = `
+                    <div class="offer-badge">${offer.badge}</div>
+                    <h3 class="offer-title">${offer.title}</h3>
+                    <p class="offer-description">${offer.description}</p>
+                    <div class="offer-price">
+                        ${offer.oldPrice > 0 ? `<span class="offer-old-price">$${offer.oldPrice.toFixed(2)}</span>` : ''}
+                        $${offer.newPrice.toFixed(2)}
+                    </div>
+                    <div class="countdown-timer" id="countdown-${offer.id}">
+                        <div class="countdown-unit">
+                            <div class="countdown-value" id="days-${offer.id}">00</div>
+                            <div class="countdown-label">Días</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-value" id="hours-${offer.id}">00</div>
+                            <div class="countdown-label">Horas</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-value" id="minutes-${offer.id}">00</div>
+                            <div class="countdown-label">Min</div>
+                        </div>
+                        <div class="countdown-unit">
+                            <div class="countdown-value" id="seconds-${offer.id}">00</div>
+                            <div class="countdown-label">Seg</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="addOfferToCart(${offer.id})">Aprovechar Oferta</button>
+                `;
+                
+                offersSlides.appendChild(slide);
+            });
+        }
+
+        // Navegar entre ofertas
+        function navigateOffers(direction) {
+            const slides = document.querySelectorAll('.offer-slide');
+            const totalSlides = slides.length;
+            
+            currentOfferSlide = (currentOfferSlide + direction + totalSlides) % totalSlides;
+            
+            const offersSlides = document.getElementById('offersSlides');
+            offersSlides.style.transform = `translateX(-${currentOfferSlide * 100}%)`;
+        }
+
+        // Iniciar contadores de ofertas
+        function startOfferCountdowns() {
+            offersInterval = setInterval(updateOfferCountdowns, 1000);
+            updateOfferCountdowns(); // Ejecutar inmediatamente
+        }
+
+        // Actualizar contadores de ofertas
+        function updateOfferCountdowns() {
+            offersData.forEach(offer => {
+                const now = new Date().getTime();
+                const distance = offer.endDate.getTime() - now;
+                
+                if (distance < 0) {
+                    // La oferta ha expirado
+                    document.getElementById(`countdown-${offer.id}`).innerHTML = '<div class="countdown-value">EXPIRADA</div>';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById(`days-${offer.id}`).textContent = days.toString().padStart(2, '0');
+                document.getElementById(`hours-${offer.id}`).textContent = hours.toString().padStart(2, '0');
+                document.getElementById(`minutes-${offer.id}`).textContent = minutes.toString().padStart(2, '0');
+                document.getElementById(`seconds-${offer.id}`).textContent = seconds.toString().padStart(2, '0');
+            });
+        }
+
+        // Agregar oferta al carrito
+        function addOfferToCart(offerId) {
+            const offer = offersData.find(o => o.id === offerId);
+            
+            if (!offer) return;
+            
+            // Verificar si la oferta ha expirado
+            const now = new Date().getTime();
+            if (now > offer.endDate.getTime()) {
+                alert('Lo sentimos, esta oferta ha expirado.');
+                return;
+            }
+            
+            // Agregar la oferta al carrito
+            addToCart(offer.title, offer.newPrice, 'Oferta Especial');
+            closeOffersModal();
+        }
+
+        // Configurar navegación inferior
+        function setupBottomNav() {
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remover clase active de todos los items
+                    navItems.forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    
+                    // Agregar clase active al item clickeado
+                    this.classList.add('active');
+                    
+                    // Obtener el destino del enlace
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    // Desplazarse a la sección
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Configurar animaciones al hacer scroll
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observar todas las tarjetas de productos
+            document.querySelectorAll('.product-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Funciones del carrito
+        function addToCart(product, price, size) {
+            // Buscar si el producto ya está en el carrito
+            const existingItem = cart.find(item => item.product === product && item.size === size);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    product: product,
+                    price: price,
+                    size: size,
+                    quantity: 1
+                });
+            }
+            
+            updateCart();
+            openCart();
+            
+            // Mostrar mensaje de confirmación
+            showNotification(`${product} agregado al carrito`);
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            
+            if (cart[index].quantity <= 0) {
+                removeFromCart(index);
+            } else {
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            // Actualizar contador
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Actualizar lista de productos
+            cartItems.innerHTML = '';
+            let total = 0;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="cart-empty">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Tu carrito está vacío</h3>
+                        <p>Agrega productos para continuar</p>
+                    </div>
+                `;
+            } else {
+                cart.forEach((item, index) => {
+                    const itemTotal = item.price * item.quantity;
+                    total += itemTotal;
+                    
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <div class="item-details">
+                            <div class="item-name">${item.product}</div>
+                            <div class="item-size">${item.size}</div>
+                        </div>
+                        <div class="item-price">$${item.price.toFixed(2)}</div>
+                        <div class="item-quantity">
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                        </div>
+                        <div class="item-total">$${itemTotal.toFixed(2)}</div>
+                        <button class="remove-item" onclick="removeFromCart(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                    
+                    cartItems.appendChild(cartItem);
+                });
+            }
+            
+            // Actualizar total
+            cartTotal.textContent = total.toFixed(2);
+            
+            // Mostrar u ocultar botón de finalizar pedido
+            document.getElementById('checkoutBtn').style.display = cart.length > 0 ? 'block' : 'none';
+        }
+
+        function openCart() {
+            document.getElementById('cartModal').style.display = 'flex';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+            document.getElementById('checkoutForm').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'none';
+        }
+
+        function showCheckoutForm() {
+            document.getElementById('checkoutForm').style.display = 'block';
+        }
+
+        function sendOrder() {
+            // Validar formulario
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('deliveryAddress').value;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            const notes = document.getElementById('additionalNotes').value;
+            
+            if (!name || !phone || !address || !paymentMethod) {
+                alert('Por favor completa todos los campos obligatorios (*)');
+                return;
+            }
+            
+            // Construir mensaje para WhatsApp
+            let message = `¡Hola! Quiero hacer un pedido en SALUD TOTAL:\n\n`;
+            
+            cart.forEach(item => {
+                message += `- ${item.product} (${item.size}) x${item.quantity}: $${(item.price * item.quantity).toFixed(2)}\n`;
+            });
+            
+            message += `\nTotal: $${document.getElementById('cartTotal').textContent}\n\n`;
+            message += `Información de entrega:\n`;
+            message += `Nombre: ${name}\n`;
+            message += `Teléfono: ${phone}\n`;
+            message += `Dirección: ${address}\n`;
+            message += `Método de pago: ${paymentMethod.value}\n`;
+            
+            if (notes) {
+                message += `Notas: ${notes}\n`;
+            }
+            
+            message += `\n*Recuerda:* Los medicamentos con receta requieren presentación de receta médica al momento de la entrega.`;
+            
+            // Codificar mensaje para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Abrir WhatsApp (reemplaza el número con el de tu negocio)
+            const whatsappURL = `https://wa.me/5491112345678?text=${encodedMessage}`;
+            window.open(whatsappURL, '_blank');
+            
+            // Mostrar mensaje de confirmación
+            document.getElementById('checkoutForm').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'block';
+            
+            // Limpiar carrito después de enviar
+            setTimeout(() => {
+                cart = [];
+                updateCart();
+                closeCart();
+                
+                // Limpiar formulario
+                document.getElementById('customerName').value = '';
+                document.getElementById('customerPhone').value = '';
+                document.getElementById('deliveryAddress').value = '';
+                document.getElementById('additionalNotes').value = '';
+                document.querySelectorAll('.payment-option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+            }, 3000);
+        }
+
+        // Funciones del modal de ofertas
+        function openOffersModal() {
+            document.getElementById('offersModal').style.display = 'flex';
+        }
+
+        function closeOffersModal() {
+            document.getElementById('offersModal').style.display = 'none';
+        }
+
+        // Funciones del modal de horarios
+        function openHoursModal() {
+            document.getElementById('hoursModal').style.display = 'flex';
+        }
+
+        function closeHoursModal() {
+            document.getElementById('hoursModal').style.display = 'none';
+        }
+
+        function showNotification(message) {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: var(--secondary-color);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 3000;
+                transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Eliminar notificación después de 3 segundos
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
