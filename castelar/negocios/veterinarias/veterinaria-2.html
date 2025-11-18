@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VETCARE - Centro Veterinario Integral</title>
+    <link rel="icon" href="../img/veterinaria/logo-veterinaria.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Fondo animado - colores para veterinaria */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: linear-gradient(-45deg, #e3f2fd, #bbdefb, #90caf9, #64b5f6);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Colores principales para veterinaria */
+        :root {
+            --primary-color: #1976d2;
+            --secondary-color: #0d47a1;
+            --accent-color: #64b5f6;
+            --text-color: #1565c0;
+        }
+
+        /* Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            color: white;
+            text-align: center;
+        }
+
+        .splash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .splash-logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .splash-logo span {
+            color: #bbdefb;
+        }
+
+        .splash-slogan {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #e3f2fd;
+        }
+
+        .loading-container {
+            margin-top: 30px;
+        }
+
+        .loading-text {
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .loading-percentage {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #bbdefb;
+        }
+
+        .loading-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #bbdefb, #64b5f6);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .loading-message {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Header - colores veterinaria */
+        header {
+            background-color: rgba(13, 71, 161, 0.95);
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            left: 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4ade80;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .hours-btn {
+            background-color: transparent;
+            color: white;
+            border: 1px solid var(--accent-color);
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .hours-btn:hover {
+            background-color: var(--accent-color);
+        }
+
+        .appointment-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .appointment-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Botón de emergencias flotante - colores veterinaria */
+        .emergency-floating {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 999;
+        }
+
+        .emergency-toggle {
+            background-color: #f44336;
+            color: white;
+            padding: 12px 8px;
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 14px;
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%) translateY(-50%); }
+            to { transform: translateX(0) translateY(-50%); }
+        }
+
+        .emergency-toggle:hover {
+            background-color: #d32f2f;
+            padding-left: 12px;
+        }
+
+        /* Barra de navegación inferior - colores veterinaria */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(13, 71, 161, 0.95);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 999;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+
+        .nav-item:hover {
+            color: var(--accent-color);
+        }
+
+        /* Botón flotante redes sociales - colores veterinaria */
+        .social-floating {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 998;
+        }
+
+        .social-toggle {
+            background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .social-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .social-buttons {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .social-buttons.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .social-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-button.facebook {
+            background-color: #3b5998;
+        }
+
+        .social-button.instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .social-button.whatsapp {
+            background-color: #25d366;
+        }
+
+        .social-button:hover {
+            transform: scale(1.1);
+        }
+
+        /* Hero Section - colores veterinaria */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1450778869180-41d0601e046e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 150px 15px 80px;
+            margin-top: 80px;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 3rem);
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Sección Servicios */
+        .services-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .services-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .services-image {
+            flex: 1;
+        }
+
+        .services-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .services-text {
+            flex: 1;
+        }
+
+        .services-text h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .services-text p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .services-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* Secciones de especialidades */
+        .specialties-section {
+            padding: 80px 0;
+            background-color: #f9f9f9;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 10px auto;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .card-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .card-specialists {
+            margin-bottom: 15px;
+        }
+
+        .specialist {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .specialist-name {
+            font-weight: 500;
+        }
+
+        .specialist-schedule {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .book-appointment {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .book-appointment:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Footer - colores veterinaria */
+        footer {
+            background-color: rgba(13, 71, 161, 0.95);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 60px;
+            width: 100%;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .hours-list {
+            list-style: none;
+        }
+
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .day {
+            font-weight: 500;
+        }
+
+        .time {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Modal de emergencias */
+        .emergency-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .emergency-modal.show {
+            display: flex;
+        }
+
+        .emergency-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .emergency-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #f44336, #ff9800, #f44336);
+            border-radius: 10px 10px 0 0;
+        }
+
+        .close-emergency {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .close-emergency:hover {
+            color: #f44336;
+        }
+
+        .emergency-title {
+            color: #f44336;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .emergency-info {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .emergency-contact {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: #ffebee;
+            border-radius: 5px;
+        }
+
+        .contact-item i {
+            color: #f44336;
+            font-size: 1.2rem;
+        }
+
+        /* Modal de reserva de turnos */
+        .appointment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .appointment-modal.show {
+            display: flex;
+        }
+
+        .appointment-content {
+            background: white;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .appointment-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--primary-color));
+            border-radius: 10px 10px 0 0;
+        }
+
+        .appointment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .appointment-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .close-appointment {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .close-appointment:hover {
+            color: var(--primary-color);
+        }
+
+        .appointment-steps {
+            padding: 20px;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .specialties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .specialty-option {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .specialty-option:hover {
+            border-color: var(--primary-color);
+        }
+
+        .specialty-option.selected {
+            border-color: var(--primary-color);
+            background-color: #e3f2fd;
+        }
+
+        .specialty-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .specialty-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .specialty-desc {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .time-slot {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .time-slot:hover {
+            border-color: var(--primary-color);
+        }
+
+        .time-slot.selected {
+            border-color: var(--primary-color);
+            background-color: #e3f2fd;
+        }
+
+        .time-slot.unavailable {
+            background-color: #f5f5f5;
+            color: #999;
+            cursor: not-allowed;
+        }
+
+        .appointment-summary {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-label {
+            font-weight: 500;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+
+        .confirmation-message i {
+            font-size: 4rem;
+            color: #4ade80;
+            margin-bottom: 15px;
+        }
+
+        .confirmation-message h3 {
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .step-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        /* Media queries */
+        @media (max-width: 480px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0 10px;
+            }
+            
+            .feature {
+                flex: 1 1 100%;
+            }
+
+            .services-features {
+                grid-template-columns: 1fr;
+            }
+
+            .specialties-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 769px) {
+            .services-content {
+                flex-direction: row;
+            }
+            
+            .services-text h2,
+            .services-text p {
+                text-align: left;
+            }
+
+            .feature {
+                flex: 1 1 45%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 15px 60px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .splash-logo {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo animado -->
+    <div class="animated-bg"></div>
+
+    <!-- Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-overlay"></div>
+        <div class="splash-content">
+            <div class="splash-logo">VET<span>CARE</span></div>
+            <div class="splash-slogan">Cuidamos a tus mascotas como en casa</div>
+            
+            <div class="loading-container">
+                <div class="loading-text">Cargando experiencia...</div>
+                <div class="loading-percentage" id="loadingPercentage">0%</div>
+                <div class="loading-bar-container">
+                    <div class="loading-bar" id="loadingBar"></div>
+                </div>
+                <div class="loading-message" id="loadingMessage">Inicializando sistema...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" id="mainLogo">
+                    <!-- Logo de veterinaria -->
+                    <img src="../img/veterinaria/logo-veterinaria.png" alt="VETCARE">
+                </div>
+                <div class="header-buttons">
+                    <!-- Indicador de estado del consultorio -->
+                    <div class="status-indicator" id="statusIndicator">
+                        <span class="status-dot"></span>
+                        <span id="statusText">Abierto</span>
+                    </div>
+                    <button class="hours-btn" id="hoursBtn">
+                        <i class="far fa-clock"></i> Horarios
+                    </button>
+                    <div class="appointment-icon" id="appointmentIcon">
+                        <i class="fas fa-calendar-check"></i>
+                        <div class="appointment-count" id="appointmentCount">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Botón de emergencias flotante - SOLAPA -->
+    <div class="emergency-floating">
+        <div class="emergency-toggle" id="emergencyToggle">
+            URGENCIAS
+        </div>
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="bottom-nav">
+        <a href="#inicio" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="#servicios" class="nav-item">
+            <i class="fas fa-stethoscope"></i>
+            <span>Servicios</span>
+        </a>
+        <a href="#especialidades" class="nav-item">
+            <i class="fas fa-user-md"></i>
+            <span>Especialidades</span>
+        </a>
+        <a href="#nosotros" class="nav-item">
+            <i class="fas fa-info-circle"></i>
+            <span>Nosotros</span>
+        </a>
+        <a href="#contacto" class="nav-item">
+            <i class="fas fa-phone"></i>
+            <span>Contacto</span>
+        </a>
+        <a href="#reservar" class="nav-item">
+            <i class="fas fa-calendar-plus"></i>
+            <span>Reservar</span>
+        </a>
+    </div>
+
+    <!-- Botón flotante redes sociales -->
+    <div class="social-floating">
+        <div class="social-toggle" id="socialToggle">
+            <i class="fas fa-share-alt"></i>
+        </div>
+        <div class="social-buttons" id="socialButtons">
+            <a href="#" class="social-button facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-button instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-button whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h1>VETCARE CENTRO VETERINARIO</h1>
+            <p>Cuidado integral para tus mascotas con profesionales especializados</p>
+            <button class="btn btn-primary" id="heroAppointmentBtn" style="margin-top: 20px;">Reservar Turno</button>
+        </div>
+    </section>
+
+    <!-- Sección Servicios -->
+    <section class="services-section" id="servicios">
+        <div class="container">
+            <div class="services-content">
+                <div class="services-image">
+                    <img src="../img/veterinaria/servicios-veterinaria.jpg" alt="Servicios Veterinarios">
+                </div>
+                <div class="services-text">
+                    <h2>Nuestros Servicios Integrales</h2>
+                    <p>En VETCARE ofrecemos una amplia gama de servicios para garantizar la salud y bienestar de tus mascotas. Contamos con tecnología de última generación y un equipo de profesionales altamente capacitados.</p>
+                    <div class="services-features">
+                        <div class="feature">
+                            <i class="fas fa-syringe"></i>
+                            <span>Vacunación y desparasitación</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-x-ray"></i>
+                            <span>Diagnóstico por imágenes</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-bone"></i>
+                            <span>Ortopedia y traumatología</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-teeth"></i>
+                            <span>Odontología veterinaria</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-heartbeat"></i>
+                            <span>Cardiología</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-dna"></i>
+                            <span>Dermatología especializada</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-clinic-medical"></i>
+                            <span>Cirugías generales</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-paw"></i>
+                            <span>Estética y peluquería</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Especialidades -->
+    <section class="specialties-section" id="especialidades">
+        <div class="container">
+            <h2 class="section-title">NUESTRAS ESPECIALIDADES</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Contamos con especialistas en diferentes áreas para brindar el mejor cuidado a tu mascota</p>
+            <div class="cards-container" id="specialtiesContainer">
+                <!-- Las tarjetas de especialidades se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Nosotros -->
+    <section class="services-section" id="nosotros">
+        <div class="container">
+            <h2 class="section-title">SOBRE NOSOTROS</h2>
+            <div class="services-content">
+                <div class="services-text">
+                    <p>VETCARE nació con la misión de proporcionar atención veterinaria de excelencia, combinando tecnología avanzada con un trato cálido y personalizado. Nuestro equipo está formado por profesionales con amplia experiencia y especialización en diferentes áreas de la medicina veterinaria.</p>
+                    <p>Creemos que las mascotas son parte fundamental de la familia, por eso nos esforzamos por ofrecerles la mejor calidad de vida a través de medicina preventiva, diagnóstico preciso y tratamientos efectivos.</p>
+                    <div class="services-features">
+                        <div class="feature">
+                            <i class="fas fa-award"></i>
+                            <span>15 años de experiencia</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-user-friends"></i>
+                            <span>Equipo multidisciplinario</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-clinic-medical"></i>
+                            <span>Instalaciones modernas</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-heart"></i>
+                            <span>Atención personalizada</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="services-image">
+                    <img src="../img/veterinaria/nosotros-veterinaria.jpg" alt="Nuestro Equipo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Contacto -->
+    <section class="specialties-section" id="contacto">
+        <div class="container">
+            <h2 class="section-title">CONTACTO</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Ubicación">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Visítanos</h3>
+                        <p class="card-description">Estamos ubicados en una zona céntrica con fácil acceso y estacionamiento.</p>
+                        <div class="card-specialists">
+                            <div class="specialist">
+                                <span class="specialist-name">Dirección</span>
+                                <span class="specialist-schedule">Av. Principal 1234</span>
+                            </div>
+                            <div class="specialist">
+                                <span class="specialist-name">Barrio</span>
+                                <span class="specialist-schedule">Centro</span>
+                            </div>
+                            <div class="specialist">
+                                <span class="specialist-name">Ciudad</span>
+                                <span class="specialist-schedule">Castelar</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Teléfono">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Llámanos</h3>
+                        <p class="card-description">Estamos disponibles para responder tus consultas y agendar turnos.</p>
+                        <div class="card-specialists">
+                            <div class="specialist">
+                                <span class="specialist-name">Consultas</span>
+                                <span class="specialist-schedule">(011) 4567-8901</span>
+                            </div>
+                            <div class="specialist">
+                                <span class="specialist-name">Urgencias</span>
+                                <span class="specialist-schedule">(011) 4567-8902</span>
+                            </div>
+                            <div class="specialist">
+                                <span class="specialist-name">WhatsApp</span>
+                                <span class="specialist-schedule">+54 9 11 5678-1234</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80" alt="Horarios">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Horarios de Atención</h3>
+                        <p class="card-description">Atención programada y servicio de urgencias 24/7 para emergencias.</p>
+                        <div class="card-specialists">
+                            <div class="specialist">
+                                <span class="specialist-name">Lunes a Viernes</span>
+                                <span class="specialist-schedule">8:00 - 20:00</span>
+                            </div>
+                            <div class="specialist">
+                                <span class="specialist-name">Sábados</span>
+                                <span class="specialist-schedule">8:00 - 14:00</span>
+                            </div>
+                            <div class="specialist">
+                                <span class="specialist-name">Urgencias</span>
+                                <span class="specialist-schedule">24/7</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de horarios -->
+    <div class="modal" id="hoursModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeHoursModal">&times;</button>
+            <h2 class="modal-title">Horarios de Atención</h2>
+            <ul class="hours-list">
+                <li>
+                    <span class="day">Lunes a Viernes</span>
+                    <span class="time">08:00 - 20:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Sábados</span>
+                    <span class="time">08:00 - 14:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Domingos y Feriados</span>
+                    <span class="time">Solo urgencias</span>
+                </li>
+            </ul>
+            <p style="margin-top: 20px; font-style: italic; text-align: center;">Servicio de urgencias disponible las 24 horas</p>
+        </div>
+    </div>
+
+    <!-- Modal de emergencias -->
+    <div class="emergency-modal" id="emergencyModal">
+        <div class="emergency-content">
+            <button class="close-emergency" id="closeEmergencyModal">&times;</button>
+            <h2 class="emergency-title">URGENCIAS VETERINARIAS</h2>
+            <div class="emergency-info">
+                <p>Si tu mascota necesita atención inmediata, contactanos ahora. Nuestro servicio de urgencias está disponible las 24 horas.</p>
+            </div>
+            <div class="emergency-contact">
+                <div class="contact-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>Teléfono Urgencias: (011) 4567-8902</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <span>WhatsApp Urgencias: +54 9 11 5678-1234</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Dirección: Av. Principal 1234, Castelar</span>
+                </div>
+            </div>
+            <div class="emergency-info">
+                <h3>¿Cuándo es una urgencia veterinaria?</h3>
+                <ul style="text-align: left; margin-top: 10px;">
+                    <li>Dificultad para respirar</li>
+                    <li>Convulsiones o temblores intensos</li>
+                    <li>Traumatismos por accidentes</li>
+                    <li>Sangrado profuso</li>
+                    <li>Vómitos o diarrea persistentes</li>
+                    <li>Incapacidad para orinar o defecar</li>
+                    <li>Ingestión de sustancias tóxicas</li>
+                    <li>Parto complicado</li>
+                </ul>
+            </div>
+            <button class="btn btn-primary" style="background: #f44336; margin-top: 20px;">
+                <i class="fas fa-phone-alt"></i> LLAMAR AHORA
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de reserva de turnos -->
+    <div class="appointment-modal" id="appointmentModal">
+        <div class="appointment-content">
+            <div class="appointment-header">
+                <h2 class="appointment-title">Reserva de Turno</h2>
+                <button class="close-appointment" id="closeAppointment">&times;</button>
+            </div>
+            <div class="appointment-steps">
+                <!-- Paso 1: Selección de especialidad -->
+                <div class="step active" id="step1">
+                    <h3 class="step-title">Selecciona una Especialidad</h3>
+                    <div class="specialties-grid" id="specialtiesGrid">
+                        <!-- Las especialidades se generarán dinámicamente -->
+                    </div>
+                    <div class="step-navigation">
+                        <button class="btn btn-secondary" disabled>Atrás</button>
+                        <button class="btn btn-primary" id="step1Next">Siguiente</button>
+                    </div>
+                </div>
+
+                <!-- Paso 2: Información de la mascota -->
+                <div class="step" id="step2">
+                    <h3 class="step-title">Información de la Mascota</h3>
+                    <div class="form-group">
+                        <label for="petName">Nombre de la Mascota *</label>
+                        <input type="text" id="petName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="petSpecies">Especie *</label>
+                        <select id="petSpecies" required>
+                            <option value="">Selecciona una especie</option>
+                            <option value="perro">Perro</option>
+                            <option value="gato">Gato</option>
+                            <option value="ave">Ave</option>
+                            <option value="roedor">Roedor</option>
+                            <option value="reptil">Reptil</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="petBreed">Raza</label>
+                        <input type="text" id="petBreed">
+                    </div>
+                    <div class="form-group">
+                        <label for="petAge">Edad (años)</label>
+                        <input type="number" id="petAge" min="0" max="30" step="0.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="petWeight">Peso (kg)</label>
+                        <input type="number" id="petWeight" min="0" step="0.1">
+                    </div>
+                    <div class="step-navigation">
+                        <button class="btn btn-secondary" id="step2Back">Atrás</button>
+                        <button class="btn btn-primary" id="step2Next">Siguiente</button>
+                    </div>
+                </div>
+
+                <!-- Paso 3: Información del dueño -->
+                <div class="step" id="step3">
+                    <h3 class="step-title">Información del Dueño</h3>
+                    <div class="form-group">
+                        <label for="ownerName">Nombre Completo *</label>
+                        <input type="text" id="ownerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerPhone">Teléfono *</label>
+                        <input type="tel" id="ownerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerEmail">Email</label>
+                        <input type="email" id="ownerEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentReason">Motivo de la Consulta</label>
+                        <textarea id="appointmentReason" rows="3" placeholder="Describe brevemente el motivo de la consulta..."></textarea>
+                    </div>
+                    <div class="step-navigation">
+                        <button class="btn btn-secondary" id="step3Back">Atrás</button>
+                        <button class="btn btn-primary" id="step3Next">Siguiente</button>
+                    </div>
+                </div>
+
+                <!-- Paso 4: Selección de fecha y hora -->
+                <div class="step" id="step4">
+                    <h3 class="step-title">Selecciona Fecha y Hora</h3>
+                    <div class="form-group">
+                        <label for="appointmentDate">Fecha *</label>
+                        <input type="date" id="appointmentDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Horarios Disponibles</label>
+                        <div class="time-slots" id="timeSlots">
+                            <!-- Los horarios se generarán dinámicamente -->
+                        </div>
+                    </div>
+                    <div class="step-navigation">
+                        <button class="btn btn-secondary" id="step4Back">Atrás</button>
+                        <button class="btn btn-primary" id="step4Next">Siguiente</button>
+                    </div>
+                </div>
+
+                <!-- Paso 5: Confirmación -->
+                <div class="step" id="step5">
+                    <h3 class="step-title">Confirma tu Turno</h3>
+                    <div class="appointment-summary" id="appointmentSummary">
+                        <!-- El resumen se generará dinámicamente -->
+                    </div>
+                    <div class="form-group">
+                        <label for="additionalNotes">Notas Adicionales</label>
+                        <textarea id="additionalNotes" rows="3" placeholder="Alguna información adicional que quieras compartir..."></textarea>
+                    </div>
+                    <div class="step-navigation">
+                        <button class="btn btn-secondary" id="step5Back">Atrás</button>
+                        <button class="btn btn-primary" id="confirmAppointment">Confirmar Turno</button>
+                    </div>
+                </div>
+
+                <!-- Mensaje de confirmación -->
+                <div class="confirmation-message" id="confirmationMessage">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>¡Turno Confirmado!</h3>
+                    <p>Hemos recibido tu solicitud de turno y te contactaremos pronto para confirmar los detalles.</p>
+                    <p>¡Gracias por confiar en VETCARE!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">VETCARE</div>
+                <p>Centro Veterinario Integral - Cuidamos a tus mascotas como en casa</p>
+                <div class="footer-links">
+                    <a href="#inicio">Inicio</a>
+                    <a href="#servicios">Servicios</a>
+                    <a href="#especialidades">Especialidades</a>
+                    <a href="#nosotros">Nosotros</a>
+                    <a href="#contacto">Contacto</a>
+                    <a href="#reservar">Reservar Turno</a>
+                </div>
+                <p class="copyright">© 2023 VETCARE. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales
+        let appointments = [];
+        let currentStep = 1;
+        let selectedSpecialty = null;
+        let selectedDateTime = null;
+        let appointmentData = {};
+
+        // Datos de especialidades para veterinaria
+        const specialtiesData = [
+            {
+                id: 1,
+                name: "Medicina General",
+                description: "Consultas de rutina, vacunación y chequeos generales",
+                image: "https://images.unsplash.com/photo-1579168765467-3b235f938439?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                icon: "fas fa-stethoscope",
+                specialists: [
+                    { name: "Dra. María González", schedule: "Lunes a Viernes 8:00-16:00" },
+                    { name: "Dr. Carlos López", schedule: "Lunes a Sábado 10:00-18:00" }
+                ]
+            },
+            {
+                id: 2,
+                name: "Cirugía",
+                description: "Intervenciones quirúrgicas generales y especializadas",
+                image: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                icon: "fas fa-syringe",
+                specialists: [
+                    { name: "Dr. Roberto Sánchez", schedule: "Lunes a Viernes 9:00-17:00" },
+                    { name: "Dra. Ana Martínez", schedule: "Martes a Sábado 8:00-14:00" }
+                ]
+            },
+            {
+                id: 3,
+                name: "Dermatología",
+                description: "Diagnóstico y tratamiento de problemas de piel",
+                image: "https://images.unsplash.com/photo-1596276020095-3e2b8d7eff6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                icon: "fas fa-allergies",
+                specialists: [
+                    { name: "Dra. Laura Fernández", schedule: "Lunes, Miércoles, Viernes 10:00-18:00" }
+                ]
+            },
+            {
+                id: 4,
+                name: "Oftalmología",
+                description: "Cuidado y tratamiento de problemas oculares",
+                image: "https://images.unsplash.com/photo-1559715541-5daf8a0296d0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                icon: "fas fa-eye",
+                specialists: [
+                    { name: "Dr. Javier Rodríguez", schedule: "Martes y Jueves 9:00-15:00" }
+                ]
+            },
+            {
+                id: 5,
+                name: "Cardiología",
+                description: "Diagnóstico y tratamiento de enfermedades cardíacas",
+                image: "https://images.unsplash.com/photo-1579202673506-ca3ce28943ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                icon: "fas fa-heartbeat",
+                specialists: [
+                    { name: "Dra. Patricia Gómez", schedule: "Lunes y Miércoles 8:00-14:00" }
+                ]
+            },
+            {
+                id: 6,
+                name: "Odontología",
+                description: "Cuidado dental y tratamientos bucales",
+                image: "https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                icon: "fas fa-tooth",
+                specialists: [
+                    { name: "Dr. Miguel Ángel Torres", schedule: "Viernes y Sábado 9:00-13:00" }
+                ]
+            }
+        ];
+
+        // Horarios del consultorio
+        const businessHours = {
+            "Lunes": { open: 8, close: 20 },
+            "Martes": { open: 8, close: 20 },
+            "Miércoles": { open: 8, close: 20 },
+            "Jueves": { open: 8, close: 20 },
+            "Viernes": { open: 8, close: 20 },
+            "Sábado": { open: 8, close: 14 },
+            "Domingo": { open: 0, close: 0 }
+        };
+
+        // Inicialización cuando el DOM está listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Iniciar la barra de carga del splash screen
+            setTimeout(updateLoadingBar, 500);
+
+            // Generar tarjetas de especialidades
+            generateSpecialtiesCards('specialtiesContainer', specialtiesData);
+            generateSpecialtiesGrid('specialtiesGrid', specialtiesData);
+
+            // Actualizar estado del consultorio
+            updateBusinessStatus();
+
+            // Configurar event listeners
+            setupEventListeners();
+
+            // Inicializar fecha mínima para selección de turnos (mañana)
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('appointmentDate').min = tomorrow.toISOString().split('T')[0];
+        });
+
+        // Función para actualizar la barra de carga del splash
+        function updateLoadingBar() {
+            const loadingBar = document.getElementById('loadingBar');
+            const loadingPercentage = document.getElementById('loadingPercentage');
+            const loadingMessage = document.getElementById('loadingMessage');
+            
+            let loadingProgress = 0;
+            const loadingMessages = [
+                "Cargando servicios veterinarios...",
+                "Inicializando sistema de turnos...",
+                "Configurando especialidades...",
+                "Preparando formularios...",
+                "¡Casi listo! Últimos ajustes...",
+                "¡Listo para cuidar a tus mascotas!"
+            ];
+
+            function update() {
+                loadingProgress += Math.random() * 15 + 5;
+                
+                if (loadingProgress > 100) {
+                    loadingProgress = 100;
+                }
+                
+                loadingBar.style.width = loadingProgress + '%';
+                loadingPercentage.textContent = Math.floor(loadingProgress) + '%';
+                
+                // Cambiar mensaje según el progreso
+                if (loadingProgress < 20) {
+                    loadingMessage.textContent = loadingMessages[0];
+                } else if (loadingProgress < 40) {
+                    loadingMessage.textContent = loadingMessages[1];
+                } else if (loadingProgress < 60) {
+                    loadingMessage.textContent = loadingMessages[2];
+                } else if (loadingProgress < 80) {
+                    loadingMessage.textContent = loadingMessages[3];
+                } else if (loadingProgress < 100) {
+                    loadingMessage.textContent = loadingMessages[4];
+                } else {
+                    loadingMessage.textContent = loadingMessages[5];
+                }
+                
+                if (loadingProgress < 100) {
+                    setTimeout(update, 300 + Math.random() * 400);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('splashScreen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('splashScreen').style.display = 'none';
+                        }, 800);
+                    }, 800);
+                }
+            }
+            
+            update();
+        }
+
+        // Función para generar tarjetas de especialidades
+        function generateSpecialtiesCards(containerId, specialties) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            specialties.forEach(specialty => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                let specialistsHTML = '';
+                if (specialty.specialists && specialty.specialists.length > 0) {
+                    specialistsHTML = `
+                        <div class="card-specialists">
+                            ${specialty.specialists.map(specialist => `
+                                <div class="specialist">
+                                    <span class="specialist-name">${specialist.name}</span>
+                                    <span class="specialist-schedule">${specialist.schedule}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="card-image">
+                        <img src="${specialty.image}" alt="${specialty.name}">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${specialty.name}</h3>
+                        <p class="card-description">${specialty.description}</p>
+                        ${specialistsHTML}
+                        <button class="book-appointment" data-specialty='${JSON.stringify(specialty)}'>
+                            Reservar Turno
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            // Agregar event listeners a los botones de reserva
+            document.querySelectorAll('.book-appointment').forEach(button => {
+                button.addEventListener('click', function() {
+                    const specialty = JSON.parse(this.getAttribute('data-specialty'));
+                    startAppointmentProcess(specialty);
+                });
+            });
+        }
+
+        // Función para generar grid de especialidades en el modal
+        function generateSpecialtiesGrid(containerId, specialties) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            specialties.forEach(specialty => {
+                const option = document.createElement('div');
+                option.className = 'specialty-option';
+                option.setAttribute('data-id', specialty.id);
+                
+                option.innerHTML = `
+                    <div class="specialty-icon">
+                        <i class="${specialty.icon}"></i>
+                    </div>
+                    <div class="specialty-name">${specialty.name}</div>
+                    <div class="specialty-desc">${specialty.description}</div>
+                `;
+
+                option.addEventListener('click', function() {
+                    // Deseleccionar todas las opciones
+                    document.querySelectorAll('.specialty-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Seleccionar esta opción
+                    this.classList.add('selected');
+                    selectedSpecialty = specialty;
+                    
+                    // Habilitar botón siguiente
+                    document.getElementById('step1Next').disabled = false;
+                });
+
+                container.appendChild(option);
+            });
+        }
+
+        // Función para actualizar el estado del consultorio
+        function updateBusinessStatus() {
+            const now = new Date();
+            const day = now.toLocaleDateString('es-ES', { weekday: 'long' });
+            const hour = now.getHours();
+            
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const statusDot = document.querySelector('.status-dot');
+            
+            if (businessHours[day]) {
+                const { open, close } = businessHours[day];
+                
+                if (hour >= open && hour < close) {
+                    statusText.textContent = 'Abierto';
+                    statusDot.style.backgroundColor = '#4ade80';
+                } else {
+                    statusText.textContent = 'Cerrado';
+                    statusDot.style.backgroundColor = '#ef4444';
+                }
+            } else {
+                statusText.textContent = 'Cerrado';
+                statusDot.style.backgroundColor = '#ef4444';
+            }
+        }
+
+        // Función para configurar event listeners
+        function setupEventListeners() {
+            // Botón de horarios
+            document.getElementById('hoursBtn').addEventListener('click', function() {
+                document.getElementById('hoursModal').classList.add('show');
+            });
+
+            // Cerrar modal de horarios
+            document.getElementById('closeHoursModal').addEventListener('click', function() {
+                document.getElementById('hoursModal').classList.remove('show');
+            });
+
+            // Botón de emergencias
+            document.getElementById('emergencyToggle').addEventListener('click', function() {
+                document.getElementById('emergencyModal').classList.add('show');
+            });
+
+            // Cerrar modal de emergencias
+            document.getElementById('closeEmergencyModal').addEventListener('click', function() {
+                document.getElementById('emergencyModal').classList.remove('show');
+            });
+
+            // Icono de reserva de turnos
+            document.getElementById('appointmentIcon').addEventListener('click', function() {
+                document.getElementById('appointmentModal').classList.add('show');
+                resetAppointmentForm();
+            });
+
+            // Botón de reserva en el hero
+            document.getElementById('heroAppointmentBtn').addEventListener('click', function() {
+                document.getElementById('appointmentModal').classList.add('show');
+                resetAppointmentForm();
+            });
+
+            // Cerrar modal de reserva
+            document.getElementById('closeAppointment').addEventListener('click', function() {
+                document.getElementById('appointmentModal').classList.remove('show');
+            });
+
+            // Botón de redes sociales
+            document.getElementById('socialToggle').addEventListener('click', function() {
+                document.getElementById('socialButtons').classList.toggle('show');
+            });
+
+            // Navegación suave
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Cerrar menú de redes sociales si está abierto
+                        document.getElementById('socialButtons').classList.remove('show');
+                        
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Navegación entre pasos del formulario de reserva
+            document.getElementById('step1Next').addEventListener('click', function() {
+                if (selectedSpecialty) {
+                    navigateToStep(2);
+                }
+            });
+
+            document.getElementById('step2Back').addEventListener('click', function() {
+                navigateToStep(1);
+            });
+
+            document.getElementById('step2Next').addEventListener('click', function() {
+                if (validateStep2()) {
+                    navigateToStep(3);
+                }
+            });
+
+            document.getElementById('step3Back').addEventListener('click', function() {
+                navigateToStep(2);
+            });
+
+            document.getElementById('step3Next').addEventListener('click', function() {
+                if (validateStep3()) {
+                    navigateToStep(4);
+                    generateTimeSlots();
+                }
+            });
+
+            document.getElementById('step4Back').addEventListener('click', function() {
+                navigateToStep(3);
+            });
+
+            document.getElementById('step4Next').addEventListener('click', function() {
+                if (validateStep4()) {
+                    navigateToStep(5);
+                    updateAppointmentSummary();
+                }
+            });
+
+            document.getElementById('step5Back').addEventListener('click', function() {
+                navigateToStep(4);
+            });
+
+            document.getElementById('confirmAppointment').addEventListener('click', function() {
+                confirmAppointment();
+            });
+
+            // Cuando cambia la fecha, regenerar los horarios disponibles
+            document.getElementById('appointmentDate').addEventListener('change', function() {
+                generateTimeSlots();
+            });
+        }
+
+        // Función para iniciar proceso de reserva
+        function startAppointmentProcess(specialty) {
+            selectedSpecialty = specialty;
+            document.getElementById('appointmentModal').classList.add('show');
+            
+            // Seleccionar automáticamente la especialidad en el paso 1
+            document.querySelectorAll('.specialty-option').forEach(option => {
+                option.classList.remove('selected');
+                if (parseInt(option.getAttribute('data-id')) === specialty.id) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            document.getElementById('step1Next').disabled = false;
+            navigateToStep(1);
+        }
+
+        // Función para navegar entre pasos
+        function navigateToStep(step) {
+            // Ocultar todos los pasos
+            document.querySelectorAll('.step').forEach(stepElement => {
+                stepElement.classList.remove('active');
+            });
+            
+            // Mostrar el paso actual
+            document.getElementById(`step${step}`).classList.add('active');
+            currentStep = step;
+        }
+
+        // Función para resetear el formulario de reserva
+        function resetAppointmentForm() {
+            selectedSpecialty = null;
+            selectedDateTime = null;
+            appointmentData = {};
+            currentStep = 1;
+            
+            // Resetear selecciones
+            document.querySelectorAll('.specialty-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Resetear formularios
+            document.getElementById('petName').value = '';
+            document.getElementById('petSpecies').value = '';
+            document.getElementById('petBreed').value = '';
+            document.getElementById('petAge').value = '';
+            document.getElementById('petWeight').value = '';
+            document.getElementById('ownerName').value = '';
+            document.getElementById('ownerPhone').value = '';
+            document.getElementById('ownerEmail').value = '';
+            document.getElementById('appointmentReason').value = '';
+            document.getElementById('appointmentDate').value = '';
+            document.getElementById('additionalNotes').value = '';
+            
+            // Resetear selección de horarios
+            document.getElementById('timeSlots').innerHTML = '';
+            
+            // Ocultar mensaje de confirmación
+            document.getElementById('confirmationMessage').style.display = 'none';
+            
+            // Navegar al paso 1
+            navigateToStep(1);
+            
+            // Deshabilitar botón siguiente del paso 1
+            document.getElementById('step1Next').disabled = true;
+        }
+
+        // Función para validar paso 2 (información de la mascota)
+        function validateStep2() {
+            const petName = document.getElementById('petName').value;
+            const petSpecies = document.getElementById('petSpecies').value;
+            
+            if (!petName || !petSpecies) {
+                alert('Por favor, completa al menos el nombre y la especie de tu mascota.');
+                return false;
+            }
+            
+            // Guardar datos
+            appointmentData.pet = {
+                name: petName,
+                species: petSpecies,
+                breed: document.getElementById('petBreed').value,
+                age: document.getElementById('petAge').value,
+                weight: document.getElementById('petWeight').value
+            };
+            
+            return true;
+        }
+
+        // Función para validar paso 3 (información del dueño)
+        function validateStep3() {
+            const ownerName = document.getElementById('ownerName').value;
+            const ownerPhone = document.getElementById('ownerPhone').value;
+            
+            if (!ownerName || !ownerPhone) {
+                alert('Por favor, completa tu nombre y teléfono.');
+                return false;
+            }
+            
+            // Guardar datos
+            appointmentData.owner = {
+                name: ownerName,
+                phone: ownerPhone,
+                email: document.getElementById('ownerEmail').value
+            };
+            
+            appointmentData.reason = document.getElementById('appointmentReason').value;
+            
+            return true;
+        }
+
+        // Función para validar paso 4 (fecha y hora)
+        function validateStep4() {
+            if (!selectedDateTime) {
+                alert('Por favor, selecciona un horario disponible.');
+                return false;
+            }
+            
+            // Guardar datos
+            appointmentData.datetime = selectedDateTime;
+            
+            return true;
+        }
+
+        // Función para generar horarios disponibles
+        function generateTimeSlots() {
+            const dateInput = document.getElementById('appointmentDate');
+            const timeSlotsContainer = document.getElementById('timeSlots');
+            
+            if (!dateInput.value) {
+                timeSlotsContainer.innerHTML = '<p>Selecciona una fecha primero</p>';
+                return;
+            }
+            
+            const selectedDate = new Date(dateInput.value);
+            const dayName = selectedDate.toLocaleDateString('es-ES', { weekday: 'long' });
+            
+            // Verificar si el consultorio está abierto ese día
+            if (!businessHours[dayName] || businessHours[dayName].open === businessHours[dayName].close) {
+                timeSlotsContainer.innerHTML = '<p>No hay horarios disponibles para esta fecha</p>';
+                return;
+            }
+            
+            const openHour = businessHours[dayName].open;
+            const closeHour = businessHours[dayName].close;
+            
+            timeSlotsContainer.innerHTML = '';
+            selectedDateTime = null;
+            
+            // Generar horarios cada 30 minutos
+            for (let hour = openHour; hour < closeHour; hour++) {
+                for (let minute = 0; minute < 60; minute += 30) {
+                    // Crear objeto Date para este horario
+                    const slotDate = new Date(selectedDate);
+                    slotDate.setHours(hour, minute, 0, 0);
+                    
+                    // Formatear hora para mostrar
+                    const timeString = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                    
+                    // Verificar si el horario ya pasó (para hoy)
+                    const now = new Date();
+                    const isPast = selectedDate.toDateString() === now.toDateString() && 
+                                  (hour < now.getHours() || (hour === now.getHours() && minute <= now.getMinutes()));
+                    
+                    // Verificar si el horario está ocupado (simulación)
+                    const isOccupied = Math.random() < 0.3; // 30% de probabilidad de estar ocupado
+                    
+                    const timeSlot = document.createElement('div');
+                    timeSlot.className = `time-slot ${isPast || isOccupied ? 'unavailable' : ''}`;
+                    timeSlot.textContent = timeString;
+                    
+                    if (!isPast && !isOccupied) {
+                        timeSlot.addEventListener('click', function() {
+                            // Deseleccionar todos los horarios
+                            document.querySelectorAll('.time-slot').forEach(slot => {
+                                slot.classList.remove('selected');
+                            });
+                            
+                            // Seleccionar este horario
+                            this.classList.add('selected');
+                            selectedDateTime = slotDate;
+                        });
+                    }
+                    
+                    timeSlotsContainer.appendChild(timeSlot);
+                }
+            }
+            
+            if (timeSlotsContainer.children.length === 0) {
+                timeSlotsContainer.innerHTML = '<p>No hay horarios disponibles para esta fecha</p>';
+            }
+        }
+
+        // Función para actualizar el resumen de la reserva
+        function updateAppointmentSummary() {
+            const summaryContainer = document.getElementById('appointmentSummary');
+            
+            if (!selectedSpecialty || !appointmentData.pet || !appointmentData.owner || !appointmentData.datetime) {
+                summaryContainer.innerHTML = '<p>Error: Información incompleta</p>';
+                return;
+            }
+            
+            const dateTime = new Date(appointmentData.datetime);
+            const formattedDate = dateTime.toLocaleDateString('es-ES');
+            const formattedTime = dateTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            
+            summaryContainer.innerHTML = `
+                <div class="summary-item">
+                    <span class="summary-label">Especialidad:</span>
+                    <span>${selectedSpecialty.name}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Mascota:</span>
+                    <span>${appointmentData.pet.name} (${appointmentData.pet.species})</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Dueño:</span>
+                    <span>${appointmentData.owner.name}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Teléfono:</span>
+                    <span>${appointmentData.owner.phone}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Fecha:</span>
+                    <span>${formattedDate}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Hora:</span>
+                    <span>${formattedTime}</span>
+                </div>
+                ${appointmentData.reason ? `
+                <div class="summary-item">
+                    <span class="summary-label">Motivo:</span>
+                    <span>${appointmentData.reason}</span>
+                </div>
+                ` : ''}
+            `;
+        }
+
+        // Función para confirmar la reserva
+        function confirmAppointment() {
+            if (!selectedSpecialty || !appointmentData.pet || !appointmentData.owner || !appointmentData.datetime) {
+                alert('Error: Información incompleta. Por favor, completa todos los pasos.');
+                return;
+            }
+            
+            // Crear objeto de reserva
+            const appointment = {
+                id: Date.now(),
+                specialty: selectedSpecialty,
+                ...appointmentData,
+                additionalNotes: document.getElementById('additionalNotes').value,
+                status: 'pendiente',
+                createdAt: new Date()
+            };
+            
+            // Agregar a la lista de reservas
+            appointments.push(appointment);
+            
+            // Actualizar contador
+            updateAppointmentCount();
+            
+            // Mostrar mensaje de confirmación
+            document.getElementById('step5').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'block';
+            
+            // Enviar confirmación por WhatsApp (simulación)
+            sendWhatsAppConfirmation(appointment);
+            
+            // Cerrar modal después de 3 segundos
+            setTimeout(() => {
+                document.getElementById('appointmentModal').classList.remove('show');
+            }, 5000);
+        }
+
+        // Función para actualizar contador de reservas
+        function updateAppointmentCount() {
+            const appointmentCount = document.getElementById('appointmentCount');
+            appointmentCount.textContent = appointments.length;
+        }
+
+        // Función para enviar confirmación por WhatsApp
+        function sendWhatsAppConfirmation(appointment) {
+            const dateTime = new Date(appointment.datetime);
+            const formattedDate = dateTime.toLocaleDateString('es-ES');
+            const formattedTime = dateTime.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+            
+            let message = `¡Hola! Confirmamos tu reserva en VETCARE:\n\n`;
+            message += `*Especialidad:* ${appointment.specialty.name}\n`;
+            message += `*Mascota:* ${appointment.pet.name} (${appointment.pet.species})\n`;
+            message += `*Fecha:* ${formattedDate}\n`;
+            message += `*Hora:* ${formattedTime}\n`;
+            message += `*Dueño:* ${appointment.owner.name}\n`;
+            message += `*Teléfono:* ${appointment.owner.phone}\n\n`;
+            message += `Te contactaremos para confirmar el turno. ¡Gracias por confiar en VETCARE!`;
+            
+            // Codificar mensaje para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Número de WhatsApp (reemplazar con el número real)
+            const whatsappNumber = '5491156781234';
+            
+            // Abrir WhatsApp (en una nueva pestaña)
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+        }
+    </script>
+</body>
+</html>
