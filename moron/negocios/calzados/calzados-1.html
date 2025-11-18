@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sección de Calzados</title>
+    <style>
+        :root {
+            --primary-color: #333;
+            --secondary-color: #666;
+            --accent-color: #e74c3c;
+            --light-color: #f9f9f9;
+            --border-color: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .shoes-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .section-header p {
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background-color: var(--light-color);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .shoes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .shoe-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .shoe-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .shoe-image {
+            height: 220px;
+            overflow: hidden;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .shoe-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .shoe-card:hover .shoe-image img {
+            transform: scale(1.05);
+        }
+        
+        .shoe-info {
+            padding: 20px;
+        }
+        
+        .shoe-category {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        
+        .shoe-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .shoe-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+        
+        .shoe-colors {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .color-option {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+        }
+        
+        .shoe-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-details {
+            background-color: var(--light-color);
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-details:hover {
+            background-color: #eaeaea;
+        }
+        
+        .btn-cart {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-cart:hover {
+            background-color: #222;
+        }
+        
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: var(--secondary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .shoes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .filters {
+                gap: 10px;
+            }
+            
+            .filter-btn {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="shoes-section">
+        <div class="section-header">
+            <h2>Nuestra Colección de Calzados</h2>
+            <p>Encuentra el calzado perfecto para cada ocasión</p>
+        </div>
+        
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="deportivos">Deportivos</button>
+            <button class="filter-btn" data-filter="casuales">Casuales</button>
+            <button class="filter-btn" data-filter="formales">Formales</button>
+            <button class="filter-btn" data-filter="botas">Botas</button>
+        </div>
+        
+        <div class="shoes-grid">
+            <!-- Zapatilla Deportiva 1 -->
+            <div class="shoe-card" data-category="deportivos">
+                <div class="shoe-image">
+                    <img src="https://via.placeholder.com/300x200/3498db/ffffff?text=Zapatilla+Deportiva+1" alt="Zapatilla Deportiva Runner Pro">
+                </div>
+                <div class="shoe-info">
+                    <div class="shoe-category">Deportivos</div>
+                    <h3 class="shoe-name">Runner Pro</h3>
+                    <div class="shoe-price">$89.99</div>
+                    <div class="shoe-colors">
+                        <div class="color-option" style="background-color: #3498db;" title="Azul"></div>
+                        <div class="color-option" style="background-color: #2c3e50;" title="Negro"></div>
+                        <div class="color-option" style="background-color: #e74c3c;" title="Rojo"></div>
+                    </div>
+                    <div class="shoe-actions">
+                        <button class="btn btn-details">Ver Detalles</button>
+                        <button class="btn btn-cart">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zapato Casual 1 -->
+            <div class="shoe-card" data-category="casuales">
+                <div class="shoe-image">
+                    <img src="https://via.placeholder.com/300x200/e67e22/ffffff?text=Zapato+Casual+1" alt="Zapato Casual Urban">
+                </div>
+                <div class="shoe-info">
+                    <div class="shoe-category">Casuales</div>
+                    <h3 class="shoe-name">Urban Style</h3>
+                    <div class="shoe-price">$65.50</div>
+                    <div class="shoe-colors">
+                        <div class="color-option" style="background-color: #e67e22;" title="Naranja"></div>
+                        <div class="color-option" style="background-color: #34495e;" title="Gris Oscuro"></div>
+                        <div class="color-option" style="background-color: #16a085;" title="Verde"></div>
+                    </div>
+                    <div class="shoe-actions">
+                        <button class="btn btn-details">Ver Detalles</button>
+                        <button class="btn btn-cart">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zapato Formal 1 -->
+            <div class="shoe-card" data-category="formales">
+                <div class="shoe-image">
+                    <img src="https://via.placeholder.com/300x200/2c3e50/ffffff?text=Zapato+Formal+1" alt="Zapato Formal Elegance">
+                </div>
+                <div class="shoe-info">
+                    <div class="shoe-category">Formales</div>
+                    <h3 class="shoe-name">Elegance Classic</h3>
+                    <div class="shoe-price">$120.00</div>
+                    <div class="shoe-colors">
+                        <div class="color-option" style="background-color: #2c3e50;" title="Negro"></div>
+                        <div class="color-option" style="background-color: #7f8c8d;" title="Gris"></div>
+                        <div class="color-option" style="background-color: #8e44ad;" title="Marrón"></div>
+                    </div>
+                    <div class="shoe-actions">
+                        <button class="btn btn-details">Ver Detalles</button>
+                        <button class="btn btn-cart">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bota 1 -->
+            <div class="shoe-card" data-category="botas">
+                <div class="shoe-image">
+                    <img src="https://via.placeholder.com/300x200/8e44ad/ffffff?text=Bota+1" alt="Bota Adventure">
+                </div>
+                <div class="shoe-info">
+                    <div class="shoe-category">Botas</div>
+                    <h3 class="shoe-name">Adventure Trek</h3>
+                    <div class="shoe-price">$135.75</div>
+                    <div class="shoe-colors">
+                        <div class="color-option" style="background-color: #8e44ad;" title="Marrón"></div>
+                        <div class="color-option" style="background-color: #34495e;" title="Negro"></div>
+                        <div class="color-option" style="background-color: #d35400;" title="Caqui"></div>
+                    </div>
+                    <div class="shoe-actions">
+                        <button class="btn btn-details">Ver Detalles</button>
+                        <button class="btn btn-cart">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zapatilla Deportiva 2 -->
+            <div class="shoe-card" data-category="deportivos">
+                <div class="shoe-image">
+                    <img src="https://via.placeholder.com/300x200/e74c3c/ffffff?text=Zapatilla+Deportiva+2" alt="Zapatilla Deportiva Air Max">
+                </div>
+                <div class="shoe-info">
+                    <div class="shoe-category">Deportivos</div>
+                    <h3 class="shoe-name">Air Max Pro</h3>
+                    <div class="shoe-price">$110.00</div>
+                    <div class="shoe-colors">
+                        <div class="color-option" style="background-color: #e74c3c;" title="Rojo"></div>
+                        <div class="color-option" style="background-color: #3498db;" title="Azul"></div>
+                        <div class="color-option" style="background-color: #2c3e50;" title="Negro"></div>
+                    </div>
+                    <div class="shoe-actions">
+                        <button class="btn btn-details">Ver Detalles</button>
+                        <button class="btn btn-cart">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zapato Casual 2 -->
+            <div class="shoe-card" data-category="casuales">
+                <div class="shoe-image">
+                    <img src="https://via.placeholder.com/300x200/16a085/ffffff?text=Zapato+Casual+2" alt="Zapato Casual Comfort">
+                </div>
+                <div class="shoe-info">
+                    <div class="shoe-category">Casuales</div>
+                    <h3 class="shoe-name">Comfort Walk</h3>
+                    <div class="shoe-price">$75.25</div>
+                    <div class="shoe-colors">
+                        <div class="color-option" style="background-color: #16a085;" title="Verde"></div>
+                        <div class="color-option" style="background-color: #e67e22;" title="Naranja"></div>
+                        <div class="color-option" style="background-color: #95a5a6;" title="Gris"></div>
+                    </div>
+                    <div class="shoe-actions">
+                        <button class="btn btn-details">Ver Detalles</button>
+                        <button class="btn btn-cart">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Zapato Formal 2 -->
+            <div class="shoe-card" data-category="formales">
+                <div class="shoe-image">
+                    <img src="https://via.placeholder.com/300x200/7f8c8d/ffffff?text=Zapato+Formal+2" alt="Zapato Formal Executive">
+                </div>
+                <div class="shoe-info">
+                    <div class="shoe-category">Formales</div>
+                    <h3 class="shoe-name">Executive Black</h3>
+                    <div class="shoe-price">$145.00</div>
+                    <div class="shoe-colors">
+                        <div class="color-option" style="background-color: #7f8c8d;" title="Gris"></div>
+                        <div class="color-option" style="background-color: #2c3e50;" title="Negro"></div>
+                        <div class="color-option" style="background-color: #c0392b;" title="Borgoña"></div>
+                    </div>
+                    <div class="shoe-actions">
+                        <button class="btn btn-details">Ver Detalles</button>
+                        <button class="btn btn-cart">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bota 2 -->
+            <div class="shoe-card" data-category="botas">
+                <div class="shoe-image">
+                    <img src="https://via.placeholder.com/300x200/d35400/ffffff?text=Bota+2" alt="Bota Winter Pro">
+                </div>
+                <div class="shoe-info">
+                    <div class="shoe-category">Botas</div>
+                    <h3 class="shoe-name">Winter Pro</h3>
+                    <div class="shoe-price">$160.00</div>
+                    <div class="shoe-colors">
+                        <div class="color-option" style="background-color: #d35400;" title="Caqui"></div>
+                        <div class="color-option" style="background-color: #2c3e50;" title="Negro"></div>
+                        <div class="color-option" style="background-color: #7f8c8d;" title="Gris"></div>
+                    </div>
+                    <div class="shoe-actions">
+                        <button class="btn btn-details">Ver Detalles</button>
+                        <button class="btn btn-cart">Añadir al Carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const shoeCards = document.querySelectorAll('.shoe-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remover clase active de todos los botones
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Agregar clase active al botón clickeado
+                    this.classList.add('active');
+                    
+                    const filterValue = this.getAttribute('data-filter');
+                    
+                    shoeCards.forEach(card => {
+                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Añadir funcionalidad a los botones de carrito
+            const cartButtons = document.querySelectorAll('.btn-cart');
+            cartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const shoeName = this.closest('.shoe-card').querySelector('.shoe-name').textContent;
+                    alert(`¡${shoeName} añadido al carrito!`);
+                });
+            });
+            
+            // Añadir funcionalidad a los botones de detalles
+            const detailButtons = document.querySelectorAll('.btn-details');
+            detailButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const shoeName = this.closest('.shoe-card').querySelector('.shoe-name').textContent;
+                    alert(`Mostrando detalles de: ${shoeName}`);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegance Shoes | Calzado Femenino de Calidad</title>
+    <meta name="description" content="Descubre la mejor colección de calzado femenino. Zapatos de calidad, comfort y estilo para toda ocasión.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Estilos Personalizados -->
+    <link rel="stylesheet" href="../../shared/css/calzados.css">
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-high-heel"></i>
+                Elegance Shoes
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#inicio">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#productos">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#categorias">Categorías</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ofertas">Ofertas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#nosotros">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contacto">Contacto</a>
+                    </li>
+                </ul>
+                
+                <!-- En el navbar, reemplazar esta parte: -->
+                <div class="navbar-actions">
+                    <button class="btn btn-cart" id="cartButton">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">0</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center min-vh-100">
+                <div class="col-lg-6">
+                    <div class="hero-content">
+                        <h1 class="hero-title">
+                            Elegancia en <span class="highlight">Cada Paso</span>
+                        </h1>
+                        <p class="hero-subtitle">
+                            Descubre nuestra exclusiva colección de calzado femenino. Diseños únicos, máxima calidad y comfort incomparable para el día a día.
+                        </p>
+                        <div class="hero-buttons">
+                            <a href="#productos" class="btn btn-primary btn-lg">
+                                Ver Colección
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <a href="#ofertas" class="btn btn-outline-secondary btn-lg">
+                                Ofertas Especiales
+                            </a>
+                        </div>
+                        <div class="hero-features">
+                            <div class="feature">
+                                <i class="fas fa-shipping-fast"></i>
+                                <span>Envío Gratis</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-undo"></i>
+                                <span>30 Días Devolución</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Garantía de Calidad</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <img src="../../castelar/img/banner-1.webp" alt="Colección Elegance Shoes" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categorías Section -->
+    <section id="categorias" class="categories-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Nuestras Categorías</h2>
+                <p>Encuentra el calzado perfecto para cada ocasión</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-female"></i>
+                        </div>
+                        <h4>Tacones</h4>
+                        <p>Elegancia y altura para ocasiones especiales</p>
+                        <a href="#" class="category-link">Ver más</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-shoe-prints"></i>
+                        </div>
+                        <h4>Planos</h4>
+                        <p>Comfort y estilo para el día a día</p>
+                        <a href="#" class="category-link">Ver más</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-shoe-prints"></i>
+                        </div>
+                        <h4>Botas</h4>
+                        <p>Protección con estilo para temporada</p>
+                        <a href="#" class="category-link">Ver más</a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="category-card">
+                        <div class="category-icon">
+                            <i class="fas fa-running"></i>
+                        </div>
+                        <h4>Deportivos</h4>
+                        <p>Comfort máximo para actividades</p>
+                        <a href="#" class="category-link">Ver más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Productos Destacados -->
+    <section id="productos" class="products-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Productos Destacados</h2>
+                <p>Los favoritos de nuestras clientas</p>
+            </div>
+            
+            <div class="row g-4" id="productsGrid">
+                <!-- Los productos se cargan dinámicamente -->
+            </div>
+            
+            <div class="text-center mt-5">
+                <a href="#" class="btn btn-outline-primary btn-lg">Ver Todos los Productos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ofertas Especiales -->
+    <section id="ofertas" class="offers-section">
+        <div class="container">
+            <div class="offer-banner">
+                <div class="offer-content">
+                    <h3>Hasta 50% OFF</h3>
+                    <p>En la colección de verano</p>
+                    <span class="offer-timer" id="offerTimer">00:00:00</span>
+                    <a href="calzados-ofertas.html" class="btn btn-light btn-lg">Aprovechar Oferta</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Kids -->
+    <section id="kids" class="kids-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Calzado Infantil</h2>
+                <p>Diseños divertidos y cómodos para los más pequeños</p>
+            </div>
+            
+            <div class="row g-4" id="kidsProductsGrid">
+                <!-- Productos kids se cargan dinámicamente -->
+            </div>
+            
+            <div class="kids-features">
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <i class="fas fa-child"></i>
+                            <h5>Materiales Seguros</h5>
+                            <p>Materiales hipoalergénicos y libres de tóxicos</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <i class="fas fa-shoe-prints"></i>
+                            <h5>Desarrollo Podológico</h5>
+                            <p>Diseñados para el correcto desarrollo de los pies</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="feature-card">
+                            <i class="fas fa-palette"></i>
+                            <h5>Diseños Divertidos</h5>
+                            <p>Colores y personajes que encantan a los niños</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonios -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Lo que dicen nuestras clientas</h2>
+                <p>Experiencias reales con Elegance Shoes</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Los zapatos son increíblemente cómodos y la calidad superó mis expectativas. ¡Volveré a comprar!"</p>
+                        <div class="client-info">
+                            <strong>María González</strong>
+                            <span>Cliente frecuente</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <p>"El envío fue rápido y el producto llegó perfectamente empaquetado. Muy profesionales."</p>
+                        <div class="client-info">
+                            <strong>Ana Martínez</strong>
+                            <span>Primera compra</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <p>"Encontré justo lo que buscaba. La atención al cliente es excelente y los precios justos."</p>
+                        <div class="client-info">
+                            <strong>Laura Rodríguez</strong>
+                            <span>Cliente desde 2022</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Pagos y Transferencias -->
+    <section id="pagos" class="payment-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Métodos de Pago</h2>
+                <p>Formas seguras de realizar tu compra</p>
+            </div>
+            
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <div class="payment-method-card">
+                        <div class="payment-header">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>Transferencia Bancaria</h4>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-detail">
+                                <span class="label">Alias:</span>
+                                <span class="value">ELEGANCE.SHOES</span>
+                                <button class="btn-copy" onclick="copyToClipboard('ELEGANCE.SHOES')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="payment-detail">
+                                <span class="label">CBU:</span>
+                                <span class="value">0170204660000008787653</span>
+                                <button class="btn-copy" onclick="copyToClipboard('0170204660000008787653')">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="payment-detail">
+                                <span class="label">Titular:</span>
+                                <span class="value">Elegance Shoes S.R.L.</span>
+                            </div>
+                            <div class="payment-instructions">
+                                <h5>Instrucciones:</h5>
+                                <ol>
+                                    <li>Realiza la transferencia con el monto total</li>
+                                    <li>Guarda el comprobante</li>
+                                    <li>Sube el comprobante en el formulario</li>
+                                    <li>Recibirás la confirmación por WhatsApp</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="payment-method-card">
+                        <div class="payment-header">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <h4>Subir Comprobante</h4>
+                        </div>
+                        <form id="voucherForm" class="voucher-form">
+                            <div class="mb-3">
+                                <label for="customerName" class="form-label">Nombre Completo *</label>
+                                <input type="text" class="form-control" id="customerName" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="customerEmail" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="customerEmail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="orderNumber" class="form-label">Número de Pedido</label>
+                                <input type="text" class="form-control" id="orderNumber" placeholder="Opcional">
+                            </div>
+                            <div class="mb-3">
+                                <label for="voucherFile" class="form-label">Comprobante de Pago *</label>
+                                <input type="file" class="form-control" id="voucherFile" 
+                                       accept=".jpg,.jpeg,.png,.pdf" required>
+                                <div class="form-text">Formatos aceptados: JPG, PNG, PDF (Máx. 5MB)</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="customerMessage" class="form-label">Mensaje Adicional</label>
+                                <textarea class="form-control" id="customerMessage" rows="3" 
+                                          placeholder="Información adicional sobre tu pedido..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg w-100">
+                                <i class="fas fa-paper-plane"></i> Enviar Comprobante
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="payment-security">
+                        <i class="fas fa-shield-alt"></i>
+                        <h5>Pago 100% Seguro</h5>
+                        <p>Todas las transacciones son verificadas y protegidas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nosotros -->
+    <section id="nosotros" class="about-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="about-content">
+                        <h2>Nuestra Pasión por el Calzado</h2>
+                        <p>En Elegance Shoes llevamos más de 10 años dedicados a ofrecer calzado femenino de la más alta calidad. Nos especializamos en combinar diseño, comfort y durabilidad.</p>
+                        
+                        <div class="about-features">
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Materiales de primera calidad</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Diseños exclusivos y modernos</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Comfort garantizado</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Atención personalizada</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="about-image">
+                        <img src="../img/icon-192x192.png" alt="Nuestra tienda" class="img-fluid rounded">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contacto" class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Contáctanos</h2>
+                <p>Estamos aquí para ayudarte</p>
+            </div>
+            
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h5>Dirección</h5>
+                                <p>Av. Principal 123, Local 45<br>Centro Comercial Elegance</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h5>Teléfono</h5>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h5>Email</h5>
+                                <p>info@eleganceshoes.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h5>Horario</h5>
+                                <p>Lun-Sáb: 9:00 - 20:00<br>Dom: 11:00 - 18:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <form class="contact-form">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Nombre completo" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" placeholder="Email" required>
+                            </div>
+                            <div class="col-12">
+                                <input type="text" class="form-control" placeholder="Asunto" required>
+                            </div>
+                            <div class="col-12">
+                                <textarea class="form-control" rows="5" placeholder="Mensaje" required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-lg">Enviar Mensaje</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <div class="footer-brand">
+                        <i class="fas fa-high-heel"></i>
+                        Elegance Shoes
+                    </div>
+                    <p class="footer-text">
+                        Tu destino para calzado femenino de calidad. Elegancia, comfort y estilo en cada paso.
+                    </p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Productos</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Tacones</a></li>
+                        <li><a href="#">Planos</a></li>
+                        <li><a href="#">Botas</a></li>
+                        <li><a href="#">Deportivos</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Empresa</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Nosotros</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Carreras</a></li>
+                        <li><a href="#">Prensa</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Soporte</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Contacto</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Envíos</a></li>
+                        <li><a href="#">Devoluciones</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-6">
+                    <h5>Legal</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Términos</a></li>
+                        <li><a href="#">Privacidad</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p>&copy; 2024 Elegance Shoes. Todos los derechos reservados.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="payment-methods">
+                            <i class="fab fa-cc-visa"></i>
+                            <i class="fab fa-cc-mastercard"></i>
+                            <i class="fab fa-cc-paypal"></i>
+                            <i class="fab fa-cc-apple-pay"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+ <!-- Cart Sidebar - Versión Corregida -->
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+        <h4>
+            <i class="fas fa-shopping-bag"></i>
+            Tu Carrito 
+            <span class="badge bg-primary" id="cartTotalCount">0</span>
+        </h4>
+        <button class="btn-close" id="closeCart"></button>
+    </div>
+    <div class="cart-body" id="cartBody">
+        <!-- Items del carrito se cargan aquí -->
+    </div>
+    <div class="cart-footer">
+        <div class="cart-summary">
+            <div class="cart-total-line">
+                <span>Subtotal:</span>
+                <span>$<span id="cartSubtotal">0.00</span></span>
+            </div>
+            <div class="cart-total-line">
+                <span>Envío:</span>
+                <span class="text-success">Gratis</span>
+            </div>
+            <div class="cart-total-line total">
+                <span>Total:</span>
+                <span>$<span id="cartTotal">0.00</span></span>
+            </div>
+        </div>
+        <div class="cart-actions">
+            <button class="btn btn-outline-danger" id="clearCart">
+                <i class="fas fa-trash"></i> Vaciar
+            </button>
+            <button class="btn btn-primary" id="sendWhatsApp">
+                <i class="fab fa-whatsapp"></i> Pedir por WhatsApp
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Overlay para cerrar carrito -->
+<div class="cart-overlay" id="cartOverlay"></div>
+
+<!-- Overlay para cerrar carrito -->
+<div class="cart-overlay" id="cartOverlay"></div>
+    <!-- Back to Top -->
+    <button class="btn-back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../shared/js/calzados/main.js"></script>
+    <script src="../../shared/js/calzados/cart.js"></script>
+    <script src="../../shared/js/calzados/contact-form.js"></script>
+    <script src="../../shared/js/calzados/social-floating.js"></script>
+    <script src="../../shared/js/calzados/quick-view.js"></script>
+    <script src="../../shared/js/calzados/wishlist.js"></script>
+</body>
+</html>

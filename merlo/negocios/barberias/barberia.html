@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BARBERÍA CLÁSICA - Estilo y Tradición</title>
+    <link rel="icon" href="../img/img-barberia/logo-barberia.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset mejorado para móvil */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fondo animado - colores barbería */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: linear-gradient(-45deg, #1a1a1a, #2d2d2d, #1a1a1a, #3a3a3a);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Container mejorado para móvil */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+            width: 100%;
+        }
+
+        /* Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1174&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        
+        @media (max-width: 480px) {
+            .splash-screen {
+                background-image: url('https://images.unsplash.com/photo-1562157873-818bc0726f68?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=627&q=80');
+            }
+        }
+
+        .splash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.5));
+            z-index: 1;
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 90%;
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        .splash-logo {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: bold;
+            color: #d4af37;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        .splash-slogan {
+            color: white;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
+            margin-bottom: 40px;
+            text-align: center;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+            font-weight: 300;
+        }
+
+        .loading-container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            margin-bottom: 15px;
+            color: #d4af37;
+            font-weight: 500;
+        }
+
+        .loading-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 0 auto 15px;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #d4af37, #f4d03f);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .loading-percentage {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .loading-message {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+            min-height: 24px;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(26, 26, 26, 0.95);
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            left: 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            transition: all 0.4s ease;
+        }
+
+        .logo img {
+            height: 60px;
+            transition: all 0.4s ease;
+            max-width: 100%;
+        }
+
+        header.scrolled .logo img {
+            height: 50px;
+        }
+
+        header.scrolled {
+            background: transparent;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+
+        .hours-btn {
+            background-color: transparent;
+            color: white;
+            border: 1px solid #d4af37;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .hours-btn:hover {
+            background-color: #d4af37;
+        }
+
+        .appointment-btn {
+            background-color: #d4af37;
+            color: #1a1a1a;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            white-space: nowrap;
+        }
+
+        .appointment-btn:hover {
+            background-color: #f4d03f;
+        }
+
+        /* Indicador de estado del comercio */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.7rem;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .status-indicator.open {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .status-indicator.closed {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-indicator.open .status-dot {
+            background-color: #2ecc71;
+            box-shadow: 0 0 5px #2ecc71;
+        }
+
+        .status-indicator.closed .status-dot {
+            background-color: #e74c3c;
+            box-shadow: 0 0 5px #e74c3c;
+        }
+
+        /* Botón de ofertas flotante - SOLAPA */
+        .offers-floating {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+        }
+
+        .offers-toggle {
+            background-color: #c0392b;
+            color: white;
+            padding: 12px 8px;
+            border-radius: 0 10px 10px 0;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 14px;
+            writing-mode: vertical-lr;
+            text-orientation: mixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-100%) translateY(-50%); }
+            to { transform: translateX(0) translateY(-50%); }
+        }
+
+        .offers-toggle:hover {
+            background-color: #e74c3c;
+            padding-left: 12px;
+        }
+
+        /* Barra de navegación inferior */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(26, 26, 26, 0.95);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 999;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #999;
+            text-decoration: none;
+            font-size: 10px;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 80px;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active {
+            color: #d4af37;
+        }
+
+        .nav-item:hover {
+            color: #d4af37;
+        }
+
+        /* Botón flotante redes sociales */
+        .social-floating {
+            position: fixed;
+            right: 10px;
+            bottom: 60px;
+            z-index: 100;
+        }
+
+        .social-toggle {
+            width: 50px;
+            height: 50px;
+            background-color: #d4af37;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .social-toggle i {
+            color: #1a1a1a;
+            font-size: 20px;
+        }
+
+        .social-toggle.active {
+            transform: rotate(45deg);
+        }
+
+        .social-buttons {
+            position: absolute;
+            bottom: 55px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .social-buttons.active {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .social-button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #1a1a1a;
+            color: white;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .social-button:hover {
+            transform: scale(1.1);
+        }
+
+        .social-button.facebook:hover {
+            background-color: #3b5998;
+        }
+
+        .social-button.instagram:hover {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .social-button.whatsapp:hover {
+            background-color: #25D366;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1174&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 150px 15px 80px;
+            margin-top: 80px;
+            width: 100%;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 3rem);
+            margin-bottom: 15px;
+            color: #d4af37;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Sección Servicios */
+        .services-section {
+            padding: 60px 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+        }
+
+        .services-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .services-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+        }
+
+        .services-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .services-text {
+            flex: 1;
+            width: 100%;
+        }
+
+        .services-text h2 {
+            font-size: clamp(1.5rem, 6vw, 2.5rem);
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+
+        .services-text p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .services-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1 1 45%;
+            min-width: 140px;
+        }
+
+        .feature i {
+            color: #d4af37;
+            font-size: 20px;
+        }
+
+        /* Secciones de menú */
+        .menu-section {
+            padding: 60px 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: clamp(1.8rem, 6vw, 2.5rem);
+            color: #333;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background-color: #d4af37;
+            margin: 10px auto;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            width: 100%;
+        }
+
+        /* Media queries mejoradas */
+        @media (max-width: 480px) {
+            .cards-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 0;
+            }
+            
+            .feature {
+                flex: 1 1 100%;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .services-content {
+                flex-direction: row;
+            }
+            
+            .services-text h2,
+            .services-text p {
+                text-align: left;
+            }
+        }
+
+        /* Estilos para tarjetas de servicios */
+        .service-card {
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            width: 100%;
+        }
+
+        .service-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .service-image {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .service-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .service-card:hover .service-image img {
+            transform: scale(1.1);
+        }
+
+        .service-details {
+            padding: 15px;
+        }
+
+        .service-name {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .service-description {
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            font-size: 0.9rem;
+        }
+
+        .service-price {
+            font-weight: bold;
+            color: #d4af37;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+        }
+
+        .book-service {
+            background-color: #d4af37;
+            color: #1a1a1a;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            width: 100%;
+            font-size: 0.9rem;
+        }
+
+        .book-service:hover {
+            background-color: #f4d03f;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(26, 26, 26, 0.95);
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+            margin-bottom: 60px;
+            width: 100%;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 15px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            color: #d4af37;
+        }
+
+        .copyright {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        /* Estilos para modales */
+        .modal, .offers-modal, .appointment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .modal-content, .offers-content, .appointment-content {
+            background-color: white;
+            width: 100%;
+            max-width: 500px;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            animation: modalAppear 0.3s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        /* Estilos para el modal de turnos */
+        .appointment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .appointment-content {
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            animation: modalAppear 0.5s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .appointment-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #d4af37, #f4d03f, #d4af37);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite linear;
+            z-index: 1;
+        }
+
+        .appointment-header {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 25px 30px 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            position: relative;
+        }
+
+        .appointment-title {
+            text-align: center;
+            color: #d4af37;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.5);
+            position: relative;
+        }
+
+        .appointment-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 10px auto 0;
+        }
+
+        .close-appointment {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .close-appointment:hover {
+            color: #d4af37;
+            background: rgba(212, 175, 55, 0.1);
+            transform: scale(1.1);
+        }
+
+        /* Formulario de turnos */
+        .appointment-form {
+            padding: 30px;
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .appointment-form h3 {
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            position: relative;
+        }
+
+        .appointment-form h3::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
+            margin: 10px auto 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: white;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+
+        .form-group input::placeholder, .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Sección de información de pago */
+        .payment-info {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .payment-info h3 {
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .payment-details {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .payment-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .payment-detail:last-child {
+            border-bottom: none;
+        }
+
+        .payment-label {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        .payment-value {
+            color: white;
+        }
+
+        .copy-btn {
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: #d4af37;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .copy-btn:hover {
+            background: rgba(212, 175, 55, 0.4);
+            color: white;
+        }
+
+        /* Carga de comprobante */
+        .receipt-upload {
+            background: rgba(26, 26, 26, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .receipt-upload h3 {
+            color: #d4af37;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(212, 175, 55, 0.4);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .upload-area:hover {
+            border-color: #d4af37;
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .upload-area i {
+            font-size: 3rem;
+            color: #d4af37;
+            margin-bottom: 15px;
+        }
+
+        .upload-text {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        #receiptPreview {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        #receiptPreview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        /* Botones de acción */
+        .appointment-actions {
+            padding: 25px 30px;
+            display: flex;
+            gap: 15px;
+            background: rgba(26, 26, 26, 0.9);
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .btn {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #d4af37, #f4d03f);
+            color: #1a1a1a;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Mensaje de confirmación */
+        .confirmation-message {
+            display: none;
+            text-align: center;
+            padding: 40px 30px;
+            background: rgba(26, 26, 26, 0.9);
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .confirmation-message i {
+            font-size: 4rem;
+            color: #27ae60;
+            margin-bottom: 20px;
+            animation: bounce 1s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        .confirmation-message h3 {
+            color: #27ae60;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .confirmation-message p {
+            color: white;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        /* Responsive para móviles */
+        @media (max-width: 768px) {
+            .appointment-content {
+                width: 95%;
+                margin: 20px;
+            }
+            
+            .appointment-header {
+                padding: 20px 25px 15px;
+            }
+            
+            .appointment-title {
+                font-size: 1.8rem;
+            }
+            
+            .appointment-form {
+                padding: 20px;
+            }
+            
+            .payment-info, .receipt-upload {
+                padding: 20px;
+            }
+            
+            .appointment-actions {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        @keyframes modalAppear {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Estilos específicos para móvil muy pequeños */
+        @media (max-width: 360px) {
+            .header-buttons {
+                gap: 5px;
+            }
+            
+            .hours-btn, .appointment-btn {
+                padding: 5px 8px;
+                font-size: 0.7rem;
+            }
+            
+            .status-indicator {
+                font-size: 0.6rem;
+                padding: 4px 8px;
+            }
+            
+            .nav-item {
+                font-size: 9px;
+            }
+            
+            .nav-item i {
+                font-size: 14px;
+            }
+        }
+
+        /* Prevenir desbordamiento horizontal */
+        img, video, iframe {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Asegurar que todos los contenedores principales ocupen el 100% */
+        main, section, .menu-section, .services-section, .hero {
+            width: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- Fondo animado -->
+    <div class="animated-bg"></div>
+
+    <!-- Splash Screen Mejorado -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-overlay"></div>
+        <div class="splash-content">
+            <div class="splash-logo">BARBERÍA CLÁSICA</div>
+            <div class="splash-slogan">Estilo y tradición en cada corte</div>
+            
+            <div class="loading-container">
+                <div class="loading-text">Cargando experiencia...</div>
+                <div class="loading-percentage" id="loadingPercentage">0%</div>
+                <div class="loading-bar-container">
+                    <div class="loading-bar" id="loadingBar"></div>
+                </div>
+                <div class="loading-message" id="loadingMessage">Preparando herramientas...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="mainHeader">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" id="mainLogo">
+                    <img src="../img/img-barberia/logo-barberia.png" alt="BARBERÍA CLÁSICA">
+                </div>
+                <div class="header-buttons">
+                    <!-- Indicador de estado del comercio -->
+                    <div class="status-indicator" id="statusIndicator">
+                        <span class="status-dot"></span>
+                        <span id="statusText">Abierto</span>
+                    </div>
+                    <button class="hours-btn" id="hoursBtn">
+                        <i class="far fa-clock"></i> Horarios
+                    </button>
+                    <button class="appointment-btn" id="appointmentBtn">
+                        <i class="fas fa-calendar-alt"></i> Sacar Turno
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Botón de ofertas flotante - SOLAPA -->
+    <div class="offers-floating">
+        <div class="offers-toggle" id="offersToggle">
+            OFERTAS
+        </div>
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="bottom-nav">
+        <a href="#inicio" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="#servicios" class="nav-item">
+            <i class="fas fa-cut"></i>
+            <span>Servicios</span>
+        </a>
+        <a href="#estilistas" class="nav-item">
+            <i class="fas fa-user-tie"></i>
+            <span>Estilistas</span>
+        </a>
+        <a href="#productos" class="nav-item">
+            <i class="fas fa-pump-soap"></i>
+            <span>Productos</span>
+        </a>
+        <a href="#galeria" class="nav-item">
+            <i class="fas fa-images"></i>
+            <span>Galería</span>
+        </a>
+        <a href="#contacto" class="nav-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>Contacto</span>
+        </a>
+    </div>
+
+    <!-- Botón flotante redes sociales -->
+    <div class="social-floating">
+        <div class="social-toggle" id="socialToggle">
+            <i class="fas fa-share-alt"></i>
+        </div>
+        <div class="social-buttons" id="socialButtons">
+            <a href="#" class="social-button facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-button instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-button whatsapp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="container">
+            <h1>BARBERÍA CLÁSICA</h1>
+            <p>Estilo y Tradición en Cada Corte</p>
+        </div>
+    </section>
+
+    <!-- Sección Servicios -->
+    <section class="services-section" id="servicios">
+        <div class="container">
+            <div class="services-content">
+                <div class="services-image">
+                    <img src="https://images.unsplash.com/photo-1621605815956-3ac3b5853b4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Servicios de Barbería">
+                </div>
+                <div class="services-text">
+                    <h2>Nuestros Servicios</h2>
+                    <p>En Barbería Clásica ofrecemos una experiencia única de cuidado masculino. Nuestros barberos profesionales utilizan técnicas tradicionales y productos de alta calidad para garantizar tu satisfacción.</p>
+                    <div class="services-features">
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Cortes modernos y clásicos</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Afeitado tradicional con navaja</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Arreglo de barba y bigote</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Tratamientos capilares</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Servicios -->
+    <section class="menu-section" id="servicios-lista">
+        <div class="container">
+            <h2 class="section-title">SERVICIOS DISPONIBLES</h2>
+            <p style="text-align: center; margin-bottom: 30px; color: #666;">Reserva tu turno para cualquiera de nuestros servicios</p>
+            <div class="cards-container" id="servicesContainer">
+                <!-- Las tarjetas de servicios se generarán dinámicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de turnos -->
+    <div class="appointment-modal" id="appointmentModal">
+        <div class="appointment-content">
+            <div class="appointment-header">
+                <h2 class="appointment-title">Reserva tu Turno</h2>
+                <button class="close-appointment" id="closeAppointment">&times;</button>
+            </div>
+            
+            <div class="appointment-form" id="appointmentForm">
+                <h3>Información del Turno</h3>
+                <div class="form-group">
+                    <label for="customerName">Nombre Completo *</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">Teléfono *</label>
+                    <input type="tel" id="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="serviceType">Servicio *</label>
+                    <select id="serviceType" required>
+                        <option value="">Selecciona un servicio</option>
+                        <option value="Corte de Cabello">Corte de Cabello - $800</option>
+                        <option value="Corte y Barba">Corte y Barba - $1200</option>
+                        <option value="Afeitado Clásico">Afeitado Clásico - $600</option>
+                        <option value="Arreglo de Barba">Arreglo de Barba - $500</option>
+                        <option value="Tratamiento Capilar">Tratamiento Capilar - $700</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentDate">Fecha *</label>
+                    <input type="date" id="appointmentDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="appointmentTime">Hora *</label>
+                    <select id="appointmentTime" required>
+                        <option value="">Selecciona una hora</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="additionalNotes">Notas Adicionales</label>
+                    <textarea id="additionalNotes" rows="3" placeholder="Especificaciones especiales para tu servicio..."></textarea>
+                </div>
+            </div>
+            
+            <div class="payment-info">
+                <h3>Información de Pago</h3>
+                <p style="color: white; text-align: center; margin-bottom: 15px;">Para confirmar tu turno, realiza una seña del 50% mediante transferencia:</p>
+                
+                <div class="payment-details">
+                    <div class="payment-detail">
+                        <span class="payment-label">Banco:</span>
+                        <span class="payment-value">Banco Provincia</span>
+                    </div>
+                    <div class="payment-detail">
+                        <span class="payment-label">Titular:</span>
+                        <span class="payment-value">BARBERÍA CLÁSICA S.R.L.</span>
+                    </div>
+                    <div class="payment-detail">
+                        <span class="payment-label">CBU:</span>
+                        <span class="payment-value" id="cbuValue">0140449503504789012345</span>
+                        <button class="copy-btn" onclick="copyToClipboard('cbuValue')">Copiar</button>
+                    </div>
+                    <div class="payment-detail">
+                        <span class="payment-label">Alias:</span>
+                        <span class="payment-value" id="aliasValue">BARBERIA.CLASICA</span>
+                        <button class="copy-btn" onclick="copyToClipboard('aliasValue')">Copiar</button>
+                    </div>
+                    <div class="payment-detail">
+                        <span class="payment-label">Monto a transferir:</span>
+                        <span class="payment-value" id="depositAmount">$0</span>
+                    </div>
+                </div>
+                
+                <p style="color: rgba(255, 255, 255, 0.7); font-size: 0.9rem; text-align: center;">
+                    * El resto se abona al momento del servicio
+                </p>
+            </div>
+            
+            <div class="receipt-upload">
+                <h3>Cargar Comprobante</h3>
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-file-upload"></i>
+                    <div class="upload-text">Haz clic para subir tu comprobante</div>
+                    <div class="upload-hint">Formatos aceptados: JPG, PNG, PDF (Máx. 5MB)</div>
+                </div>
+                <input type="file" id="receiptFile" accept=".jpg,.jpeg,.png,.pdf" style="display: none;">
+                <div id="receiptPreview"></div>
+            </div>
+            
+            <div class="confirmation-message" id="confirmationMessage">
+                <i class="fas fa-check-circle"></i>
+                <h3>¡Turno Reservado con Éxito!</h3>
+                <p>Hemos recibido tu reserva y te contactaremos pronto para confirmar los detalles.</p>
+                <p>¡Te esperamos en Barbería Clásica!</p>
+            </div>
+            
+            <div class="appointment-actions">
+                <button class="btn btn-secondary" id="cancelAppointment">Cancelar</button>
+                <button class="btn btn-primary" id="sendAppointment">Enviar Reserva por WhatsApp</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de horarios -->
+    <div class="modal" id="hoursModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeHoursModal">&times;</button>
+            <h2 class="modal-title">Horarios de Atención</h2>
+            <ul class="hours-list">
+                <li>
+                    <span class="day">Lunes a Viernes</span>
+                    <span class="time">09:00 - 19:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Sábados</span>
+                    <span class="time">09:00 - 14:00 hs</span>
+                </li>
+                <li>
+                    <span class="day">Domingos</span>
+                    <span class="time">Cerrado</span>
+                </li>
+            </ul>
+            <p style="margin-top: 20px; font-style: italic; text-align: center;">¡Te esperamos para darte el mejor servicio!</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">BARBERÍA CLÁSICA</div>
+                <p>Estilo y Tradición en Cada Corte</p>
+                <div class="footer-links">
+                    <a href="#inicio">Inicio</a>
+                    <a href="#servicios">Servicios</a>
+                    <a href="#estilistas">Estilistas</a>
+                    <a href="#productos">Productos</a>
+                    <a href="#galeria">Galería</a>
+                    <a href="#contacto">Contacto</a>
+                </div>
+                <p class="copyright">© 2023 BARBERÍA CLÁSICA. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales
+        let currentService = null;
+        let receiptFile = null;
+
+        // Datos de servicios
+        const servicesData = [
+            {
+                id: 1,
+                name: "Corte de Cabello",
+                description: "Corte moderno o clásico según tu preferencia, incluye lavado y peinado.",
+                image: "https://images.unsplash.com/photo-1567894340315-735d5c5f4b11?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                price: 800
+            },
+            {
+                id: 2,
+                name: "Corte y Barba",
+                description: "Combo completo que incluye corte de cabello y arreglo de barba profesional.",
+                image: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80",
+                price: 1200
+            },
+            {
+                id: 3,
+                name: "Afeitado Clásico",
+                description: "Afeitado tradicional con navaja, toallas calientes y productos premium.",
+                image: "https://images.unsplash.com/photo-1596704012031-4c0dc4230c40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                price: 600
+            },
+            {
+                id: 4,
+                name: "Arreglo de Barba",
+                description: "Perfilado, recorte y cuidado completo de tu barba con productos especializados.",
+                image: "https://images.unsplash.com/photo-1540337706094-da0b4a5b0c6f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                price: 500
+            },
+            {
+                id: 5,
+                name: "Tratamiento Capilar",
+                description: "Hidratación y nutrición profunda para un cabello saludable y con brillo.",
+                image: "https://images.unsplash.com/photo-1594736797933-d0ea3ff8db41?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                price: 700
+            },
+            {
+                id: 6,
+                name: "Servicio Completo",
+                description: "Experiencia premium que incluye corte, barba, mascarilla y masaje facial.",
+                image: "https://images.unsplash.com/photo-1622286342621-4bd786c2447c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                price: 1500
+            }
+        ];
+
+        // Horarios del comercio
+        const businessHours = {
+            "Lunes": { open: 9, close: 19 },
+            "Martes": { open: 9, close: 19 },
+            "Miercoles": { open: 9, close: 19 },
+            "Jueves": { open: 9, close: 19 },
+            "Viernes": { open: 9, close: 19 },
+            "Sabado": { open: 9, close: 14 },
+            "Domingo": { open: null, close: null } // Cerrado
+        };
+
+        // Inicialización cuando el DOM está listo
+        document.addEventListener('DOMContentLoaded', function() {
+            // Iniciar la barra de carga del splash screen
+            setTimeout(updateLoadingBar, 500);
+
+            // Generar tarjetas de servicios
+            generateServiceCards('servicesContainer', servicesData);
+
+            // Configurar botones de reserva
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('book-service')) {
+                    const card = e.target.closest('.service-card');
+                    const serviceName = card.querySelector('.service-name').textContent;
+                    const servicePrice = parseFloat(card.querySelector('.service-price').textContent.replace('$', ''));
+                    
+                    openAppointmentModal(serviceName, servicePrice);
+                }
+            });
+
+            // Configurar modal de turnos
+            document.getElementById('appointmentBtn').addEventListener('click', openAppointmentModal);
+            document.getElementById('closeAppointment').addEventListener('click', closeAppointmentModal);
+            document.getElementById('cancelAppointment').addEventListener('click', closeAppointmentModal);
+            document.getElementById('sendAppointment').addEventListener('click', sendAppointment);
+
+            // Configurar selección de servicio
+            document.getElementById('serviceType').addEventListener('change', updateDepositAmount);
+
+            // Configurar carga de comprobante
+            document.getElementById('uploadArea').addEventListener('click', function() {
+                document.getElementById('receiptFile').click();
+            });
+
+            document.getElementById('receiptFile').addEventListener('change', handleReceiptUpload);
+
+            // Configurar botón flotante de redes sociales
+            document.getElementById('socialToggle').addEventListener('click', function() {
+                this.classList.toggle('active');
+                document.getElementById('socialButtons').classList.toggle('active');
+            });
+
+            // Configurar modal de horarios
+            document.getElementById('hoursBtn').addEventListener('click', openHoursModal);
+            document.getElementById('closeHoursModal').addEventListener('click', closeHoursModal);
+
+            // Configurar navegación inferior
+            setupBottomNav();
+
+            // Configurar scroll para animaciones
+            setupScrollAnimations();
+
+            // Configurar scroll para cambiar tamaño del logo
+            window.addEventListener('scroll', function() {
+                const header = document.getElementById('mainHeader');
+                const scrollPosition = window.scrollY;
+                
+                if (scrollPosition > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Verificar estado del comercio
+            checkBusinessStatus();
+        });
+
+        // Función para actualizar la barra de carga del splash
+        function updateLoadingBar() {
+            const loadingBar = document.getElementById('loadingBar');
+            const loadingPercentage = document.getElementById('loadingPercentage');
+            const loadingMessage = document.getElementById('loadingMessage');
+            
+            let loadingProgress = 0;
+            const loadingMessages = [
+                "Preparando herramientas...",
+                "Organizando productos...",
+                "Afilando navajas...",
+                "Calentando toallas...",
+                "¡Casi listo! Ajustando los últimos detalles...",
+                "¡Listo para atenderte!"
+            ];
+
+            function update() {
+                loadingProgress += Math.random() * 15 + 5;
+                
+                if (loadingProgress > 100) {
+                    loadingProgress = 100;
+                }
+                
+                loadingBar.style.width = loadingProgress + '%';
+                loadingPercentage.textContent = Math.floor(loadingProgress) + '%';
+                
+                // Cambiar mensaje según el progreso
+                if (loadingProgress < 20) {
+                    loadingMessage.textContent = loadingMessages[0];
+                } else if (loadingProgress < 40) {
+                    loadingMessage.textContent = loadingMessages[1];
+                } else if (loadingProgress < 60) {
+                    loadingMessage.textContent = loadingMessages[2];
+                } else if (loadingProgress < 80) {
+                    loadingMessage.textContent = loadingMessages[3];
+                } else if (loadingProgress < 100) {
+                    loadingMessage.textContent = loadingMessages[4];
+                } else {
+                    loadingMessage.textContent = loadingMessages[5];
+                }
+                
+                if (loadingProgress < 100) {
+                    setTimeout(update, 300 + Math.random() * 400);
+                } else {
+                    setTimeout(() => {
+                        document.getElementById('splashScreen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('splashScreen').style.display = 'none';
+                        }, 800);
+                    }, 800);
+                }
+            }
+            
+            update();
+        }
+
+        // Función para generar tarjetas de servicios
+        function generateServiceCards(containerId, services) {
+            const container = document.getElementById(containerId);
+            
+            services.forEach(service => {
+                const card = document.createElement('div');
+                card.className = 'service-card';
+                
+                card.innerHTML = `
+                    <div class="service-image">
+                        <img src="${service.image}" alt="${service.name}">
+                    </div>
+                    <div class="service-details">
+                        <h3 class="service-name">${service.name}</h3>
+                        <p class="service-description">${service.description}</p>
+                        <div class="service-price">$${service.price}</div>
+                        <button class="book-service">Reservar Turno</button>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Verificar estado del comercio
+        function checkBusinessStatus() {
+            const now = new Date();
+            const currentDay = now.toLocaleDateString('es-ES', { weekday: 'long' });
+            const currentHour = now.getHours();
+            
+            // Capitalizar primera letra del día
+            const capitalizedDay = currentDay.charAt(0).toUpperCase() + currentDay.slice(1);
+            
+            const todayHours = businessHours[capitalizedDay];
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            
+            if (!todayHours || !todayHours.open) {
+                // Cerrado (como los domingos)
+                statusIndicator.className = 'status-indicator closed';
+                statusText.textContent = 'Cerrado';
+            } else if (currentHour >= todayHours.open && currentHour < todayHours.close) {
+                // Abierto
+                statusIndicator.className = 'status-indicator open';
+                statusText.textContent = 'Abierto';
+            } else {
+                // Cerrado
+                statusIndicator.className = 'status-indicator closed';
+                statusText.textContent = 'Cerrado';
+            }
+        }
+
+        // Configurar navegación inferior
+        function setupBottomNav() {
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remover clase active de todos los items
+                    navItems.forEach(navItem => {
+                        navItem.classList.remove('active');
+                    });
+                    
+                    // Agregar clase active al item clickeado
+                    this.classList.add('active');
+                    
+                    // Obtener el destino del enlace
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    // Desplazarse a la sección
+                    if (targetSection) {
+                        window.scrollTo({
+                            top: targetSection.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // Configurar animaciones al hacer scroll
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observar todas las tarjetas de servicios
+            document.querySelectorAll('.service-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Funciones del modal de turnos
+        function openAppointmentModal(serviceName = null, servicePrice = null) {
+            document.getElementById('appointmentModal').style.display = 'flex';
+            
+            // Si se pasó un servicio específico, establecerlo
+            if (serviceName && servicePrice) {
+                document.getElementById('serviceType').value = serviceName;
+                updateDepositAmount();
+            }
+        }
+
+        function closeAppointmentModal() {
+            document.getElementById('appointmentModal').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'none';
+            
+            // Limpiar formulario
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('serviceType').value = '';
+            document.getElementById('appointmentDate').value = '';
+            document.getElementById('appointmentTime').value = '';
+            document.getElementById('additionalNotes').value = '';
+            
+            // Limpiar comprobante
+            document.getElementById('receiptPreview').innerHTML = '';
+            document.getElementById('receiptFile').value = '';
+            receiptFile = null;
+        }
+
+        function updateDepositAmount() {
+            const serviceType = document.getElementById('serviceType');
+            const depositAmount = document.getElementById('depositAmount');
+            
+            if (serviceType.value) {
+                let price = 0;
+                
+                switch(serviceType.value) {
+                    case 'Corte de Cabello':
+                        price = 800;
+                        break;
+                    case 'Corte y Barba':
+                        price = 1200;
+                        break;
+                    case 'Afeitado Clásico':
+                        price = 600;
+                        break;
+                    case 'Arreglo de Barba':
+                        price = 500;
+                        break;
+                    case 'Tratamiento Capilar':
+                        price = 700;
+                        break;
+                }
+                
+                const deposit = price * 0.5; // 50% de seña
+                depositAmount.textContent = `$${deposit}`;
+            } else {
+                depositAmount.textContent = '$0';
+            }
+        }
+
+        function handleReceiptUpload(event) {
+            const file = event.target.files[0];
+            const preview = document.getElementById('receiptPreview');
+            
+            if (file) {
+                // Validar tipo de archivo
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Por favor, sube un archivo JPG, PNG o PDF.');
+                    return;
+                }
+                
+                // Validar tamaño (5MB máximo)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('El archivo es demasiado grande. Máximo 5MB.');
+                    return;
+                }
+                
+                receiptFile = file;
+                
+                // Mostrar vista previa para imágenes
+                if (file.type.includes('image')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        preview.innerHTML = `<img src="${e.target.result}" alt="Comprobante">`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.innerHTML = `<p style="color: white;">Archivo PDF: ${file.name}</p>`;
+                }
+            }
+        }
+
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(function() {
+                showNotification('¡Copiado al portapapeles!');
+            }, function(err) {
+                console.error('Error al copiar: ', err);
+            });
+        }
+
+        function sendAppointment() {
+            // Validar formulario
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const service = document.getElementById('serviceType').value;
+            const date = document.getElementById('appointmentDate').value;
+            const time = document.getElementById('appointmentTime').value;
+            const notes = document.getElementById('additionalNotes').value;
+            
+            if (!name || !phone || !service || !date || !time) {
+                alert('Por favor completa todos los campos obligatorios (*)');
+                return;
+            }
+            
+            if (!receiptFile) {
+                alert('Por favor, sube el comprobante de la transferencia');
+                return;
+            }
+            
+            // Construir mensaje para WhatsApp
+            let message = `¡Hola! Quiero reservar un turno:\n\n`;
+            message += `*Nombre:* ${name}\n`;
+            message += `*Teléfono:* ${phone}\n`;
+            message += `*Servicio:* ${service}\n`;
+            message += `*Fecha:* ${date}\n`;
+            message += `*Hora:* ${time}\n`;
+            
+            if (notes) {
+                message += `*Notas:* ${notes}\n`;
+            }
+            
+            message += `\n*Información de pago:*\n`;
+            message += `- Seña del 50% realizada\n`;
+            message += `- Comprobante adjunto\n\n`;
+            message += `¡Espero confirmación de mi turno!`;
+            
+            // Codificar mensaje para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Abrir WhatsApp (reemplaza el número con el de tu barbería)
+            const whatsappURL = `https://wa.me/5491112345678?text=${encodedMessage}`;
+            
+            // Si hay un archivo, intentar enviarlo (esto es más complejo y requeriría una API)
+            // Por ahora, solo abrimos WhatsApp con el mensaje
+            window.open(whatsappURL, '_blank');
+            
+            // Mostrar mensaje de confirmación
+            document.getElementById('appointmentForm').style.display = 'none';
+            document.getElementById('paymentInfo').style.display = 'none';
+            document.getElementById('receiptUpload').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'block';
+            
+            // Limpiar después de enviar
+            setTimeout(() => {
+                closeAppointmentModal();
+            }, 5000);
+        }
+
+        // Funciones del modal de horarios
+        function openHoursModal() {
+            document.getElementById('hoursModal').style.display = 'flex';
+        }
+
+        function closeHoursModal() {
+            document.getElementById('hoursModal').style.display = 'none';
+        }
+
+        function showNotification(message) {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #27ae60;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                z-index: 3000;
+                transition: all 0.3s ease;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Eliminar notificación después de 3 segundos
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

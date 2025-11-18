@@ -4,13 +4,13 @@ const fs = require('fs');
 // CONFIGURACIÓN - EDITA ESTO CUANDO AGREGues LOCALIDADES
 const baseUrl = 'https://www.tubarrioaunclik.com';
 const localidades = [
-    'castelar', 'ituzaingo', 'moron', 'ciudadela', 
-    'merlo', 'haedo', 'ramos-mejia'
+    'castelar', 'ituzaingo', 'moron', 
+    'merlo'
     // PARA AGREGAR NUEVAS LOCALIDADES, AÑÁDELAS AQUÍ ↓
     // 'san-justo', 'villa-luzuriaga', 'el-palomar'
 ];
 const paginas = [
-    '', 'comunidad.html', 'emprendimientos.html', 
+    '', 'comunidad-de-ofertas.html', 'emprendimientos.html', 
     'oficios-profesiones.html', 'inscripcion.html'
 ];
 
