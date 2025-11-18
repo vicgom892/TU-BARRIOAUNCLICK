@@ -7,7 +7,7 @@
     <link rel="icon" href="../img/panaderia/logo-panaderia.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Reset y estilos base (igual que en el ejemplo original) */
+        /* Reset y estilos base */
         * {
             margin: 0;
             padding: 0;
@@ -28,6 +28,12 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
 
         /* Fondo animado - colores para panadería */
@@ -57,6 +63,93 @@
             --text-color: #5c3a21;
         }
 
+        /* Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #5c3a21 0%, #8b4513 50%, #a0522d 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            color: white;
+            text-align: center;
+        }
+
+        .splash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .splash-logo {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+
+        .splash-logo span {
+            color: var(--primary-color);
+        }
+
+        .splash-slogan {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: var(--accent-color);
+        }
+
+        .loading-container {
+            margin-top: 30px;
+        }
+
+        .loading-text {
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .loading-percentage {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .loading-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .loading-message {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
         /* Header - colores panadería */
         header {
             background-color: rgba(139, 69, 19, 0.95);
@@ -69,6 +162,43 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
             left: 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #4ade80;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
         .hours-btn {
@@ -87,11 +217,37 @@
             background-color: var(--primary-color);
         }
 
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
         .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
             background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
         }
 
         /* Botón de ofertas flotante - colores panadería */
+        .offers-floating {
+            position: fixed;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            z-index: 999;
+        }
+
         .offers-toggle {
             background-color: var(--secondary-color);
             color: white;
@@ -109,6 +265,11 @@
             justify-content: center;
             height: 120px;
             animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%) translateY(-50%); }
+            to { transform: translateX(0) translateY(-50%); }
         }
 
         .offers-toggle:hover {
@@ -130,6 +291,21 @@
             box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
         }
 
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            margin-bottom: 3px;
+        }
+
         .nav-item.active {
             color: var(--primary-color);
         }
@@ -139,8 +315,77 @@
         }
 
         /* Botón flotante redes sociales - colores panadería */
+        .social-floating {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            z-index: 998;
+        }
+
         .social-toggle {
             background-color: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .social-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .social-buttons {
+            position: absolute;
+            bottom: 60px;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .social-buttons.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .social-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-button.facebook {
+            background-color: #3b5998;
+        }
+
+        .social-button.instagram {
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+        }
+
+        .social-button.whatsapp {
+            background-color: #25d366;
+        }
+
+        .social-button:hover {
+            transform: scale(1.1);
         }
 
         /* Hero Section - colores panadería */
@@ -161,7 +406,82 @@
             color: var(--primary-color);
         }
 
-        /* Secciones de productos - colores panadería */
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Sección Delivery */
+        .delivery-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+
+        .delivery-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .delivery-image {
+            flex: 1;
+        }
+
+        .delivery-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .delivery-text {
+            flex: 1;
+        }
+
+        .delivery-text h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .delivery-text p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .delivery-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        /* Secciones de productos */
+        .menu-section {
+            padding: 80px 0;
+            background-color: #f9f9f9;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
         .section-title:after {
             content: '';
             display: block;
@@ -169,6 +489,78 @@
             height: 4px;
             background-color: var(--primary-color);
             margin: 10px auto;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .card-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .card-sizes {
+            margin-bottom: 15px;
+        }
+
+        .size-option {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .size-name {
+            font-weight: 500;
+        }
+
+        .size-price {
+            color: var(--primary-color);
+            font-weight: bold;
         }
 
         .add-to-cart {
@@ -202,80 +594,534 @@
             font-size: 1.5rem;
             font-weight: bold;
             color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
         }
 
         .footer-links a:hover {
             color: var(--primary-color);
         }
 
-        /* Resto de estilos igual que el ejemplo original... */
-        
-        /* Estilos para modales - colores panadería */
-        .cart-content::before {
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--primary-color));
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
         }
 
-        .cart-title {
+        /* Modales */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
             color: var(--primary-color);
         }
 
-        .close-cart:hover {
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+
+        .hours-list {
+            list-style: none;
+        }
+
+        .hours-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .day {
+            font-weight: 500;
+        }
+
+        .time {
             color: var(--primary-color);
+            font-weight: bold;
         }
 
-        .item-size {
-            color: var(--primary-color);
+        /* Modal de ofertas */
+        .offers-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
         }
 
-        .quantity-btn {
-            background: var(--primary-color);
+        .offers-modal.show {
+            display: flex;
         }
 
-        .btn-primary {
-            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+        .offers-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
-        /* Estilos para el modal de ofertas - colores panadería */
         .offers-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
             background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--primary-color));
+            border-radius: 10px 10px 0 0;
         }
 
-        .offers-title {
-            color: var(--primary-color);
+        .close-offers {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
         }
 
         .close-offers:hover {
             color: var(--primary-color);
         }
 
+        .offers-title {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+
+        .offers-carousel {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .offers-slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .offer-slide {
+            min-width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .offer-image {
+            height: 200px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .offer-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .offer-badge {
+            display: inline-block;
             background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .offer-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .offer-description {
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .offer-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .countdown-value {
-            color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            margin-top: 5px;
+            color: #666;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
         }
 
         .carousel-btn {
             background: rgba(212, 167, 106, 0.8);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
         }
 
         .carousel-btn:hover {
             background: var(--primary-color);
         }
 
-        /* Media queries igual que el ejemplo original */
+        /* Carrito de Compras */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-modal.show {
+            display: flex;
+        }
+
+        .cart-content {
+            background: white;
+            border-radius: 10px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .cart-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--primary-color));
+            border-radius: 10px 10px 0 0;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-title {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.3s;
+        }
+
+        .close-cart:hover {
+            color: var(--primary-color);
+        }
+
+        .cart-items {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .item-size {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .item-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quantity-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .item-quantity {
+            font-weight: bold;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .item-price {
+            font-weight: bold;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .remove-item {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin-left: 10px;
+        }
+
+        .cart-total {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            text-align: right;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .checkout-form {
+            padding: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            color: white;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .confirmation-message {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+
+        .confirmation-message i {
+            font-size: 4rem;
+            color: #4ade80;
+            margin-bottom: 15px;
+        }
+
+        .confirmation-message h3 {
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        /* Media queries */
         @media (max-width: 480px) {
             .cards-container {
                 grid-template-columns: 1fr;
             }
             
             .container {
-                padding: 0;
+                padding: 0 10px;
             }
             
             .feature {
                 flex: 1 1 100%;
+            }
+
+            .delivery-features {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-options {
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
@@ -288,9 +1134,25 @@
             .delivery-text p {
                 text-align: left;
             }
+
+            .feature {
+                flex: 1 1 45%;
+            }
         }
 
-        /* Resto de estilos igual que el ejemplo original... */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 120px 15px 60px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .splash-logo {
+                font-size: 2.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -652,7 +1514,16 @@
                         { name: "Grande", price: 8.50 }
                     ]
                 },
-                // Más productos...
+                {
+                    id: 3,
+                    name: "Pan de Centeno",
+                    description: "Sabor intenso y textura densa, perfecto para acompañar quesos y embutidos.",
+                    image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "Mediano", price: 5.50 },
+                        { name: "Grande", price: 9.00 }
+                    ]
+                }
             ],
             facturas: [
                 {
@@ -665,10 +1536,113 @@
                         { name: "Docena", price: 15.00 }
                     ]
                 },
-                // Más productos...
+                {
+                    id: 102,
+                    name: "Facturas Variadas",
+                    description: "Selección de vigilantes, cañoncitos, bolas de fraile y otras delicias.",
+                    image: "https://images.unsplash.com/photo-1558961367-2e31f455df2a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "Media docena", price: 7.50 },
+                        { name: "Docena", price: 14.00 }
+                    ]
+                }
             ],
-            // Más categorías...
+            tortas: [
+                {
+                    id: 201,
+                    name: "Torta Brownie",
+                    description: "Delicioso brownie con nueces y chips de chocolate, cubierto con glaseado.",
+                    image: "https://images.unsplash.com/photo-1564355808539-22fda35bed7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "Porción", price: 3.50 },
+                        { name: "Torta entera", price: 25.00 }
+                    ]
+                },
+                {
+                    id: 202,
+                    name: "Cheesecake",
+                    description: "Suave y cremoso cheesecake con base de galletitas y salsa de frutos rojos.",
+                    image: "https://images.unsplash.com/photo-1567306301408-9b74779a11af?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "Porción", price: 4.00 },
+                        { name: "Torta entera", price: 28.00 }
+                    ]
+                }
+            ],
+            sandwiches: [
+                {
+                    id: 301,
+                    name: "Sándwich de Jamón y Queso",
+                    description: "Clásico sándwich con jamón cocido, queso y mayonesa en pan fresco.",
+                    image: "https://images.unsplash.com/photo-1567234669003-dce7a7a88821?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "Individual", price: 4.50 }
+                    ]
+                },
+                {
+                    id: 302,
+                    name: "Sándwich de Milanesa",
+                    description: "Crujiente milanesa con lechuga, tomate y mayonesa en pan casero.",
+                    image: "https://images.unsplash.com/photo-1551504734-5ee1c4a1479b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "Individual", price: 6.50 }
+                    ]
+                }
+            ],
+            bebidas: [
+                {
+                    id: 401,
+                    name: "Café",
+                    description: "Café recién preparado, disponible en diferentes variedades.",
+                    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "Chico", price: 2.00 },
+                        { name: "Mediano", price: 2.50 },
+                        { name: "Grande", price: 3.00 }
+                    ]
+                },
+                {
+                    id: 402,
+                    name: "Jugo de Naranja",
+                    description: "Jugo de naranja natural recién exprimido.",
+                    image: "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                    sizes: [
+                        { name: "Vaso", price: 3.50 }
+                    ]
+                }
+            ]
         };
+
+        // Ofertas especiales
+        const offersData = [
+            {
+                id: 1,
+                title: "Combo Desayuno Familiar",
+                description: "Incluye 1 docena de facturas, 1 pan de campo mediano y 1 litro de jugo de naranja.",
+                image: "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                price: 22.00,
+                originalPrice: 28.00,
+                endTime: "2023-12-31T23:59:59"
+            },
+            {
+                id: 2,
+                title: "Promo Medialunas",
+                description: "Llevá 2 docenas de medialunas de manteca y pagá solo 1 y media.",
+                image: "https://images.unsplash.com/photo-1555507038-44d8c2d0e9c2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                price: 22.50,
+                originalPrice: 30.00,
+                endTime: "2023-12-25T23:59:59"
+            },
+            {
+                id: 3,
+                title: "Torta + Café",
+                description: "Porción de torta a elección + café mediano a un precio especial.",
+                image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                price: 6.00,
+                originalPrice: 7.50,
+                endTime: "2023-12-20T23:59:59"
+            }
+        ];
 
         // Horarios del comercio
         const businessHours = {
@@ -681,9 +1655,6 @@
             "Domingo": { open: 8, close: 13 }
         };
 
-        // El resto del JavaScript es similar al ejemplo original
-        // con adaptaciones menores para panadería
-
         // Inicialización cuando el DOM está listo
         document.addEventListener('DOMContentLoaded', function() {
             // Iniciar la barra de carga del splash screen
@@ -692,10 +1663,21 @@
             // Generar tarjetas de productos
             generateProductCards('panesContainer', menuData.panes);
             generateProductCards('facturasContainer', menuData.facturas);
-            // Generar más categorías...
+            generateProductCards('tortasContainer', menuData.tortas);
+            generateProductCards('sandwichesContainer', menuData.sandwiches);
+            generateProductCards('drinksContainer', menuData.bebidas);
 
-            // El resto de la inicialización igual que el ejemplo original
-            // con cambios en los mensajes para panadería
+            // Generar ofertas
+            generateOffers();
+
+            // Actualizar estado del comercio
+            updateBusinessStatus();
+
+            // Configurar event listeners
+            setupEventListeners();
+
+            // Iniciar carrusel de ofertas
+            startOffersCarousel();
         });
 
         // Función para actualizar la barra de carga del splash
@@ -754,8 +1736,495 @@
             update();
         }
 
-        // El resto de las funciones JavaScript son similares
-        // al ejemplo original con cambios menores en textos
+        // Función para generar tarjetas de productos
+        function generateProductCards(containerId, products) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                
+                let sizesHTML = '';
+                if (product.sizes && product.sizes.length > 0) {
+                    sizesHTML = `
+                        <div class="card-sizes">
+                            ${product.sizes.map(size => `
+                                <div class="size-option">
+                                    <span class="size-name">${size.name}</span>
+                                    <span class="size-price">$${size.price.toFixed(2)}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div class="card-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${product.name}</h3>
+                        <p class="card-description">${product.description}</p>
+                        ${sizesHTML}
+                        <button class="add-to-cart" data-product='${JSON.stringify(product)}'>
+                            Agregar al Carrito
+                        </button>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+
+            // Agregar event listeners a los botones de agregar al carrito
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                button.addEventListener('click', function() {
+                    const product = JSON.parse(this.getAttribute('data-product'));
+                    addToCart(product);
+                });
+            });
+        }
+
+        // Función para generar ofertas
+        function generateOffers() {
+            const offersSlides = document.getElementById('offersSlides');
+            if (!offersSlides) return;
+
+            offersSlides.innerHTML = '';
+
+            offersData.forEach(offer => {
+                const slide = document.createElement('div');
+                slide.className = 'offer-slide';
+                
+                // Calcular tiempo restante
+                const endTime = new Date(offer.endTime).getTime();
+                const now = new Date().getTime();
+                const timeLeft = endTime - now;
+                
+                let countdownHTML = '';
+                if (timeLeft > 0) {
+                    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                    
+                    countdownHTML = `
+                        <div class="countdown">
+                            <div class="countdown-item">
+                                <div class="countdown-value">${days}</div>
+                                <div class="countdown-label">DÍAS</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value">${hours}</div>
+                                <div class="countdown-label">HORAS</div>
+                            </div>
+                            <div class="countdown-item">
+                                <div class="countdown-value">${minutes}</div>
+                                <div class="countdown-label">MIN</div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                slide.innerHTML = `
+                    <div class="offer-image">
+                        <img src="${offer.image}" alt="${offer.title}">
+                    </div>
+                    <div class="offer-badge">OFERTA ESPECIAL</div>
+                    <h3 class="offer-title">${offer.title}</h3>
+                    <p class="offer-description">${offer.description}</p>
+                    <div class="offer-price">
+                        <span style="text-decoration: line-through; color: #999; margin-right: 10px;">$${offer.originalPrice.toFixed(2)}</span>
+                        <span>$${offer.price.toFixed(2)}</span>
+                    </div>
+                    ${countdownHTML}
+                    <button class="btn btn-primary" style="margin-top: 10px;">Aprovechar Oferta</button>
+                `;
+
+                offersSlides.appendChild(slide);
+            });
+        }
+
+        // Función para actualizar el estado del comercio
+        function updateBusinessStatus() {
+            const now = new Date();
+            const day = now.toLocaleDateString('es-ES', { weekday: 'long' });
+            const hour = now.getHours();
+            
+            const statusIndicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const statusDot = document.querySelector('.status-dot');
+            
+            if (businessHours[day]) {
+                const { open, close } = businessHours[day];
+                
+                if (hour >= open && hour < close) {
+                    statusText.textContent = 'Abierto';
+                    statusDot.style.backgroundColor = '#4ade80';
+                } else {
+                    statusText.textContent = 'Cerrado';
+                    statusDot.style.backgroundColor = '#ef4444';
+                }
+            } else {
+                statusText.textContent = 'Cerrado';
+                statusDot.style.backgroundColor = '#ef4444';
+            }
+        }
+
+        // Función para configurar event listeners
+        function setupEventListeners() {
+            // Botón de horarios
+            document.getElementById('hoursBtn').addEventListener('click', function() {
+                document.getElementById('hoursModal').classList.add('show');
+            });
+
+            // Cerrar modal de horarios
+            document.getElementById('closeHoursModal').addEventListener('click', function() {
+                document.getElementById('hoursModal').classList.remove('show');
+            });
+
+            // Botón de ofertas
+            document.getElementById('offersToggle').addEventListener('click', function() {
+                document.getElementById('offersModal').classList.add('show');
+            });
+
+            // Cerrar modal de ofertas
+            document.getElementById('closeOffersModal').addEventListener('click', function() {
+                document.getElementById('offersModal').classList.remove('show');
+            });
+
+            // Icono del carrito
+            document.getElementById('cartIcon').addEventListener('click', function() {
+                document.getElementById('cartModal').classList.add('show');
+                updateCartDisplay();
+            });
+
+            // Cerrar carrito
+            document.getElementById('closeCart').addEventListener('click', function() {
+                document.getElementById('cartModal').classList.remove('show');
+            });
+
+            // Botón de redes sociales
+            document.getElementById('socialToggle').addEventListener('click', function() {
+                document.getElementById('socialButtons').classList.toggle('show');
+            });
+
+            // Navegación suave
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        // Cerrar menú de redes sociales si está abierto
+                        document.getElementById('socialButtons').classList.remove('show');
+                        
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Botones del carrusel de ofertas
+            document.getElementById('prevOffer').addEventListener('click', function() {
+                navigateOffers(-1);
+            });
+
+            document.getElementById('nextOffer').addEventListener('click', function() {
+                navigateOffers(1);
+            });
+
+            // Botones del carrito
+            document.getElementById('checkoutBtn').addEventListener('click', function() {
+                document.getElementById('checkoutForm').style.display = 'block';
+                document.querySelector('.cart-items').style.display = 'none';
+                document.querySelector('.cart-total').style.display = 'none';
+                this.style.display = 'none';
+                document.getElementById('continueShopping').style.display = 'none';
+            });
+
+            document.getElementById('continueShopping').addEventListener('click', function() {
+                document.getElementById('cartModal').classList.remove('show');
+            });
+
+            document.getElementById('sendOrder').addEventListener('click', function() {
+                sendOrder();
+            });
+        }
+
+        // Función para iniciar carrusel de ofertas
+        function startOffersCarousel() {
+            offersInterval = setInterval(() => {
+                navigateOffers(1);
+            }, 5000);
+        }
+
+        // Función para navegar ofertas
+        function navigateOffers(direction) {
+            const slides = document.getElementById('offersSlides');
+            const totalSlides = offersData.length;
+            
+            currentOfferSlide += direction;
+            
+            if (currentOfferSlide >= totalSlides) {
+                currentOfferSlide = 0;
+            } else if (currentOfferSlide < 0) {
+                currentOfferSlide = totalSlides - 1;
+            }
+            
+            slides.style.transform = `translateX(-${currentOfferSlide * 100}%)`;
+            
+            // Reiniciar el intervalo
+            clearInterval(offersInterval);
+            startOffersCarousel();
+        }
+
+        // Función para agregar producto al carrito
+        function addToCart(product, selectedSize = null) {
+            // Si no se especifica tamaño, usar el primero disponible
+            const size = selectedSize || (product.sizes && product.sizes[0]) || { name: 'Único', price: 0 };
+            
+            const cartItem = {
+                id: product.id,
+                name: product.name,
+                size: size.name,
+                price: size.price,
+                quantity: 1
+            };
+            
+            // Verificar si el producto ya está en el carrito
+            const existingItemIndex = cart.findIndex(item => 
+                item.id === cartItem.id && item.size === cartItem.size
+            );
+            
+            if (existingItemIndex !== -1) {
+                cart[existingItemIndex].quantity += 1;
+            } else {
+                cart.push(cartItem);
+            }
+            
+            updateCartCount();
+            
+            // Mostrar confirmación
+            showAddToCartConfirmation(product.name);
+        }
+
+        // Función para actualizar contador del carrito
+        function updateCartCount() {
+            const cartCount = document.getElementById('cartCount');
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+        }
+
+        // Función para mostrar confirmación de agregado al carrito
+        function showAddToCartConfirmation(productName) {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: var(--primary-color);
+                color: white;
+                padding: 15px 20px;
+                border-radius: 5px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 1001;
+                animation: slideInRight 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-check-circle" style="margin-right: 10px;"></i>
+                ${productName} agregado al carrito
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remover después de 3 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+            
+            // Agregar estilos de animación si no existen
+            if (!document.getElementById('notificationStyles')) {
+                const style = document.createElement('style');
+                style.id = 'notificationStyles';
+                style.textContent = `
+                    @keyframes slideInRight {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOutRight {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Función para actualizar visualización del carrito
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            
+            cartItems.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; padding: 20px;">Tu carrito está vacío</p>';
+                cartTotal.textContent = '0.00';
+                return;
+            }
+            
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-name">${item.name}</div>
+                        <div class="item-size">${item.size}</div>
+                    </div>
+                    <div class="item-controls">
+                        <button class="quantity-btn minus" data-index="${index}">-</button>
+                        <span class="item-quantity">${item.quantity}</span>
+                        <button class="quantity-btn plus" data-index="${index}">+</button>
+                        <span class="item-price">$${itemTotal.toFixed(2)}</span>
+                        <button class="remove-item" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                cartItems.appendChild(cartItem);
+            });
+            
+            cartTotal.textContent = total.toFixed(2);
+            
+            // Agregar event listeners a los botones de cantidad
+            document.querySelectorAll('.quantity-btn.minus').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    updateQuantity(index, -1);
+                });
+            });
+            
+            document.querySelectorAll('.quantity-btn.plus').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    updateQuantity(index, 1);
+                });
+            });
+            
+            // Agregar event listeners a los botones de eliminar
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    removeFromCart(index);
+                });
+            });
+        }
+
+        // Función para actualizar cantidad de producto en el carrito
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            
+            updateCartCount();
+            updateCartDisplay();
+        }
+
+        // Función para eliminar producto del carrito
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartCount();
+            updateCartDisplay();
+        }
+
+        // Función para enviar pedido por WhatsApp
+        function sendOrder() {
+            const customerName = document.getElementById('customerName').value;
+            const customerPhone = document.getElementById('customerPhone').value;
+            const deliveryAddress = document.getElementById('deliveryAddress').value;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            const additionalNotes = document.getElementById('additionalNotes').value;
+            
+            // Validar campos obligatorios
+            if (!customerName || !customerPhone || !deliveryAddress || !paymentMethod) {
+                alert('Por favor, completa todos los campos obligatorios.');
+                return;
+            }
+            
+            // Construir mensaje para WhatsApp
+            let message = `¡Hola! Quiero hacer un pedido:\n\n`;
+            
+            cart.forEach(item => {
+                message += `• ${item.quantity}x ${item.name} (${item.size}) - $${(item.price * item.quantity).toFixed(2)}\n`;
+            });
+            
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            message += `\nTotal: $${total.toFixed(2)}\n\n`;
+            message += `Información de entrega:\n`;
+            message += `Nombre: ${customerName}\n`;
+            message += `Teléfono: ${customerPhone}\n`;
+            message += `Dirección: ${deliveryAddress}\n`;
+            message += `Método de pago: ${paymentMethod.value}\n`;
+            
+            if (additionalNotes) {
+                message += `Notas adicionales: ${additionalNotes}\n`;
+            }
+            
+            // Codificar mensaje para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Número de WhatsApp (reemplazar con el número real)
+            const whatsappNumber = '5491156781234';
+            
+            // Abrir WhatsApp
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+            
+            // Mostrar mensaje de confirmación
+            document.getElementById('checkoutForm').style.display = 'none';
+            document.getElementById('confirmationMessage').style.display = 'block';
+            
+            // Limpiar carrito después de 3 segundos
+            setTimeout(() => {
+                cart = [];
+                updateCartCount();
+                document.getElementById('cartModal').classList.remove('show');
+                document.getElementById('confirmationMessage').style.display = 'none';
+                document.getElementById('checkoutForm').style.display = 'block';
+                document.querySelector('.cart-items').style.display = 'block';
+                document.querySelector('.cart-total').style.display = 'block';
+                document.getElementById('checkoutBtn').style.display = 'block';
+                document.getElementById('continueShopping').style.display = 'block';
+                
+                // Limpiar formulario
+                document.getElementById('customerName').value = '';
+                document.getElementById('customerPhone').value = '';
+                document.getElementById('deliveryAddress').value = '';
+                document.getElementById('additionalNotes').value = '';
+                document.querySelectorAll('input[name="payment"]').forEach(radio => {
+                    radio.checked = false;
+                });
+            }, 3000);
+        }
     </script>
 </body>
 </html>
