@@ -2,8 +2,8 @@
   "name": "Tu Barrio a un Click",
   "short_name": "BarrioClick",
   "description": "Comercios, ofertas y servicios locales en Castelar, Morón, Ituzaingó y más",
-  "start_url": "/tubarrioaunclic/",
-  "scope": "/tubarrioaunclic/",
+  "start_url": "/TU-BARRIO/",
+  "scope": "/TU-BARRIO/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0f172a",
@@ -13,13 +13,13 @@
   "dir": "ltr",
   "icons": [
     {
-      "src": "./shared/img/icon-192x192.webp",
+      "src": "/TU-BARRIO/shared/img/icon-192x192.webp",
       "sizes": "192x192",
       "type": "image/webp",
       "purpose": "any maskable"
     },
     {
-      "src": "./shared/img/icon-512x512.webp",
+      "src": "/TU-BARRIO/shared/img/icon-512x512.webp",
       "sizes": "512x512",
       "type": "image/webp",
       "purpose": "any maskable"

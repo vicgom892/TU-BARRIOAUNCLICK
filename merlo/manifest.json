@@ -1,14 +1,28 @@
 {
   "name": "Tu Barrio a un Click - Merlo",
   "short_name": "BarrioClick Merlo",
-  "start_url": "./",
-  "scope": "./",
+  "description": "Comercios, ofertas y servicios locales en Merlo",
+  "start_url": "/TU-BARRIO/merlo/",
+  "scope": "/TU-BARRIO/merlo/",
   "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "orientation": "portrait",
+  "categories": ["shopping", "food", "business"],
+  "lang": "es-AR",
+  "dir": "ltr",
   "icons": [
     {
-      "src": "../shared/img/icon-192x192.png",
+      "src": "/TU-BARRIO/shared/img/icon-192x192.webp",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/TU-BARRIO/shared/img/icon-512x512.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
     }
   ]
 }

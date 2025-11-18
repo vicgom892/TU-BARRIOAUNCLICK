@@ -4,7 +4,7 @@
 
 const CACHE_VERSION = 'v81-prod-castelar-moron-ituzaingo-merlo';
 const CACHE_NAME = `tu-barrio-${CACHE_VERSION}`;
-const BASE_PATH = self.location.hostname === 'vicgom892.github.io' ? '/tubarrioaunclic' : '';
+const BASE_PATH = self.location.hostname === 'vicgom892.github.io' ? '/TU-BARRIO' : '';
 
 // 🆕 RECURSOS CRÍTICOS ACTUALIZADOS - Incluye manifest-tubarrio.json
 const CORE_RESOURCES = [
