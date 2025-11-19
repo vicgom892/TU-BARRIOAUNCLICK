@@ -1457,6 +1457,16 @@ function setupLoadMoreButton(loadMoreBtn, negocios, contenedor, rubro) {
       // 🆕 USAR LA NUEVA FUNCIÓN QUE SEPARA RENDER Y CONTADORES
       await cargarTarjetasConVisitas(initialNegocios, rubro, contenedor);
       
+      // 🆕 ACTUALIZAR DISTANCIAS SI LA UBICACIÓN ESTÁ ACTIVA
+      if (window.ubicacionEstaActiva && window.ubicacionEstaActiva()) {
+        console.log(`📍 Ubicación activa - Actualizando distancias para ${rubro}`);
+        setTimeout(() => {
+          if (window.locationManager && typeof window.locationManager.calculateBusinessDistances === 'function') {
+            window.locationManager.calculateBusinessDistances();
+          }
+        }, 1500);
+      }
+      
       // Configurar botón "Cargar más" 
       const rubroToSpanish = {
         'panaderias': 'Panadería',
@@ -1513,7 +1523,6 @@ function setupLoadMoreButton(loadMoreBtn, negocios, contenedor, rubro) {
       checkInitialization();
     }
   }
-
   // === MODAL DETALLADO DEL NEGOCIO MEJORADO CON ESTADO - VERSIÓN CORREGIDA ===
   document.addEventListener('click', function(e) {
     const image = e.target.closest('.clickable-image');
@@ -2383,93 +2392,18 @@ function setupLoadMoreButton(loadMoreBtn, negocios, contenedor, rubro) {
     return marker;
   }
 
-  function setupLocationButton() {
+ function setupLocationButton() {
     const locateMeButton = document.getElementById('locateMe');
     if (!locateMeButton) return;
     
     locateMeButton.addEventListener('click', () => {
-        if (!window.map) {
-            showBusinessNotification('El mapa aún no está listo. Espera unos segundos.');
-            return;
-        }
-        
-        const originalText = locateMeButton.innerHTML;
-        locateMeButton.disabled = true;
-        locateMeButton.innerHTML = `
-            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
-            Obteniendo ubicación...
-        `;
-        
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude, accuracy } = position.coords;
-                    const accuracyMeters = Math.round(accuracy);
-                    
-                    // 🆕 Limpiar marcadores anteriores
-                    if (window.userMarker) window.map.removeLayer(window.userMarker);
-                    if (window.userAccuracyCircle) window.map.removeLayer(window.userAccuracyCircle);
-                    
-                    // 🆕 Crear marcador de usuario
-                    window.userMarker = L.marker([latitude, longitude], {
-                        icon: L.divIcon({
-                            className: 'user-location-marker',
-                            html: `<div class="user-location-ring"></div><div class="user-location-dot"></div>`,
-                            iconSize: [40, 40],
-                            iconAnchor: [20, 20]
-                        })
-                    }).addTo(window.map);
-                    
-                    window.userAccuracyCircle = L.circle([latitude, longitude], {
-                        radius: accuracy,
-                        color: '#3b82f6',
-                        fillColor: '#3b82f6',
-                        fillOpacity: 0.15,
-                        weight: 1
-                    }).addTo(window.map);
-                    
-                    // 🆕 Centrar mapa y actualizar lista (SIN MODAL)
-                    window.map.setView([latitude, longitude], 14);
-                    updateBusinessList(window.businesses);
-                    
-                    // 🆕 Notificación sutil
-                    showBusinessNotification(`Ubicación detectada (precisión: ${accuracyMeters}m)`);
-                    
-                    locateMeButton.innerHTML = `
-                        <i class="fas fa-location-dot me-1"></i>
-                        Mi ubicación
-                    `;
-                    locateMeButton.disabled = false;
-                },
-                (error) => {
-                    console.error("Error de geolocalización:", error);
-                    let message = "No se pudo obtener tu ubicación. ";
-                    switch (error.code) {
-                        case error.PERMISSION_DENIED:
-                            message += "Permiso denegado.";
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            message += "Ubicación no disponible.";
-                            break;
-                        case error.TIMEOUT:
-                            message += "Tiempo de espera agotado.";
-                            break;
-                        default:
-                            message += "Error desconocido.";
-                    }
-                    showBusinessNotification(message);
-                    locateMeButton.innerHTML = originalText;
-                    locateMeButton.disabled = false;
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 0
-                }
-            );
+        console.log('🎯 Botón "Mi Ubicación" clickeado');
+        if (window.locationManager) {
+            window.locationManager.showConsentModal();
         } else {
-            showBusinessNotification("Tu navegador no soporta geolocalización.");
-            locateMeButton.disabled = false;
+            console.error('Sistema de ubicación no disponible');
+            // Usar función global
+            window.activarUbicacion();
         }
     });
 }
@@ -3619,5 +3553,55 @@ window.registrarYActualizarVisitas = async function(rubro, index, nombre) {
 };
 // Llamar después de instalar la app
 window.addEventListener('appinstalled', activarSyncPeriodico);
-  console.log('✅ main-2.js mejorado completamente cargado con estados de negocios - ERROR FIXED');
+  console.log('✅ main-2.js mejorado completamente cargado con estados de negocios - ERROR FIXED'); 
+  
+  
+  // =============================================
+// SISTEMA DE DISTANCIAS - INTEGRACIÓN
+// =============================================
+
+// Función para actualizar distancias de negocios
+function actualizarDistanciasNegocios() {
+    if (window.locationManager && window.ubicacionEstaActiva && window.ubicacionEstaActiva()) {
+        console.log('🔄 Actualizando distancias en negocios existentes...');
+        window.locationManager.calculateBusinessDistances();
+    }
+}
+
+// Escuchar cuando se actualice la ubicación
+window.addEventListener('locationUpdated', function(e) {
+    console.log('🔄 Ubicación actualizada, recalculando distancias...');
+    actualizarDistanciasNegocios();
+});
+
+// También actualizar cuando se haga clic en el botón "Mi Ubicación" del mapa
+function setupLocationButton() {
+    const locateMeButton = document.getElementById('locateMe');
+    if (!locateMeButton) return;
+    
+    locateMeButton.addEventListener('click', () => {
+        console.log('🎯 Botón "Mi Ubicación" clickeado');
+        if (window.locationManager) {
+            window.locationManager.showConsentModal();
+        } else {
+            console.error('Sistema de ubicación no disponible');
+            window.activarUbicacion && window.activarUbicacion();
+        }
+        
+        // Actualizar distancias después de obtener ubicación
+        setTimeout(() => {
+            actualizarDistanciasNegocios();
+        }, 3000);
+    });
+}
+
+// Actualizar distancias cuando la página gane foco (por si cambia la ubicación)
+window.addEventListener('focus', () => {
+    if (window.ubicacionEstaActiva && window.ubicacionEstaActiva()) {
+        console.log('📱 Página en foco - Actualizando distancias...');
+        setTimeout(() => {
+            actualizarDistanciasNegocios();
+        }, 1000);
+    }
+});
 });

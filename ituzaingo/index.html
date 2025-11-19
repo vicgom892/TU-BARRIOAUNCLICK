@@ -845,6 +845,68 @@
       <i class="fas fa-chevron-down"></i>
     </a>
   </section>
+
+   <!-- Sección Elegante de Ubicación -->
+<section class="location-cta-section py-5 bg-gradient-to-r from-blue-50 to-indigo-100">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8 mx-auto text-center">
+        <!-- Icono animado -->
+        <div class="location-icon mb-4">
+          <div class="location-pulse"></div>
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        
+        <!-- Título y descripción -->
+        <h2 class="display-6 fw-bold text-dark mb-3">
+          Descubre los negocios más cercanos a ti
+        </h2>
+        
+        <p class="lead text-muted mb-4">
+          Activa tu ubicación para ver los comercios que tienes cerca en tiempo real. 
+          Te mostraremos distancias exactas y los horarios de atención.
+        </p>
+        
+        <!-- Beneficios -->
+        <div class="benefits-grid row justify-content-center mb-4">
+          <div class="col-md-4 mb-3">
+            <div class="benefit-item">
+              <i class="fas fa-walking text-primary fa-2x mb-2"></i>
+              <h5 class="fw-bold">Distancias exactas</h5>
+              <p class="text-muted small">Sabrás exactamente a cuántos metros estás de cada local</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="benefit-item">
+              <i class="fas fa-clock text-success fa-2x mb-2"></i>
+              <h5 class="fw-bold">Horarios en tiempo real</h5>
+              <p class="text-muted small">Te indicamos qué negocios están abiertos ahora mismo</p>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="benefit-item">
+              <i class="fas fa-route text-warning fa-2x mb-2"></i>
+              <h5 class="fw-bold">Rutas optimizadas</h5>
+              <p class="text-muted small">Encuentra el camino más corto hacia tus comercios favoritos</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Botón principal -->
+        <button id="activateLocationBtn" class="btn btn-primary btn-lg px-5 py-3 location-main-btn">
+          <i class="fas fa-location-crosshairs me-2"></i>
+          Activar Mi Ubicación
+        </button>
+        
+        <!-- Texto de seguridad -->
+        <p class="text-muted small mt-3">
+          <i class="fas fa-shield-alt me-1"></i>
+          Tu ubicación es 100% privada. Solo la usamos para mostrarte comercios cercanos.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
   
   <!-- Carrusel Infinito de Negocios -->
   <section class="business-carousel mt-5" id="businessCarousel">
@@ -3140,6 +3202,8 @@ document.addEventListener('DOMContentLoaded', function() {
   <script src="../shared/js/notificaciones.js" defer></script>
   <script src="../shared/js/splash.js" defer></script>
   <script src="../shared/js/publicidad.js" defer></script>
+
+  <script src="../shared/js/location-consent.js" defer></script>
   
   <script src="../shared/js/resenas-comun.js" defer></script>
   <script src="../shared/lib/aos/aos.js"></script>
