@@ -286,7 +286,7 @@ class LocationConsentManager {
             /* Badge de distancia en tarjetas */
             .distance-badge {
                 position: absolute;
-                top: 110%;
+                top: 115%;
                 left: 2px;
                 z-index: 10;
                 background: rgba(255, 255, 255, 0.95);
