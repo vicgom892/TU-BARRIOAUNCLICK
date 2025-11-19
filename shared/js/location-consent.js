@@ -1,5 +1,5 @@
 // location-consent.js - Sistema de Consentimiento de Ubicación con Indicadores de Distancia
-// Versión: 2.1 - Corregido error de contexto
+// Versión: 2.2 - Corregido problema de persistencia entre páginas
 
 console.log('📍 Cargando sistema de consentimiento de ubicación con indicadores...');
 
@@ -22,6 +22,8 @@ class LocationConsentManager {
         this.requestLocation = this.requestLocation.bind(this);
         this.handleLocationSuccess = this.handleLocationSuccess.bind(this);
         this.handleLocationError = this.handleLocationError.bind(this);
+        this.checkExistingConsent = this.checkExistingConsent.bind(this);
+        this.restoreLocationUI = this.restoreLocationUI.bind(this);
     }
 
     init() {
@@ -41,7 +43,10 @@ class LocationConsentManager {
 
         this.createConsentModal();
         this.bindEvents();
+        
+        // 🆕 PRIMERO verificar consentimiento existente antes de mostrar UI
         this.checkExistingConsent();
+        
         this.addDistanceStyles();
         this.isInitialized = true;
         
@@ -53,6 +58,60 @@ class LocationConsentManager {
         setTimeout(() => {
             this.init();
         }, 1000);
+    }
+
+    // 🆕 MÉTODO MEJORADO: Verificar y restaurar consentimiento existente
+    checkExistingConsent() {
+        const hasConsent = localStorage.getItem('locationConsent') === 'granted';
+        const savedLocation = localStorage.getItem('lastKnownLocation');
+        
+        if (hasConsent && savedLocation) {
+            console.log('🔄 Consentimiento previo encontrado, restaurando ubicación...');
+            try {
+                this.userLocation = JSON.parse(savedLocation);
+                this.restoreLocationUI();
+                console.log('✅ Ubicación restaurada:', this.userLocation);
+            } catch (error) {
+                console.error('❌ Error restaurando ubicación:', error);
+                this.clearStoredLocation();
+            }
+        } else if (hasConsent && !savedLocation) {
+            console.log('⚠️ Consentimiento sin ubicación, solicitando nuevamente...');
+            this.requestLocation();
+        } else {
+            console.log('ℹ️ No hay consentimiento previo de ubicación');
+        }
+    }
+
+    // 🆕 MÉTODO NUEVO: Restaurar interfaz de ubicación
+    restoreLocationUI() {
+        if (!this.userLocation) return;
+        
+        console.log('🔄 Restaurando interfaz de ubicación...');
+        
+        // Actualizar el botón
+        this.updateUIWithLocation();
+        
+        // Calcular distancias
+        this.calculateBusinessDistances();
+        
+        // Iniciar actualizaciones
+        this.startDistanceUpdates();
+        
+        // Disparar evento
+        window.dispatchEvent(new CustomEvent('locationUpdated', {
+            detail: this.userLocation
+        }));
+        
+        console.log('✅ Interfaz de ubicación restaurada correctamente');
+    }
+
+    // 🆕 MÉTODO NUEVO: Limpiar ubicación almacenada
+    clearStoredLocation() {
+        localStorage.removeItem('locationConsent');
+        localStorage.removeItem('lastKnownLocation');
+        this.userLocation = null;
+        console.log('🧹 Ubicación almacenada limpiada');
     }
 
     createConsentModal() {
@@ -477,6 +536,7 @@ class LocationConsentManager {
             case 1:
                 errorMessage += 'Has denegado el permiso de ubicación.';
                 localStorage.setItem('locationConsent', 'denied');
+                this.clearStoredLocation(); // 🆕 Limpiar ubicación almacenada
                 break;
             case 2:
                 errorMessage += 'La información de ubicación no está disponible.';
@@ -490,11 +550,15 @@ class LocationConsentManager {
         
         this.showErrorNotification(errorMessage);
         this.hideConsentModal();
+        
+        // 🆕 Limpiar UI si hay error
+        this.cleanupDistanceIndicators();
     }
 
     handleLocationDenied() {
         console.log('🚫 Usuario denegó la ubicación');
         localStorage.setItem('locationConsent', 'denied');
+        this.clearStoredLocation(); // 🆕 Limpiar ubicación almacenada
         this.hideConsentModal();
         this.showDeniedNotification();
     }
@@ -861,13 +925,6 @@ class LocationConsentManager {
         }
     }
 
-    checkExistingConsent() {
-        const hasConsent = localStorage.getItem('locationConsent') === 'granted';
-        if (hasConsent) {
-            console.log('🔄 Consentimiento previo encontrado');
-        }
-    }
-
     cleanupDistanceIndicators() {
         this.stopDistanceUpdates();
         
@@ -957,6 +1014,25 @@ window.activarUbicacion = function() {
     }
 };
 
+// 🆕 EVENTOS PARA MANEJAR RECARGAS Y NAVEGACIÓN
+window.addEventListener('beforeunload', () => {
+    if (window.locationManager) {
+        console.log('💾 Guardando estado de ubicación...');
+        // El estado ya está en localStorage, esto es solo para logs
+    }
+});
+
+// Escuchar cuando la página se vuelve visible (vuelve de otra pestaña/página)
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && window.locationManager) {
+        console.log('🔍 Página visible, verificando ubicación...');
+        // Verificar rápidamente si necesitamos restaurar algo
+        setTimeout(() => {
+            window.locationManager.checkExistingConsent();
+        }, 500);
+    }
+});
+
 // Inicialización automática
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeLocationSystem);
@@ -964,4 +1040,4 @@ if (document.readyState === 'loading') {
     initializeLocationSystem();
 }
 
-console.log('✅ location-consent.js con indicadores cargado correctamente');
+console.log('✅ location-consent.js con indicadores cargado correctamente - VERSIÓN 2.2');
