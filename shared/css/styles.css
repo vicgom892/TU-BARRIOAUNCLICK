@@ -730,8 +730,8 @@ body {
 .scroll-down {
   position: absolute;
   bottom: 30px;
-  left: 50%;
-  transform: translateX(-50%);
+  /*left: 50%;
+  transform: translateX(-50%);*/
   z-index: 2;
   color: white;
   font-size: 2rem;
