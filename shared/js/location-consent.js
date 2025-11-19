@@ -228,7 +228,7 @@ class LocationConsentManager {
             .distance-badge {
                 position: absolute;
                 top: 100%;
-                right: 8px;
+                left: 8px;
                 z-index: 10;
                 background: rgba(255, 255, 255, 0.95);
                 backdrop-filter: blur(10px);
