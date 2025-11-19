@@ -376,8 +376,8 @@ class CouponsSystem {
         
         badge.style.cssText = `
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 20px;
+            right: 2px;
             background: linear-gradient(135deg, ${localidadColor}, #ee5a52);
             color: white;
             padding: 6px 10px;
