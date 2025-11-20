@@ -1523,72 +1523,82 @@ function setupLoadMoreButton(loadMoreBtn, negocios, contenedor, rubro) {
       checkInitialization();
     }
   }
-  // === MODAL DETALLADO DEL NEGOCIO MEJORADO CON ESTADO - VERSIÓN CORREGIDA ===
-  document.addEventListener('click', function(e) {
+  // === MODAL DETALLADO DEL NEGOCIO - ACTUALIZADO CON DISTANCIAS ===
+document.addEventListener('click', function(e) {
     const image = e.target.closest('.clickable-image');
     if (!image) return;
     
     const negocio = JSON.parse(image.dataset.business);
     const isOpen = isBusinessOpen(negocio.horarioData || negocio.horario);
     
-    const modal = document.getElementById('businessModal');
+    console.log('🔄 Abriendo modal para:', negocio.nombre);
+
+    // 1. ACTUALIZAR CONTENIDO BÁSICO DEL MODAL
+    const modalImage = document.getElementById('modalImage');
+    const modalName = document.getElementById('modalName');
+    const modalAddress = document.getElementById('modalAddress');
+    const modalHours = document.getElementById('modalHours');
+    const modalPhone = document.getElementById('modalPhone');
     
-    document.getElementById('modalImage').src = negocio.imagen;
-    document.getElementById('modalImage').alt = negocio.nombre;
-    document.getElementById('modalName').textContent = negocio.nombre;
-    document.getElementById('modalAddress').textContent = negocio.direccion || 'No disponible';
-    document.getElementById('modalHours').textContent = negocio.horario;
-    document.getElementById('modalPhone').textContent = negocio.telefono;
-    
-    // 🆕 Agregar indicador de estado en el modal - VERSIÓN CORREGIDA
-    const statusElement = document.getElementById('modalStatus') || (() => {
-        const statusEl = document.createElement('div');
-        statusEl.id = 'modalStatus';
-        statusEl.className = 'mb-2';
+    if (modalImage) {
+        modalImage.src = negocio.imagen;
+        modalImage.alt = negocio.nombre;
+        // 🆕 GUARDAR DATOS DEL NEGOCIO EN EL MODAL
+        modalImage.dataset.business = image.dataset.business;
+    }
+    if (modalName) modalName.textContent = negocio.nombre;
+    if (modalAddress) modalAddress.textContent = negocio.direccion || 'No disponible';
+    if (modalHours) modalHours.textContent = negocio.horario;
+    if (modalPhone) modalPhone.textContent = negocio.telefono;
+
+    // 2. ACTUALIZAR ESTADO
+    let statusElement = document.getElementById('modalStatus');
+    if (!statusElement) {
+        statusElement = document.createElement('div');
+        statusElement.id = 'modalStatus';
+        statusElement.className = 'mb-3 text-center';
         
-        // 🛠️ USAR LA NUEVA FUNCIÓN SEGURA EN LUGAR DE insertBefore
-        const success = safeModalElementInsertion(statusEl, 'modalAddress');
-        
-        if (!success) {
-            console.error('💥 No se pudo insertar statusElement');
+        const modalBody = document.querySelector('#businessModal .modal-body');
+        if (modalBody) {
+            const referenceElement = document.getElementById('modalName');
+            if (referenceElement && referenceElement.nextSibling) {
+                modalBody.insertBefore(statusElement, referenceElement.nextSibling);
+            } else {
+                modalBody.appendChild(statusElement);
+            }
         }
-        
-        return statusEl;
-    })();
+    }
     
     statusElement.innerHTML = isOpen ? 
-        '<span class="badge bg-success">🟢 ABIERTO AHORA</span>' : 
-        '<span class="badge bg-danger">🔴 CERRADO</span>';
+        '<span class="badge bg-success p-2 fs-6"><i class="fas fa-door-open me-2"></i> ABIERTO AHORA</span>' : 
+        '<span class="badge bg-danger p-2 fs-6"><i class="fas fa-door-closed me-2"></i> CERRADO</span>';
+
+    // 3. ACTUALIZAR BOTONES
+    updateModalButtons(negocio, isOpen);
     
-    // 🆕 Actualizar botones según estado
-    const modalWhatsapp = document.getElementById('modalWhatsapp');
-    modalWhatsapp.href = `https://wa.me/${negocio.whatsapp}?text=Hola%20desde%20BarrioClik`;
-    modalWhatsapp.classList.toggle('disabled', !isOpen);
-    modalWhatsapp.style.opacity = isOpen ? '1' : '0.6';
+    // 4. 🆕 FORZAR ACTUALIZACIÓN DE DISTANCIAS EN EL MODAL
+    setTimeout(() => {
+        if (window.locationManager && typeof window.locationManager.updateModalDistance === 'function') {
+            window.locationManager.updateModalDistance();
+        }
+    }, 100);
     
-    const modalWebsite = document.getElementById('modalWebsite');
-    modalWebsite.href = negocio.pagina;
-    modalWebsite.setAttribute('data-analytics', 'web');
-    modalWebsite.setAttribute('data-negocio', negocio.nombre);
+    // 5. ACTUALIZAR TÍTULO DEL MODAL
+    const modalLabel = document.getElementById('businessModalLabel');
+    if (modalLabel) modalLabel.textContent = negocio.nombre;
+    
+    console.log('✅ Modal configurado correctamente');
+});
 
-    const modalMap = document.getElementById('modalMap');
-    modalMap.href = `https://maps.google.com/?daddr=${negocio.latitud},${negocio.longitud}`;
-    modalMap.setAttribute('data-analytics', 'ubicacion');
-    modalMap.setAttribute('data-negocio', negocio.nombre);
-
-    const modalPromo = document.getElementById('modalPromo');
-    if (modalPromo && negocio.promo) {
-      modalPromo.style.display = 'inline-block';
-      modalPromo.setAttribute('data-analytics', 'promocion');
-      modalPromo.setAttribute('data-negocio', negocio.nombre);
-      modalPromo.setAttribute('data-promo', negocio.promo);
-      modalPromo.textContent = negocio.promo;
-    } else if(modalPromo) {
-      modalPromo.style.display = 'none';
-    }
-
-    document.getElementById('businessModalLabel').textContent = negocio.nombre;
-  });
+// 🆕 ESCUCHAR CUANDO SE ABRE EL MODAL PARA ACTUALIZAR DISTANCIAS
+document.getElementById('businessModal')?.addEventListener('show.bs.modal', function () {
+    console.log('🔄 Modal abierto - actualizando distancias...');
+    setTimeout(() => {
+        if (window.locationManager && typeof window.locationManager.updateModalDistance === 'function') {
+            window.locationManager.updateModalDistance();
+        }
+    }, 300);
+});
 
   document.getElementById('businessModal')?.addEventListener('hidden.bs.modal', function () {
     const img = document.getElementById('modalImage');

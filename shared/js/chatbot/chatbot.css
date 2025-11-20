@@ -992,3 +992,150 @@
         gap: 6px;
     }
 }
+
+/* ===== ESTILOS PARA EL SISTEMA DE VOZ ===== */
+
+/* Botón de micrófono */
+.mic-btn {
+    background: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.mic-btn:hover {
+    background: #3367D6;
+    transform: scale(1.1);
+}
+
+.mic-btn.listening {
+    background: #EA4335;
+    animation: pulse 1.5s infinite;
+}
+
+/* Botón de toggle de voz */
+.voice-btn {
+    background: #34A853;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+
+.voice-btn:hover {
+    background: #2E8B46;
+    transform: scale(1.1);
+}
+
+.voice-btn.active {
+    background: #EA4335;
+    box-shadow: 0 0 10px rgba(234, 67, 53, 0.5);
+}
+
+/* Indicador de escucha */
+.voice-listening-indicator {
+    display: none;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #4285F4, #3367D6);
+    color: white;
+    border-radius: 12px;
+    margin: 10px 0;
+    animation: slideIn 0.3s ease;
+}
+
+.listening-animation {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.pulse {
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    animation: voicePulse 1.4s ease-in-out infinite both;
+}
+
+.pulse:nth-child(2) { animation-delay: 0.2s; }
+.pulse:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes voicePulse {
+    0%, 80%, 100% { 
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+    40% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Texto reconocido */
+.recognized-text-indicator {
+    display: none;
+    padding: 10px 16px;
+    background: #E8F0FE;
+    border: 1px solid #4285F4;
+    border-radius: 12px;
+    margin: 10px 0;
+    animation: slideIn 0.3s ease;
+}
+
+.recognized-text {
+    color: #4285F4;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.recognized-text i {
+    font-size: 12px;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mejoras responsive */
+@media (max-width: 768px) {
+    .mic-btn, .voice-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+    }
+    
+    .voice-listening-indicator {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    .recognized-text {
+        font-size: 13px;
+    }
+}

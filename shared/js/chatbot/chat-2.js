@@ -1,4 +1,4 @@
-// chat.js - VERSIÓN COMPLETA OPTIMIZADA
+// chat.js - VERSIÓN COMPLETA OPTIMIZADA CON SISTEMA DE VOZ MEJORADO
 document.addEventListener('DOMContentLoaded', function() {
   // === VARIABLES GLOBALES ===
   let negociosData = [];
@@ -11,6 +11,13 @@ document.addEventListener('DOMContentLoaded', function() {
   let negociosCache = null;
   let lastLoadTime = 0;
   const CACHE_DURATION = 30000; // 30 segundos de cache
+
+  // === VARIABLES PARA SISTEMA DE VOZ ===
+  let recognition = null;
+  let synthesis = null;
+  let isListening = false;
+  let voiceEnabled = false;
+  let isSpeaking = false; // Control de estado de habla
 
   // === ELEMENTOS DEL DOM ===
   const chatbotBtn = document.getElementById('chatbotBtn');
@@ -78,15 +85,15 @@ document.addEventListener('DOMContentLoaded', function() {
     'Kiosco': ['kiosco', 'quiosco', 'cigarrillos', 'golosinas', 'revistas', 'bebida', 'chicles', 'azúcar', 'papel', 'lápiz', 'diarios', 'golosina'],
     'Mascotas': ['mascota', 'mascotas', 'perro', 'gato', 'alimento animal', 'veterinario', 'peluquería canina', 'tienda de mascotas', 'accesorios mascotas', 'veterinaria'],
     'Calzados': [
-  'calzado', 'calzados', 'zapato', 'zapatos', 'zapatilla', 'zapatillas',
-  'bota', 'botas', 'botín', 'botines', 'sandalia', 'sandalias',
-  'ojota', 'ojotas', 'chancleta', 'chancletas', 'pantufla', 'pantuflas',
-  'tacones', 'tacón', 'deportivo', 'deportivos', 'tenis', 'calzado deportivo',
-  'calzado casual', 'calzado formal', 'calzado infantil', 'calzado para hombre',
-  'calzado para mujer', 'calzado para niño', 'calzado escolar', 'calzado de trabajo',
-  'calzado de seguridad', 'calzado ortopédico', 'calzado cómodo', 'calzado elegante',
-  'marcas de zapatos', 'venta de zapatos', 'zapatería', 'zapaterías'
-],
+      'calzado', 'calzados', 'zapato', 'zapatos', 'zapatilla', 'zapatillas',
+      'bota', 'botas', 'botín', 'botines', 'sandalia', 'sandalias',
+      'ojota', 'ojotas', 'chancleta', 'chancletas', 'pantufla', 'pantuflas',
+      'tacones', 'tacón', 'deportivo', 'deportivos', 'tenis', 'calzado deportivo',
+      'calzado casual', 'calzado formal', 'calzado infantil', 'calzado para hombre',
+      'calzado para mujer', 'calzado para niño', 'calzado escolar', 'calzado de trabajo',
+      'calzado de seguridad', 'calzado ortopédico', 'calzado cómodo', 'calzado elegante',
+      'marcas de zapatos', 'venta de zapatos', 'zapatería', 'zapaterías'
+    ],
     'Barbería': ['barbería', 'barberias', 'corte de pelo', 'barbero', 'peluquería hombre', 'peluqueria hombre', 'afeitado', 'bigote', 'barba', 'estilista'],
     'Ferretería': ['ferretería', 'ferreterias', 'herramientas', 'clavo', 'tornillo', 'cable', 'electricidad', 'llave', 'martillo', 'serrucho', 'materiales'],
     'Ropa': ['ropa', 'tienda de ropa', 'camisa', 'pantalón', 'zapatillas', 'moda', 'prendas', 'vestimenta', 'calzado', 'accesorios', 'indumentaria'],
@@ -181,6 +188,433 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     return null;
+  }
+
+  // === SISTEMA DE VOZ COMPLETO MEJORADO ===
+
+  // === INICIALIZACIÓN DEL SISTEMA DE VOZ ===
+  function initVoiceSystem() {
+    initSpeechRecognition();
+    initSpeechSynthesis();
+  }
+
+  // === RECONOCIMIENTO DE VOZ (HABLAR AL CHATBOT) ===
+  function initSpeechRecognition() {
+    try {
+      // Verificar compatibilidad del navegador
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        
+        // Configuración
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'es-ES';
+        recognition.maxAlternatives = 1;
+        
+        // Eventos
+        recognition.onstart = function() {
+          console.log('🎤 Reconocimiento de voz iniciado');
+          isListening = true;
+          updateMicButton();
+          showVoiceListeningIndicator();
+        };
+        
+        recognition.onresult = function(event) {
+          const transcript = event.results[0][0].transcript;
+          console.log('📝 Texto reconocido:', transcript);
+          
+          // Mostrar texto reconocido
+          showRecognizedText(transcript);
+          
+          // Procesar después de un pequeño delay
+          setTimeout(() => {
+            messageInput.value = transcript;
+            handleSendMessage();
+          }, 500);
+        };
+        
+        recognition.onerror = function(event) {
+          console.error('❌ Error en reconocimiento de voz:', event.error);
+          isListening = false;
+          updateMicButton();
+          hideVoiceListeningIndicator();
+          
+          let errorMessage = 'Error en el micrófono: ';
+          switch(event.error) {
+            case 'not-allowed':
+            case 'permission-denied':
+              errorMessage += 'Permiso denegado. Por favor, permite el acceso al micrófono.';
+              break;
+            case 'no-speech':
+              errorMessage += 'No se detectó voz. Intenta nuevamente.';
+              break;
+            case 'audio-capture':
+              errorMessage += 'No se pudo acceder al micrófono.';
+              break;
+            case 'network':
+              errorMessage += 'Error de red.';
+              break;
+            default:
+              errorMessage += event.error;
+          }
+          
+          addMessage(`❌ ${errorMessage}`, 'bot');
+        };
+        
+        recognition.onend = function() {
+          console.log('🔴 Reconocimiento de voz finalizado');
+          isListening = false;
+          updateMicButton();
+          hideVoiceListeningIndicator();
+        };
+        
+      } else {
+        console.warn('⚠️ El reconocimiento de voz no es compatible con este navegador');
+        addMessage('❌ Tu navegador no soporta reconocimiento de voz. Usa Chrome, Edge o Safari.', 'bot');
+      }
+    } catch (error) {
+      console.error('❌ Error al inicializar reconocimiento de voz:', error);
+      addMessage('❌ Error al configurar el micrófono. Intenta recargar la página.', 'bot');
+    }
+  }
+
+  // === SÍNTESIS DE VOZ (CHATBOT HABLA) ===
+  function initSpeechSynthesis() {
+    if ('speechSynthesis' in window) {
+      synthesis = window.speechSynthesis;
+      console.log('✅ Síntesis de voz disponible');
+    } else {
+      console.warn('⚠️ La síntesis de voz no es compatible');
+    }
+  }
+
+  // === FUNCIÓN PARA HABLAR TEXTO - VERSIÓN MEJORADA ===
+  function speakText(text) {
+    if (!voiceEnabled || !synthesis) return;
+    
+    try {
+      // Limpiar texto (remover emojis y formato)
+      const cleanText = text
+        .replace(/[^\w\s¡!¿?.,;:áéíóúÁÉÍÓÚñÑ()\-]/g, '')
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/\*(.*?)\*/g, '$1')
+        .replace(/\[.*?\]\(.*?\)/g, '')
+        .trim();
+      
+      if (!cleanText) return;
+      
+      // Esperar un momento antes de cancelar para evitar interrupciones bruscas
+      setTimeout(() => {
+        // Solo cancelar si hay algo reproduciéndose
+        if (synthesis.speaking) {
+          synthesis.cancel();
+        }
+        
+        // Pequeña pausa antes de empezar a hablar
+        setTimeout(() => {
+          const utterance = new SpeechSynthesisUtterance(cleanText);
+          
+          // Configuración de voz en español
+          utterance.lang = 'es-ES';
+          utterance.rate = 0.9; // Un poco más lento para mejor comprensión
+          utterance.pitch = 1.0;
+          utterance.volume = 1.0;
+          
+          // Seleccionar voz en español si está disponible
+          const voices = synthesis.getVoices();
+          const spanishVoice = voices.find(voice => 
+            voice.lang.includes('es') && voice.localService === false
+          );
+          
+          if (spanishVoice) {
+            utterance.voice = spanishVoice;
+          }
+          
+          // Eventos de la síntesis - CON MANEJO DE ERRORES MEJORADO
+          utterance.onstart = function() {
+            console.log('🔊 Reproduciendo audio...');
+            isSpeaking = true;
+          };
+          
+          utterance.onend = function() {
+            console.log('✅ Audio finalizado correctamente');
+            isSpeaking = false;
+          };
+          
+          utterance.onerror = function(event) {
+            isSpeaking = false;
+            // Ignorar errores "interrupted" ya que son normales
+            if (event.error !== 'interrupted') {
+              console.error('❌ Error en síntesis de voz:', event.error);
+            } else {
+              console.log('⏸️ Audio interrumpido (normal al cambiar mensajes)');
+            }
+          };
+          
+          // Reproducir con manejo de errores
+          try {
+            synthesis.speak(utterance);
+          } catch (error) {
+            console.warn('⚠️ Error al reproducir audio:', error);
+          }
+          
+        }, 100); // Pequeña pausa
+      }, 50);
+      
+    } catch (error) {
+      console.error('❌ Error general en speakText:', error);
+    }
+  }
+
+  // === TOGGLE VOZ MEJORADO ===
+  function toggleVoiceResponse() {
+    voiceEnabled = !voiceEnabled;
+    updateVoiceButton();
+    
+    if (voiceEnabled) {
+      addMessage('🔊 **Voz activada** - Ahora escucharás las respuestas por audio', 'bot');
+      // Pequeño delay antes de hablar para evitar conflictos
+      setTimeout(() => {
+        speakText('Voz activada. Ahora escucharás las respuestas por audio.');
+      }, 500);
+    } else {
+      addMessage('🔇 **Voz desactivada** - Respuestas solo en texto', 'bot');
+      // Detener cualquier audio en reproducción de forma suave
+      if (synthesis && synthesis.speaking) {
+        setTimeout(() => {
+          synthesis.cancel();
+        }, 100);
+      }
+    }
+  }
+
+  // === CONTROL DEL MICRÓFONO ===
+  function toggleVoiceRecognition() {
+    if (!recognition) {
+      initSpeechRecognition();
+      // Esperar un momento para la inicialización
+      setTimeout(() => {
+        if (recognition) {
+          startVoiceRecognition();
+        }
+      }, 100);
+      return;
+    }
+    
+    if (isListening) {
+      stopVoiceRecognition();
+    } else {
+      startVoiceRecognition();
+    }
+  }
+
+  function startVoiceRecognition() {
+    try {
+      recognition.start();
+    } catch (error) {
+      console.error('❌ Error al iniciar reconocimiento:', error);
+      addMessage('❌ Error al activar el micrófono. Intenta nuevamente.', 'bot');
+    }
+  }
+
+  function stopVoiceRecognition() {
+    try {
+      recognition.stop();
+    } catch (error) {
+      console.error('❌ Error al detener reconocimiento:', error);
+    }
+  }
+
+  // === ACTUALIZAR ESTADO DE BOTONES ===
+  function updateMicButton() {
+    const micBtn = document.getElementById('micBtn');
+    if (micBtn) {
+      if (isListening) {
+        micBtn.classList.add('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+        micBtn.title = 'Detener grabación';
+      } else {
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+        micBtn.title = 'Hablar con el chatbot';
+      }
+    }
+  }
+
+  function updateVoiceButton() {
+    const voiceBtn = document.getElementById('voiceToggleBtn');
+    if (voiceBtn) {
+      if (voiceEnabled) {
+        voiceBtn.classList.add('active');
+        voiceBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+        voiceBtn.title = 'Desactivar respuesta por voz';
+      } else {
+        voiceBtn.classList.remove('active');
+        voiceBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+        voiceBtn.title = 'Activar respuesta por voz';
+      }
+    }
+  }
+
+  // === INDICADOR VISUAL DE GRABACIÓN ===
+  function showVoiceListeningIndicator() {
+    let indicator = document.getElementById('voiceListeningIndicator');
+    
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.id = 'voiceListeningIndicator';
+      indicator.className = 'voice-listening-indicator';
+      indicator.innerHTML = `
+        <div class="listening-animation">
+          <div class="pulse"></div>
+          <div class="pulse"></div>
+          <div class="pulse"></div>
+        </div>
+        <span>Escuchando... Habla ahora</span>
+      `;
+      
+      const chatBody = document.getElementById('chatBody');
+      if (chatBody) {
+        chatBody.appendChild(indicator);
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }
+    }
+    
+    indicator.style.display = 'flex';
+  }
+
+  function hideVoiceListeningIndicator() {
+    const indicator = document.getElementById('voiceListeningIndicator');
+    if (indicator) {
+      indicator.style.display = 'none';
+    }
+  }
+
+  function showRecognizedText(text) {
+    let recognizedText = document.getElementById('recognizedText');
+    
+    if (!recognizedText) {
+      recognizedText = document.createElement('div');
+      recognizedText.id = 'recognizedText';
+      recognizedText.className = 'recognized-text-indicator';
+      
+      const chatBody = document.getElementById('chatBody');
+      if (chatBody) {
+        chatBody.appendChild(recognizedText);
+      }
+    }
+    
+    recognizedText.innerHTML = `
+      <div class="recognized-text">
+        <i class="fas fa-microphone"></i>
+        <strong>Dijiste:</strong> "${text}"
+      </div>
+    `;
+    recognizedText.style.display = 'block';
+    
+    // Ocultar después de 3 segundos
+    setTimeout(() => {
+      recognizedText.style.display = 'none';
+    }, 3000);
+  }
+
+  // === FUNCIONES DE MENSAJES ===
+  function formatMessageLinks(message) {
+    const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let processedMessage = message.replace(markdownLinkRegex, (match, text, url) => {
+      const cleanUrl = url.trim().replace(/\s+/g, '');
+      
+      if (cleanUrl.includes('inscripcion.html')) {
+        return `<a href="inscripcion.html" target="_blank" class="chat-link">${text}</a>`;
+      }
+      
+      if (cleanUrl.includes('wa.me') || cleanUrl.includes('whatsapp')) {
+        return `<a href="https://wa.me/5491157194796" target="_blank" class="chat-link">${text}</a>`;
+      }
+      
+      return `<a href="${cleanUrl}" target="_blank" class="chat-link">${text}</a>`;
+    });
+
+    const urlRegex = /(https?:\/\/[^\s<]+[^\s<.,;:!?])/g;
+    processedMessage = processedMessage.replace(urlRegex, url => {
+      const cleanUrl = url.trim().replace(/\s+/g, '');
+      return `<a href="${cleanUrl}" target="_blank" class="chat-link">${url}</a>`;
+    });
+
+    return processedMessage;
+  }
+
+  function addMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message message-${sender} message-animation`;
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'message-content';
+    contentDiv.innerHTML = formatMessageLinks(text);
+
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'message-time';
+    timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    if (sender === 'bot') {
+      const aiDiv = document.createElement('div');
+      aiDiv.className = 'ai-indicator';
+      aiDiv.innerHTML = `
+        <span class="ai-dot"></span>
+        <span class="ai-dot"></span>
+        <span class="ai-dot"></span>
+        <small>Asistente Inteligente</small>
+      `;
+      messageDiv.appendChild(aiDiv);
+      
+      // Reproducir audio si la voz está activada - CON DELAY MEJORADO
+      if (voiceEnabled && text) {
+        setTimeout(() => {
+          // Esperar un poco más si ya se está hablando
+          const delay = isSpeaking ? 1000 : 500;
+          setTimeout(() => {
+            speakText(text);
+          }, delay);
+        }, 500);
+      }
+    }
+    
+    messageDiv.appendChild(contentDiv);
+    messageDiv.appendChild(timeDiv);
+    chatBody.appendChild(messageDiv);
+    
+    if (sender === 'user') {
+      const existingQuickReplies = document.querySelector('.quick-replies');
+      if (existingQuickReplies) {
+        existingQuickReplies.remove();
+      }
+    }
+    
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'typing-indicator';
+    typingDiv.id = 'typingIndicator';
+    
+    const dotsDiv = document.createElement('div');
+    dotsDiv.className = 'typing-dots';
+    for (let i = 0; i < 3; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'typing-dot';
+      dotsDiv.appendChild(dot);
+    }
+    
+    typingDiv.appendChild(dotsDiv);
+    chatBody.appendChild(typingDiv);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function hideTypingIndicator() {
+    const indicator = document.getElementById('typingIndicator');
+    if (indicator) indicator.remove();
   }
 
   // === FUNCIÓN DE BORRAR BÚSQUEDAS CORREGIDA ===
@@ -278,93 +712,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const closeBtn = document.querySelector('.close-btn');
     chatHeader.insertBefore(clearBtn, closeBtn);
-  }
-
-  // === FUNCIONES DE MENSAJES ===
-  function formatMessageLinks(message) {
-    const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-    let processedMessage = message.replace(markdownLinkRegex, (match, text, url) => {
-      const cleanUrl = url.trim().replace(/\s+/g, '');
-      
-      if (cleanUrl.includes('inscripcion.html')) {
-        return `<a href="inscripcion.html" target="_blank" class="chat-link">${text}</a>`;
-      }
-      
-      if (cleanUrl.includes('wa.me') || cleanUrl.includes('whatsapp')) {
-        return `<a href="https://wa.me/5491157194796" target="_blank" class="chat-link">${text}</a>`;
-      }
-      
-      return `<a href="${cleanUrl}" target="_blank" class="chat-link">${text}</a>`;
-    });
-
-    const urlRegex = /(https?:\/\/[^\s<]+[^\s<.,;:!?])/g;
-    processedMessage = processedMessage.replace(urlRegex, url => {
-      const cleanUrl = url.trim().replace(/\s+/g, '');
-      return `<a href="${cleanUrl}" target="_blank" class="chat-link">${url}</a>`;
-    });
-
-    return processedMessage;
-  }
-
-  function addMessage(text, sender) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message message-${sender} message-animation`;
-    
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'message-content';
-    contentDiv.innerHTML = formatMessageLinks(text);
-
-    const timeDiv = document.createElement('div');
-    timeDiv.className = 'message-time';
-    timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
-    if (sender === 'bot') {
-      const aiDiv = document.createElement('div');
-      aiDiv.className = 'ai-indicator';
-      aiDiv.innerHTML = `
-        <span class="ai-dot"></span>
-        <span class="ai-dot"></span>
-        <span class="ai-dot"></span>
-        <small>Asistente Inteligente</small>
-      `;
-      messageDiv.appendChild(aiDiv);
-    }
-    
-    messageDiv.appendChild(contentDiv);
-    messageDiv.appendChild(timeDiv);
-    chatBody.appendChild(messageDiv);
-    
-    if (sender === 'user') {
-      const existingQuickReplies = document.querySelector('.quick-replies');
-      if (existingQuickReplies) {
-        existingQuickReplies.remove();
-      }
-    }
-    
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  function showTypingIndicator() {
-    const typingDiv = document.createElement('div');
-    typingDiv.className = 'typing-indicator';
-    typingDiv.id = 'typingIndicator';
-    
-    const dotsDiv = document.createElement('div');
-    dotsDiv.className = 'typing-dots';
-    for (let i = 0; i < 3; i++) {
-      const dot = document.createElement('div');
-      dot.className = 'typing-dot';
-      dotsDiv.appendChild(dot);
-    }
-    
-    typingDiv.appendChild(dotsDiv);
-    chatBody.appendChild(typingDiv);
-    chatBody.scrollTop = chatBody.scrollHeight;
-  }
-
-  function hideTypingIndicator() {
-    const indicator = document.getElementById('typingIndicator');
-    if (indicator) indicator.remove();
   }
 
   // === BOTONES DE ACCESO RÁPIDO ===
@@ -1446,7 +1793,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 1000);
   }
 
-  // === INICIALIZACIÓN ===
+  // === INICIALIZACIÓN MEJORADA ===
   function initChatbot() {
     if (window.chatbotInitialized) return;
 
@@ -1457,9 +1804,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     window.chatbotInitialized = true;
 
+    // Inicializar sistemas
     cargarNegocios();
     cargarOfertas();
+    initVoiceSystem(); // Inicializar sistema de voz
 
+    // Event listeners para botones de voz
+    const micBtn = document.getElementById('micBtn');
+    const voiceToggleBtn = document.getElementById('voiceToggleBtn');
+    
+    if (micBtn) {
+      micBtn.addEventListener('click', toggleVoiceRecognition);
+    }
+    
+    if (voiceToggleBtn) {
+      voiceToggleBtn.addEventListener('click', toggleVoiceResponse);
+    }
+
+    // Event listeners existentes
     if (sendBtn) sendBtn.addEventListener('click', handleSendMessage);
     if (messageInput) {
       messageInput.addEventListener('keydown', function(event) {
@@ -1475,7 +1837,17 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     
-    if (closeChat) closeChat.addEventListener('click', () => chatContainer.classList.remove('active'));
+    if (closeChat) closeChat.addEventListener('click', () => {
+      chatContainer.classList.remove('active');
+      // Detener reconocimiento de voz al cerrar
+      if (isListening && recognition) {
+        recognition.stop();
+      }
+      // Detener síntesis de voz al cerrar
+      if (synthesis && synthesis.speaking) {
+        synthesis.cancel();
+      }
+    });
 
     setTimeout(() => {
       if (negociosData.length > 0) {

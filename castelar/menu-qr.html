@@ -28,6 +28,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: var(--text);
             line-height: 1.6;
+            min-height: 100vh;
         }
 
         .menu-container {
@@ -72,14 +73,13 @@
             background-size: cover;
         }
 
-        /* Navegación por categorías */
+        /* Navegación por categorías - STICKY CORREGIDO */
         .categories-nav {
-            position: sticky;
             background: var(--dark);
             padding: 15px;
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000; /* Aumentado para estar por encima de todo */
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
@@ -396,7 +396,7 @@
             background: white;
             box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
             transition: right 0.3s ease;
-            z-index: 1000;
+            z-index: 2000; /* Mayor que el nav sticky */
             display: flex;
             flex-direction: column;
         }
@@ -564,6 +564,94 @@
             font-weight: 700;
         }
 
+        /* Sistema de Notificaciones Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            background: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 300px;
+            transform: translateX(400px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .toast.hide {
+            transform: translateX(400px);
+            opacity: 0;
+        }
+
+        .toast-icon {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .toast.success {
+            border-left-color: var(--accent);
+        }
+
+        .toast.success .toast-icon {
+            color: var(--accent);
+        }
+
+        .toast.warning {
+            border-left-color: var(--secondary);
+        }
+
+        .toast.warning .toast-icon {
+            color: var(--secondary);
+        }
+
+        .toast.error {
+            border-left-color: #e74c3c;
+        }
+
+        .toast.error .toast-icon {
+            color: #e74c3c;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toast-close:hover {
+            color: #666;
+        }
+
         /* Footer con QR */
         .menu-footer {
             background: var(--dark);
@@ -670,6 +758,17 @@
             .cart-container {
                 width: 100%;
                 right: -100%;
+            }
+
+            .toast-container {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+            }
+
+            .toast {
+                min-width: auto;
+                width: 100%;
             }
 
             .qr-section {
@@ -1359,6 +1458,62 @@
         let cart = [];
         let quantities = {};
 
+        // Sistema de Notificaciones Toast
+        function showToast(message, type = 'info', duration = 3000) {
+            const toastContainer = document.getElementById('toastContainer');
+            
+            // Crear elemento toast
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            // Icono según el tipo
+            let icon = 'ℹ️';
+            if (type === 'success') icon = '✅';
+            if (type === 'warning') icon = '⚠️';
+            if (type === 'error') icon = '❌';
+            
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <span class="toast-message">${message}</span>
+                <button class="toast-close">&times;</button>
+            `;
+            
+            // Agregar al contenedor
+            toastContainer.appendChild(toast);
+            
+            // Animación de entrada
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+            
+            // Evento para cerrar manualmente
+            const closeBtn = toast.querySelector('.toast-close');
+            closeBtn.addEventListener('click', () => {
+                hideToast(toast);
+            });
+            
+            // Auto-eliminar después del tiempo especificado
+            if (duration > 0) {
+                setTimeout(() => {
+                    hideToast(toast);
+                }, duration);
+            }
+            
+            return toast;
+        }
+        
+        function hideToast(toast) {
+            toast.classList.remove('show');
+            toast.classList.add('hide');
+            
+            // Eliminar del DOM después de la animación
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }
+
         // Navegación entre categorías
         document.addEventListener('DOMContentLoaded', function() {
             const categoryButtons = document.querySelectorAll('.category-btn');
@@ -1420,8 +1575,8 @@
                     
                     addToCart(product, price, quantity);
                     
-                    // Mostrar notificación
-                    showNotification(`${product} agregado al carrito`);
+                    // Mostrar notificación toast
+                    showToast(`${product} agregado al carrito`, 'success');
                 });
             });
 
@@ -1456,6 +1611,7 @@
         function removeFromCart(product) {
             cart = cart.filter(item => item.product !== product);
             updateCart();
+            showToast(`${product} eliminado del carrito`, 'warning');
         }
 
         function updateCart() {
@@ -1514,11 +1670,11 @@
 
         function checkout() {
             if (cart.length === 0) {
-                alert('Tu carrito está vacío. Agrega algunos productos antes de realizar el pedido.');
+                showToast('Tu carrito está vacío. Agrega algunos productos antes de realizar el pedido.', 'warning');
                 return;
             }
             
-            alert('Pedido realizado con éxito. ¡Gracias por tu compra!');
+            showToast('Pedido realizado con éxito. ¡Gracias por tu compra!', 'success', 5000);
             cart = [];
             updateCart();
             closeCart();
@@ -1526,7 +1682,7 @@
 
         function sendWhatsApp() {
             if (cart.length === 0) {
-                alert('Tu carrito está vacío. Agrega algunos productos antes de enviar por WhatsApp.');
+                showToast('Tu carrito está vacío. Agrega algunos productos antes de enviar por WhatsApp.', 'warning');
                 return;
             }
             
@@ -1545,31 +1701,6 @@
             window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
         }
 
-        function showNotification(message) {
-            // Crear notificación
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 100px;
-                right: 30px;
-                background: var(--primary);
-                color: white;
-                padding: 15px 20px;
-                border-radius: 8px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                z-index: 1000;
-                animation: slideIn 0.3s ease;
-            `;
-            notification.textContent = message;
-            
-            document.body.appendChild(notification);
-            
-            // Remover después de 3 segundos
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
         // Efectos hover en tarjetas de productos
         const productCards = document.querySelectorAll('.product-card');
         productCards.forEach(card => {
@@ -1584,3 +1715,4 @@
     </script>
 </body>
 </html>
+

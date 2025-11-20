@@ -1,6 +1,5 @@
 // location-consent.js - Sistema de Consentimiento de Ubicación con Indicadores de Distancia
-// Versión: 2.2 - Corregido problema de persistencia entre páginas
-
+// Versión: 2.3 - Corregida incompatibilidad de distancias entre tarjetas y modal
 console.log('📍 Cargando sistema de consentimiento de ubicación con indicadores...');
 
 // =============================================
@@ -24,6 +23,7 @@ class LocationConsentManager {
         this.handleLocationError = this.handleLocationError.bind(this);
         this.checkExistingConsent = this.checkExistingConsent.bind(this);
         this.restoreLocationUI = this.restoreLocationUI.bind(this);
+        this.updateModalDistance = this.updateModalDistance.bind(this);
     }
 
     init() {
@@ -306,6 +306,10 @@ class LocationConsentManager {
                 gap: 6px;
                 margin-top: 8px;
                 font-size: 0.85rem;
+                padding: 8px 12px;
+                background: rgba(59, 130, 246, 0.05);
+                border-radius: 8px;
+                border-left: 3px solid #3b82f6;
             }
 
             /* Sección de ubicación activa */
@@ -354,6 +358,14 @@ class LocationConsentManager {
                 font-size: 0.7rem;
                 color: #64748b;
                 margin-top: 2px;
+            }
+
+            /* 🆕 Estilos para botón de maps actualizado */
+            .modal-map-with-distance {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-weight: 500;
             }
         </style>
         `;
@@ -707,6 +719,7 @@ class LocationConsentManager {
         return R * c;
     }
 
+    // 🆕 MÉTODO MEJORADO: Actualizar todos los indicadores de distancia
     updateDistanceIndicators() {
         if (!this.userLocation) return;
 
@@ -715,7 +728,7 @@ class LocationConsentManager {
         // 1. Actualizar tarjetas de negocios
         this.updateBusinessCardsDistance();
 
-        // 2. Actualizar modal de negocio si está abierto
+        // 2. 🆕 ACTUALIZAR MODAL DE NEGOCIO (INCLUYENDO BOTÓN MAPS)
         this.updateModalDistance();
 
         // 3. Actualizar lista de negocios en el mapa
@@ -723,6 +736,101 @@ class LocationConsentManager {
 
         // 4. Actualizar sección de ubicación activa
         this.updateLocationActiveSection();
+    }
+
+    // 🆕 MÉTODO MEJORADO: Actualizar distancia en el modal del negocio
+    updateModalDistance() {
+        if (!this.userLocation) return;
+
+        console.log('🔄 Actualizando distancia en modal de negocio...');
+
+        const modal = document.getElementById('businessModal');
+        if (!modal || !modal.classList.contains('show')) return;
+
+        const modalImage = document.getElementById('modalImage');
+        if (!modalImage) return;
+
+        try {
+            const negocio = JSON.parse(modalImage.dataset.business || '{}');
+            if (negocio.latitud && negocio.longitud) {
+                const distance = this.calculateDistance(
+                    this.userLocation.latitude,
+                    this.userLocation.longitude,
+                    negocio.latitud,
+                    negocio.longitud
+                );
+
+                // 🆕 ACTUALIZAR BOTÓN DE MAPS CON DISTANCIA CORRECTA
+                this.updateMapsButtonWithDistance(negocio, distance);
+                
+                // 🆕 ACTUALIZAR INDICADOR DE DISTANCIA EN MODAL
+                this.updateModalDistanceIndicator(negocio, distance);
+            }
+        } catch (error) {
+            console.warn('Error actualizando distancia en modal:', error);
+        }
+    }
+
+    // 🆕 MÉTODO NUEVO: Actualizar botón de Maps con distancia correcta
+    updateMapsButtonWithDistance(negocio, distance) {
+        const modalMap = document.getElementById('modalMap');
+        if (!modalMap) return;
+
+        // 🆕 CREAR URL DE MAPS QUE INCLUYE LA DISTANCIA DESDE TU UBICACIÓN
+        const mapsUrl = this.createMapsUrlWithUserLocation(negocio);
+        modalMap.href = mapsUrl;
+        
+        // 🆕 ACTUALIZAR TEXTO DEL BOTÓN CON LA DISTANCIA
+        const distanceText = this.formatDistance(distance);
+        modalMap.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${distanceText}`;
+        modalMap.title = `A ${distanceText} de tu ubicación - Ver en Maps`;
+        modalMap.classList.add('modal-map-with-distance');
+    }
+
+    // 🆕 MÉTODO NUEVO: Crear URL de Maps que use tu ubicación
+    createMapsUrlWithUserLocation(negocio) {
+        if (!this.userLocation) {
+            return `https://maps.google.com/?q=${negocio.latitud},${negocio.longitud}`;
+        }
+
+        // 🆕 URL que muestra ruta desde tu ubicación actual hasta el negocio
+        return `https://www.google.com/maps/dir/?api=1&origin=${this.userLocation.latitude},${this.userLocation.longitude}&destination=${negocio.latitud},${negocio.longitud}&travelmode=driving`;
+    }
+
+    // 🆕 MÉTODO NUEVO: Actualizar indicador de distancia en el modal
+    updateModalDistanceIndicator(negocio, distance) {
+        let distanceElement = document.getElementById('modalDistance');
+        
+        if (!distanceElement) {
+            distanceElement = document.createElement('div');
+            distanceElement.id = 'modalDistance';
+            distanceElement.className = 'modal-distance';
+            
+            // Insertar después de la dirección
+            const addressElement = document.getElementById('modalAddress');
+            if (addressElement && addressElement.parentNode) {
+                addressElement.parentNode.insertBefore(distanceElement, addressElement.nextSibling);
+            }
+        }
+
+        distanceElement.innerHTML = `
+            <i class="fas fa-route text-primary me-2"></i>
+            <span class="fw-bold">A ${this.formatDistance(distance)}</span>
+            <small class="text-muted ms-2">(${this.getWalkingTime(distance)} | ${this.getDrivingTime(distance)})</small>
+        `;
+    }
+
+    // 🆕 MÉTODO NUEVO: Calcular tiempo en auto
+    getDrivingTime(distance) {
+        const drivingSpeed = 30; // km/h en zona urbana
+        const minutes = Math.round((distance / drivingSpeed) * 60);
+        
+        if (minutes < 1) return '1 min en auto';
+        if (minutes < 60) return `${minutes} min en auto`;
+        
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return `${hours}h ${remainingMinutes}min en auto`;
     }
 
     updateBusinessCardsDistance() {
@@ -761,50 +869,8 @@ class LocationConsentManager {
         });
     }
 
-    updateModalDistance() {
-        const modal = document.getElementById('businessModal');
-        if (!modal || !modal.classList.contains('show')) return;
-
-        const modalImage = document.getElementById('modalImage');
-        if (!modalImage) return;
-
-        try {
-            const negocio = JSON.parse(modalImage.dataset.business || '{}');
-            if (negocio.latitud && negocio.longitud) {
-                const distance = this.calculateDistance(
-                    this.userLocation.latitude,
-                    this.userLocation.longitude,
-                    negocio.latitud,
-                    negocio.longitud
-                );
-
-                // Actualizar o crear indicador de distancia en el modal
-                let distanceElement = document.getElementById('modalDistance');
-                if (!distanceElement) {
-                    distanceElement = document.createElement('div');
-                    distanceElement.id = 'modalDistance';
-                    distanceElement.className = 'modal-distance';
-                    
-                    // Insertar después del horario
-                    const hoursElement = document.getElementById('modalHours');
-                    if (hoursElement && hoursElement.parentNode) {
-                        hoursElement.parentNode.insertBefore(distanceElement, hoursElement.nextSibling);
-                    }
-                }
-
-                distanceElement.innerHTML = `
-                    <i class="fas fa-walking walking-icon ${this.getDistanceClass(distance)}"></i>
-                    <span class="${this.getDistanceClass(distance)}">A ${this.formatDistance(distance)} de tu ubicación</span>
-                    <small class="text-muted">(${this.getWalkingTime(distance)})</small>
-                `;
-            }
-        } catch (error) {
-            console.warn('Error actualizando distancia en modal:', error);
-        }
-    }
-
     updateBusinessListDistance() {
-        // Implementar según sea necesario
+        // Implementar según sea necesario para la lista de negocios
     }
 
     updateLocationActiveSection() {
@@ -944,6 +1010,14 @@ class LocationConsentManager {
         if (modalDistance) {
             modalDistance.remove();
         }
+        
+        // 🆕 Restaurar botones de maps a su estado original
+        const modalMaps = document.querySelectorAll('#modalMap');
+        modalMaps.forEach(btn => {
+            btn.classList.remove('modal-map-with-distance');
+            btn.innerHTML = '<i class="fas fa-map-marker-alt"></i> Maps';
+            btn.title = 'Abrir en Google Maps';
+        });
     }
 }
 
@@ -1033,6 +1107,29 @@ document.addEventListener('visibilitychange', () => {
     }
 });
 
+// 🆕 ESCUCHAR CUANDO SE ACTUALICE LA UBICACIÓN PARA ACTUALIZAR DISTANCIAS
+window.addEventListener('locationUpdated', function(e) {
+    console.log('🔄 Ubicación actualizada, recalculando distancias...');
+    if (window.locationManager) {
+        window.locationManager.calculateBusinessDistances();
+    }
+});
+
+// 🆕 ACTUALIZAR DISTANCIAS CUANDO SE ABRE EL MODAL DE NEGOCIO
+document.addEventListener('DOMContentLoaded', function() {
+    const businessModal = document.getElementById('businessModal');
+    if (businessModal) {
+        businessModal.addEventListener('show.bs.modal', function() {
+            console.log('🔄 Modal de negocio abierto - actualizando distancias...');
+            setTimeout(() => {
+                if (window.locationManager && typeof window.locationManager.updateModalDistance === 'function') {
+                    window.locationManager.updateModalDistance();
+                }
+            }, 300);
+        });
+    }
+});
+
 // Inicialización automática
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeLocationSystem);
@@ -1040,4 +1137,4 @@ if (document.readyState === 'loading') {
     initializeLocationSystem();
 }
 
-console.log('✅ location-consent.js con indicadores cargado correctamente - VERSIÓN 2.2');
+console.log('✅ location-consent.js con indicadores cargado correctamente - VERSIÓN 2.3 - DISTANCIAS CORREGIDAS');
